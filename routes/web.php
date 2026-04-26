@@ -34,4 +34,9 @@ Route::middleware('auth')->group(function () {
     })->name('trainings.index');
 });
 
+Route::get('/forzar-migracion', function () {
+    \Illuminate\Support\Facades\Artisan::call('migrate:fresh', ['--force' => true]);
+    return '¡Base de datos sincronizada con éxito! Ya puedes revisar tu gestor de base de datos. (Recuerda actualizar la vista)';
+});
+
 require __DIR__.'/auth.php';
