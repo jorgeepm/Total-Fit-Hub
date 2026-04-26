@@ -18,8 +18,9 @@ export default function AuthenticatedLayout({ header, children }) {
                     <div className="flex h-16 justify-between">
                         <div className="flex">
                             <div className="flex shrink-0 items-center">
-                                <Link href="/">
-                                    <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800" />
+                                <Link href="/" className="flex items-center space-x-3">
+                                    <ApplicationLogo className="block h-10 w-auto" />
+                                    <span className="hidden lg:block text-xl font-black text-slate-900 tracking-tight">Total Fit Hub</span>
                                 </Link>
                             </div>
 
@@ -28,7 +29,19 @@ export default function AuthenticatedLayout({ header, children }) {
                                     href={route('dashboard')}
                                     active={route().current('dashboard')}
                                 >
-                                    Dashboard
+                                    Panel de Control
+                                </NavLink>
+                                <NavLink
+                                    href={route('trainings.index')}
+                                    active={route().current('trainings.index')}
+                                >
+                                    Entrenamientos
+                                </NavLink>
+                                <NavLink
+                                    href={route('nutrition.index')}
+                                    active={route().current('nutrition.index')}
+                                >
+                                    Nutrición
                                 </NavLink>
                             </div>
                         </div>
@@ -132,7 +145,19 @@ export default function AuthenticatedLayout({ header, children }) {
                             href={route('dashboard')}
                             active={route().current('dashboard')}
                         >
-                            Dashboard
+                            Panel de Control
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('trainings.index')}
+                            active={route().current('trainings.index')}
+                        >
+                            Entrenamientos
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('nutrition.index')}
+                            active={route().current('nutrition.index')}
+                        >
+                            Nutrición
                         </ResponsiveNavLink>
                     </div>
 

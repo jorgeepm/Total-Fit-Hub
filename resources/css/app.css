@@ -1,1 +1,27 @@
 @import "tailwindcss";
+
+@theme {
+  --color-primary: #0d9488;
+  --color-primary-dark: #0f766e;
+  --color-secondary: #f97316;
+  --color-surface: #ffffff;
+  --color-background: #f1f5f9;
+  
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+}
+
+@layer base {
+  body {
+    @apply bg-background text-slate-900;
+  }
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.gradient-text {
+  @apply bg-clip-text text-transparent bg-linear-to-r from-teal-500 to-orange-400;
+}

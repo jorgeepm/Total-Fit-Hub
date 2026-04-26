@@ -1,11 +1,13 @@
 import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
-import GuestLayout from '@/Layouts/GuestLayout';
+import AuthLayout from '@/Layouts/AuthLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
+import { Mail, Lock, User, Eye, EyeOff } from 'lucide-react';
+import { useState } from 'react';
 
 export default function Register() {
+    const [showPassword, setShowPassword] = useState(false);
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
         email: '',
@@ -15,106 +17,124 @@ export default function Register() {
 
     const submit = (e) => {
         e.preventDefault();
-
         post(route('register'), {
             onFinish: () => reset('password', 'password_confirmation'),
         });
     };
 
     return (
-        <GuestLayout>
-            <Head title="Register" />
+        <AuthLayout image="/images/login_bg.png">
+            <Head title="Registrarse" />
 
-            <form onSubmit={submit}>
+            <div className="text-center mb-8">
+                <img src="/images/logo.png" alt="Logo" className="h-16 w-16 mx-auto mb-4" />
+                <h2 className="text-2xl font-bold text-slate-800">Total Fit Hub</h2>
+                <h1 className="text-3xl font-extrabold mt-6 text-slate-900">Crear una cuenta</h1>
+            </div>
+
+            <form onSubmit={submit} className="space-y-6">
                 <div>
-                    <InputLabel htmlFor="name" value="Name" />
-
-                    <TextInput
-                        id="name"
-                        name="name"
-                        value={data.name}
-                        className="mt-1 block w-full"
-                        autoComplete="name"
-                        isFocused={true}
-                        onChange={(e) => setData('name', e.target.value)}
-                        required
-                    />
-
-                    <InputError message={errors.name} className="mt-2" />
+                    <label className="block text-sm font-semibold text-slate-700 mb-1">Nombre Completo</label>
+                    <div className="relative">
+                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <User className="h-5 w-5 text-slate-400" />
+                        </div>
+                        <TextInput
+                            id="name"
+                            name="name"
+                            value={data.name}
+                            className="pl-10 block w-full border-slate-200 focus:border-primary focus:ring-primary rounded-xl"
+                            autoComplete="name"
+                            isFocused={true}
+                            placeholder="Tu nombre completo"
+                            onChange={(e) => setData('name', e.target.value)}
+                            required
+                        />
+                    </div>
+                    <InputError message={errors.name} className="mt-1" />
                 </div>
 
-                <div className="mt-4">
-                    <InputLabel htmlFor="email" value="Email" />
-
-                    <TextInput
-                        id="email"
-                        type="email"
-                        name="email"
-                        value={data.email}
-                        className="mt-1 block w-full"
-                        autoComplete="username"
-                        onChange={(e) => setData('email', e.target.value)}
-                        required
-                    />
-
-                    <InputError message={errors.email} className="mt-2" />
+                <div>
+                    <label className="block text-sm font-semibold text-slate-700 mb-1">Correo Electrónico</label>
+                    <div className="relative">
+                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <Mail className="h-5 w-5 text-slate-400" />
+                        </div>
+                        <TextInput
+                            id="email"
+                            type="email"
+                            name="email"
+                            value={data.email}
+                            className="pl-10 block w-full border-slate-200 focus:border-primary focus:ring-primary rounded-xl"
+                            autoComplete="username"
+                            placeholder="usuario@ejemplo.es"
+                            onChange={(e) => setData('email', e.target.value)}
+                            required
+                        />
+                    </div>
+                    <InputError message={errors.email} className="mt-1" />
                 </div>
 
-                <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label className="block text-sm font-semibold text-slate-700 mb-1">Contraseña</label>
+                        <div className="relative">
+                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <Lock className="h-5 w-5 text-slate-400" />
+                            </div>
+                            <TextInput
+                                id="password"
+                                type={showPassword ? "text" : "password"}
+                                name="password"
+                                value={data.password}
+                                className="pl-10 block w-full border-slate-200 focus:border-primary focus:ring-primary rounded-xl"
+                                autoComplete="new-password"
+                                placeholder="••••••••"
+                                onChange={(e) => setData('password', e.target.value)}
+                                required
+                            />
+                        </div>
+                        <InputError message={errors.password} className="mt-1" />
+                    </div>
 
-                    <TextInput
-                        id="password"
-                        type="password"
-                        name="password"
-                        value={data.password}
-                        className="mt-1 block w-full"
-                        autoComplete="new-password"
-                        onChange={(e) => setData('password', e.target.value)}
-                        required
-                    />
-
-                    <InputError message={errors.password} className="mt-2" />
+                    <div>
+                        <label className="block text-sm font-semibold text-slate-700 mb-1">Confirmar Contraseña</label>
+                        <div className="relative">
+                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <Lock className="h-5 w-5 text-slate-400" />
+                            </div>
+                            <TextInput
+                                id="password_confirmation"
+                                type="password"
+                                name="password_confirmation"
+                                value={data.password_confirmation}
+                                className="pl-10 block w-full border-slate-200 focus:border-primary focus:ring-primary rounded-xl"
+                                autoComplete="new-password"
+                                placeholder="••••••••"
+                                onChange={(e) => setData('password_confirmation', e.target.value)}
+                                required
+                            />
+                        </div>
+                        <InputError message={errors.password_confirmation} className="mt-1" />
+                    </div>
                 </div>
 
-                <div className="mt-4">
-                    <InputLabel
-                        htmlFor="password_confirmation"
-                        value="Confirm Password"
-                    />
+                <PrimaryButton
+                    className="w-full justify-center py-3 bg-primary hover:bg-primary-dark text-white rounded-xl text-lg font-bold transition-all transform hover:scale-[1.01]"
+                    disabled={processing}
+                >
+                    Registrarse
+                </PrimaryButton>
 
-                    <TextInput
-                        id="password_confirmation"
-                        type="password"
-                        name="password_confirmation"
-                        value={data.password_confirmation}
-                        className="mt-1 block w-full"
-                        autoComplete="new-password"
-                        onChange={(e) =>
-                            setData('password_confirmation', e.target.value)
-                        }
-                        required
-                    />
-
-                    <InputError
-                        message={errors.password_confirmation}
-                        className="mt-2"
-                    />
-                </div>
-
-                <div className="mt-4 flex items-center justify-end">
-                    <Link
-                        href={route('login')}
-                        className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                    >
-                        Already registered?
-                    </Link>
-
-                    <PrimaryButton className="ms-4" disabled={processing}>
-                        Register
-                    </PrimaryButton>
+                <div className="text-center mt-6">
+                    <p className="text-slate-600">
+                        ¿Ya tienes cuenta?{' '}
+                        <Link href={route('login')} className="text-primary font-bold hover:underline">
+                            Inicia Sesión
+                        </Link>
+                    </p>
                 </div>
             </form>
-        </GuestLayout>
+        </AuthLayout>
     );
 }
