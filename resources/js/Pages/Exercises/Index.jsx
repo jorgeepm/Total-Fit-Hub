@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import ExerciseCard from './ExerciseCard'; // Asegúrate de que la ruta es correcta
+import ExerciseCard from '@/Components/ExerciseCard';
 
 const ExerciseLibrary = () => {
     // 1. Datos simulados (Mock data) que luego vendrán de Laravel/MySQL
