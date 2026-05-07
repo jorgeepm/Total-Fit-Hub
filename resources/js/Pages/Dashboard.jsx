@@ -1,23 +1,65 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 import { PieChart, Pie, Cell, Label, ResponsiveContainer } from 'recharts';
+import { useMemo } from 'react';
 
 // ¡Aquí "atrapamos" la mochila de datos que envía Laravel!
-export default function Dashboard({ auth, nutritionSummary, entrenamientos }) {
+export default function Dashboard({ auth, nutritionSummary, macroTargets, entrenamientos }) {
     
-    // 1. Cálculos matemáticos para tu Donut usando DATOS REALES
+    // 🛡️ VALIDACIONES: Verificar que los datos llegan correctamente
+    if (!nutritionSummary || typeof nutritionSummary !== 'object') {
+        return (
+            <AuthenticatedLayout>
+                <Head title="Dashboard" />
+                <div className="py-12">
+                    <div className="max-w-7xl mx-auto">
+                        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                            <p className="text-red-600 font-semibold">⚠️ Error al cargar datos de nutrición</p>
+                            <p className="text-red-500 text-sm">Recarga la página o intenta más tarde.</p>
+                        </div>
+                    </div>
+                </div>
+            </AuthenticatedLayout>
+        );
+    }
+
+    // 1. Cálculos matemáticos seguros para tu Donut usando DATOS REALES
     const caloriasConsumidas = nutritionSummary?.consumidas || 0;
     const caloriasObjetivo = nutritionSummary?.objetivo || 2500;
     const caloriasRestantes = Math.max(caloriasObjetivo - caloriasConsumidas, 0);
 
-    // 2. Estructura de datos que pide recharts
-    const data = [
-        { name: 'Consumidas', value: caloriasConsumidas },
-        { name: 'Restantes', value: caloriasRestantes }
-    ];
+    // 📊 Datos de gráfico memoizados (se recalculan solo si nutritionSummary cambia)
+    const chartData = useMemo(
+        () => [
+            { name: 'Consumidas', value: caloriasConsumidas },
+            { name: 'Restantes', value: caloriasRestantes }
+        ],
+        [caloriasConsumidas, caloriasRestantes]
+    );
 
-    // 3. Tus colores premium (El primero usará el gradiente, el segundo es la pista gris)
+    // 🎨 Tus colores premium
     const COLORS = ['url(#colorUv)', '#E5E7EB'];
+
+    // 🎯 Objetivos de macronutrientes (desacoplados, dinámicos)
+    const proteinTarget = macroTargets?.proteins || 150;
+    const carbsTarget = macroTargets?.carbs || 250;
+    const fatsTarget = macroTargets?.fats || 70;
+
+    // 📈 Cálculos de porcentajes SEGUROS (sin división por cero)
+    const proteinPercent = useMemo(
+        () => Math.min(((nutritionSummary?.proteins || 0) / proteinTarget) * 100, 100),
+        [nutritionSummary?.proteins, proteinTarget]
+    );
+
+    const carbsPercent = useMemo(
+        () => Math.min(((nutritionSummary?.carbs || 0) / carbsTarget) * 100, 100),
+        [nutritionSummary?.carbs, carbsTarget]
+    );
+
+    const fatsPercent = useMemo(
+        () => Math.min(((nutritionSummary?.fats || 0) / fatsTarget) * 100, 100),
+        [nutritionSummary?.fats, fatsTarget]
+    );
 
     return (
         <AuthenticatedLayout>
@@ -47,7 +89,7 @@ export default function Dashboard({ auth, nutritionSummary, entrenamientos }) {
                                         </defs>
                                         
                                         <Pie
-                                            data={data}
+                                            data={chartData}
                                             cx="50%"
                                             cy="50%"
                                             innerRadius={70}
@@ -57,7 +99,7 @@ export default function Dashboard({ auth, nutritionSummary, entrenamientos }) {
                                             dataKey="value"
                                             stroke="none"
                                         >
-                                            {data.map((entry, index) => (
+                                            {chartData.map((entry, index) => (
                                                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                                             ))}
                                             <Label
@@ -78,16 +120,25 @@ export default function Dashboard({ auth, nutritionSummary, entrenamientos }) {
                         <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
                             <h2 className="text-lg font-semibold text-gray-800 mb-4">Entrenamiento de Hoy</h2>
                             
-                            {entrenamientos && entrenamientos.length > 0 ? (
+                            {Array.isArray(entrenamientos) && entrenamientos.length > 0 ? (
                                 entrenamientos.map((entreno) => (
-                                    <div key={entreno.id} className="mb-3 p-4 bg-gray-50 rounded-lg border border-gray-100">
-                                        <p className="font-medium text-gray-800">{entreno.routine?.nombre || 'Sesión completada'}</p>
-                                        <p className="text-xs text-gray-500 mt-1">Volumen: {entreno.total_volume} kg</p>
+                                    <div 
+                                        key={entreno?.id || Math.random()} 
+                                        className="mb-3 p-4 bg-gray-50 rounded-lg border border-gray-100"
+                                    >
+                                        <p className="font-medium text-gray-800">
+                                            {entreno?.routine?.nombre || 'Sesión completada'}
+                                        </p>
+                                        <p className="text-xs text-gray-500 mt-1">
+                                            Volumen: {entreno?.total_calorias_quemadas || '0'} kcal
+                                        </p>
                                     </div>
                                 ))
                             ) : (
                                 <div className="h-full flex items-center justify-center pb-8">
-                                    <p className="text-gray-400 text-sm text-center">Aún no has registrado <br/>ningún entrenamiento hoy.</p>
+                                    <p className="text-gray-400 text-sm text-center">
+                                        Aún no has registrado <br/>ningún entrenamiento hoy.
+                                    </p>
                                 </div>
                             )}
                         </div>
@@ -103,12 +154,14 @@ export default function Dashboard({ auth, nutritionSummary, entrenamientos }) {
                                 <div>
                                     <div className="flex justify-between mb-1">
                                         <span className="text-sm font-medium text-gray-700">Proteínas</span>
-                                        <span className="text-sm font-bold text-gray-900">{Math.round(nutritionSummary?.proteins || 0)}g</span>
+                                        <span className="text-sm font-bold text-gray-900">
+                                            {Math.round(nutritionSummary?.proteins || 0)}g / {proteinTarget}g
+                                        </span>
                                     </div>
                                     <div className="w-full bg-gray-100 rounded-full h-2.5">
                                         <div 
                                             className="bg-blue-500 h-2.5 rounded-full transition-all duration-500" 
-                                            style={{ width: `${Math.min(((nutritionSummary?.proteins || 0) / 150) * 100, 100)}%` }}
+                                            style={{ width: `${proteinPercent}%` }}
                                         ></div>
                                     </div>
                                 </div>
@@ -117,12 +170,14 @@ export default function Dashboard({ auth, nutritionSummary, entrenamientos }) {
                                 <div>
                                     <div className="flex justify-between mb-1">
                                         <span className="text-sm font-medium text-gray-700">Carbohidratos</span>
-                                        <span className="text-sm font-bold text-gray-900">{Math.round(nutritionSummary?.carbs || 0)}g</span>
+                                        <span className="text-sm font-bold text-gray-900">
+                                            {Math.round(nutritionSummary?.carbs || 0)}g / {carbsTarget}g
+                                        </span>
                                     </div>
                                     <div className="w-full bg-gray-100 rounded-full h-2.5">
                                         <div 
                                             className="bg-green-500 h-2.5 rounded-full transition-all duration-500" 
-                                            style={{ width: `${Math.min(((nutritionSummary?.carbs || 0) / 250) * 100, 100)}%` }}
+                                            style={{ width: `${carbsPercent}%` }}
                                         ></div>
                                     </div>
                                 </div>
@@ -131,12 +186,14 @@ export default function Dashboard({ auth, nutritionSummary, entrenamientos }) {
                                 <div>
                                     <div className="flex justify-between mb-1">
                                         <span className="text-sm font-medium text-gray-700">Grasas</span>
-                                        <span className="text-sm font-bold text-gray-900">{Math.round(nutritionSummary?.fats || 0)}g</span>
+                                        <span className="text-sm font-bold text-gray-900">
+                                            {Math.round(nutritionSummary?.fats || 0)}g / {fatsTarget}g
+                                        </span>
                                     </div>
                                     <div className="w-full bg-gray-100 rounded-full h-2.5">
                                         <div 
                                             className="bg-yellow-500 h-2.5 rounded-full transition-all duration-500" 
-                                            style={{ width: `${Math.min(((nutritionSummary?.fats || 0) / 70) * 100, 100)}%` }}
+                                            style={{ width: `${fatsPercent}%` }}
                                         ></div>
                                     </div>
                                 </div>

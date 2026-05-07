@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\FoodLog;
+use App\Models\Entrenamiento;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
 
 class DashboardController extends Controller
@@ -11,6 +13,12 @@ class DashboardController extends Controller
     public function index()
     {
         $user = Auth::user();
+        
+        // Validación: El usuario debe estar autenticado
+        if (!$user) {
+            abort(403, 'Unauthorized');
+        }
+        
         $today = now()->toDateString();
 
         // Sumamos las calorías de todos los alimentos registrados HOY por este usuario
@@ -34,20 +42,28 @@ class DashboardController extends Controller
         // Obtenemos su objetivo diario (o 2500 por defecto si no lo ha configurado)
         $caloriasDiarias = $user->calorias_diarias ?? 2500;
 
-        // Obtenemos los entrenamientos de hoy
+        // Obtenemos los entrenamientos de hoy con eager loading para evitar N+1
         $entrenamientosHoy = $user->entrenamientos()
             ->with('routine')
-            ->whereDate('started_at', $today)
+            ->whereDate('hora_inicio', $today)
             ->get();
+
+        // Objetivos de macronutrientes (dinámicos, por usuario)
+        $macroTargets = [
+            'proteins' => $user->target_proteins ?? 150,
+            'carbs' => $user->target_carbs ?? 250,
+            'fats' => $user->target_fats ?? 70,
+        ];
 
         return Inertia::render('Dashboard', [
             'nutritionSummary' => [
-                'consumidas' => $caloriasConsumidas,
-                'objetivo' => $caloriasDiarias,
-                'proteins' => $proteinasConsumidas,
-                'carbs' => $carbsConsumidas,
-                'fats' => $fatsConsumidas,
+                'consumidas' => (int) $caloriasConsumidas,
+                'objetivo' => (int) $caloriasDiarias,
+                'proteins' => (int) $proteinasConsumidas,
+                'carbs' => (int) $carbsConsumidas,
+                'fats' => (int) $fatsConsumidas,
             ],
+            'macroTargets' => $macroTargets,
             'entrenamientos' => $entrenamientosHoy,
         ]);
     }
