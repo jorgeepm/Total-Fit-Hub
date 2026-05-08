@@ -29,13 +29,23 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $user = $request->user();
+        $oldWeight = $user->peso;
+        $user->fill($request->validated());
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
         }
 
-        $request->user()->save();
+        $user->save();
+
+        // Si el peso ha cambiado o es nuevo, registrarlo en el historial
+        if ($request->has('peso') && $request->peso != $oldWeight) {
+            $user->weightLogs()->updateOrCreate(
+                ['log_date' => now()->toDateString()],
+                ['weight' => $request->peso]
+            );
+        }
 
         return Redirect::route('profile.edit');
     }

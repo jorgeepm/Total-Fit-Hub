@@ -17,7 +17,7 @@ class ProfileUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
+            'nombre_usuario' => ['required', 'string', 'max:255'],
             'email' => [
                 'required',
                 'string',
@@ -26,6 +26,13 @@ class ProfileUpdateRequest extends FormRequest
                 'max:255',
                 Rule::unique(User::class)->ignore($this->user()->id),
             ],
+            'peso' => ['nullable', 'numeric', 'min:0', 'max:500'],
+            'altura' => ['nullable', 'numeric', 'min:0', 'max:300'],
+            'peso_objetivo' => ['nullable', 'numeric', 'min:0', 'max:500'],
+            'calorias_diarias' => ['nullable', 'integer', 'min:0', 'max:10000'],
+            'target_proteins' => ['nullable', 'integer', 'min:0', 'max:1000'],
+            'target_carbs' => ['nullable', 'integer', 'min:0', 'max:1000'],
+            'target_fats' => ['nullable', 'integer', 'min:0', 'max:1000'],
         ];
     }
 }

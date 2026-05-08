@@ -3,7 +3,7 @@ import { Search, X, Loader2, Plus, ShoppingBasket, Trash2, Check, Scale, Flame, 
 import { router } from '@inertiajs/react';
 import axios from 'axios';
 
-export default function FoodSearch({ onClose, mealType }) {
+export default function FoodSearch({ onClose, mealType, selectedDate }) {
     const [query, setQuery] = useState('');
     const [results, setResults] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -35,11 +35,9 @@ export default function FoodSearch({ onClose, mealType }) {
     const searchFood = async () => {
         setIsLoading(true);
         try {
-            const response = await axios.get(`https://es.openfoodfacts.org/api/v2/search`, {
+            const response = await axios.get(route('nutrition.search'), {
                 params: {
-                    q: query,
-                    fields: 'product_name,brands,nutriments,image_front_small_url,_id,quantity',
-                    page_size: 24
+                    query: query
                 }
             });
             setResults(response.data.products || []);

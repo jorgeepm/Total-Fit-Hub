@@ -55,6 +55,19 @@ class DashboardController extends Controller
             'fats' => $user->target_fats ?? 70,
         ];
 
+        // Historial de peso para la gráfica
+        $weightHistory = $user->weightLogs()
+            ->orderBy('log_date', 'asc')
+            ->get(['weight', 'log_date', 'id'])
+            ->map(fn($log) => [
+                'id' => $log->id,
+                'timestamp' => $log->log_date,
+                'fecha' => \Carbon\Carbon::parse($log->log_date)->format('d/m'),
+                'hora' => \Carbon\Carbon::parse($log->log_date)->format('H:i'),
+                'full_date' => \Carbon\Carbon::parse($log->log_date)->format('d/m/Y H:i'),
+                'peso' => (float) $log->weight,
+            ]);
+
         return Inertia::render('Dashboard', [
             'nutritionSummary' => [
                 'consumidas' => (int) $caloriasConsumidas,
@@ -65,6 +78,7 @@ class DashboardController extends Controller
             ],
             'macroTargets' => $macroTargets,
             'entrenamientos' => $entrenamientosHoy,
+            'weightHistory' => $weightHistory,
         ]);
     }
 }

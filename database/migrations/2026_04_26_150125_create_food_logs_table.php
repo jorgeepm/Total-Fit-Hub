@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('food_logs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('usuarios')->onDelete('cascade');
             $table->string('food_name');
             $table->string('brand')->nullable();
             $table->decimal('calories', 8, 2)->default(0);

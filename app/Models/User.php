@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['nombre_usuario', 'email', 'contrasenia', 'rol', 'peso', 'altura', 'peso_objetivo', 'calorias_diarias', 'target_proteins', 'target_carbs', 'target_fats'])]
+#[Fillable(['nombre_usuario', 'email', 'contrasenia', 'rol', 'peso', 'altura', 'peso_objetivo', 'calorias_diarias', 'target_proteins', 'target_carbs', 'target_fats', 'onboarding_completed'])]
 #[Hidden(['contrasenia', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -50,5 +50,10 @@ class User extends Authenticatable
     public function entradasComidas()
     {
         return $this->hasMany(EntradaComida::class, 'id_usuario');
+    }
+
+    public function weightLogs()
+    {
+        return $this->hasMany(WeightLog::class, 'user_id');
     }
 }

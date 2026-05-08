@@ -22,6 +22,11 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    Route::get('/onboarding', [App\Http\Controllers\OnboardingController::class, 'index'])->name('onboarding.index');
+    Route::post('/onboarding', [App\Http\Controllers\OnboardingController::class, 'store'])->name('onboarding.store');
+
+    Route::post('/weight-logs', [App\Http\Controllers\WeightLogController::class, 'store'])->name('weight-logs.store');
+
     Route::get('/nutrition', [App\Http\Controllers\NutritionController::class, 'index'])->name('nutrition.index');
     Route::get('/nutrition/search', [App\Http\Controllers\NutritionController::class, 'search'])->name('nutrition.search');
     Route::post('/nutrition/log', [App\Http\Controllers\NutritionController::class, 'store'])->name('nutrition.store');

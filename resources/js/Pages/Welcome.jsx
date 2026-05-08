@@ -34,7 +34,7 @@ export default function Welcome({ auth }) {
                                     href={route('login')} 
                                     className="text-slate-600 font-bold text-sm hover:text-slate-900 px-4"
                                 >
-                                    Log In
+                                    Iniciar Sesión
                                 </Link>
                                 <Link 
                                     href={route('register')} 
