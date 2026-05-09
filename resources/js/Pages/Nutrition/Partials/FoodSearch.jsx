@@ -33,6 +33,7 @@ export default function FoodSearch({ onClose, mealType, selectedDate }) {
     }, [query, isCustomMode]);
 
     const searchFood = async () => {
+        setResults([]);
         setIsLoading(true);
         try {
             const response = await axios.get(route('nutrition.search'), {

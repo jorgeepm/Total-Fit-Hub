@@ -14,6 +14,19 @@ const mockExercises = [
 
 export default function Trainings() {
     const [searchTerm, setSearchTerm] = useState('');
+    const [selectedGroups, setSelectedGroups] = useState([]);
+    const [selectedEquip, setSelectedEquip] = useState([]);
+
+    const toggleFilter = (set, value) => {
+        set(prev => prev.includes(value) ? prev.filter(v => v !== value) : [...prev, value]);
+    };
+
+    const filteredExercises = mockExercises.filter(ex => {
+        const matchesSearch = ex.name.toLowerCase().includes(searchTerm.toLowerCase());
+        const matchesGroup = selectedGroups.length === 0 || selectedGroups.includes(ex.group);
+        // Equipamiento isn't in mock data yet, but we'll leave it ready
+        return matchesSearch && matchesGroup;
+    });
 
     return (
         <AuthenticatedLayout
@@ -38,7 +51,12 @@ export default function Trainings() {
                                         <div className="space-y-3">
                                             {['Pecho', 'Espalda', 'Piernas'].map((group) => (
                                                 <label key={group} className="flex items-center space-x-3 group cursor-pointer">
-                                                    <input type="checkbox" className="rounded-lg border-slate-200 text-primary focus:ring-primary h-5 w-5 transition-all" />
+                                                    <input 
+                                                        type="checkbox" 
+                                                        checked={selectedGroups.includes(group)}
+                                                        onChange={() => toggleFilter(setSelectedGroups, group)}
+                                                        className="rounded-lg border-slate-200 text-primary focus:ring-primary h-5 w-5 transition-all" 
+                                                    />
                                                     <span className="text-slate-600 font-bold group-hover:text-primary transition-colors">{group}</span>
                                                 </label>
                                             ))}
@@ -50,7 +68,12 @@ export default function Trainings() {
                                         <div className="space-y-3">
                                             {['Mancuernas', 'Máquinas'].map((item) => (
                                                 <label key={item} className="flex items-center space-x-3 group cursor-pointer">
-                                                    <input type="checkbox" className="rounded-lg border-slate-200 text-primary focus:ring-primary h-5 w-5 transition-all" />
+                                                    <input 
+                                                        type="checkbox" 
+                                                        checked={selectedEquip.includes(item)}
+                                                        onChange={() => toggleFilter(setSelectedEquip, item)}
+                                                        className="rounded-lg border-slate-200 text-primary focus:ring-primary h-5 w-5 transition-all" 
+                                                    />
                                                     <span className="text-slate-600 font-bold group-hover:text-primary transition-colors">{item}</span>
                                                 </label>
                                             ))}
@@ -59,7 +82,10 @@ export default function Trainings() {
                                 </div>
                             </div>
 
-                            <button className="w-full bg-primary text-white py-6 rounded-[30px] font-black text-lg flex items-center justify-center space-x-3 shadow-xl shadow-primary/20 hover:scale-[1.02] transition-transform">
+                             <button 
+                                onClick={() => alert('¡Funcionalidad en desarrollo! Pronto podrás crear tus propias rutinas.')}
+                                className="w-full bg-primary text-white py-6 rounded-[30px] font-black text-lg flex items-center justify-center space-x-3 shadow-xl shadow-primary/20 hover:scale-[1.02] transition-transform"
+                            >
                                 <Plus className="h-6 w-6" />
                                 <span>Añadir Entrenamiento</span>
                             </button>
@@ -79,9 +105,10 @@ export default function Trainings() {
                                 />
                             </div>
 
-                            {/* Exercises Grid */}
+                             {/* Exercises Grid */}
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                                {mockExercises.map((exercise) => (
+                                {filteredExercises.length > 0 ? (
+                                    filteredExercises.map((exercise) => (
                                     <div key={exercise.id} className="bg-white rounded-[40px] overflow-hidden shadow-sm border border-slate-100 group hover:border-primary/50 transition-all hover:-translate-y-2">
                                         <div className="aspect-[4/3] overflow-hidden">
                                             <img 
@@ -108,8 +135,13 @@ export default function Trainings() {
                                                 </button>
                                             </div>
                                         </div>
+                                     </div>
+                                    ))
+                                ) : (
+                                    <div className="col-span-full py-20 text-center">
+                                        <p className="text-xl font-bold text-slate-400">No se encontraron ejercicios con estos filtros.</p>
                                     </div>
-                                ))}
+                                )}
                             </div>
                         </div>
 
