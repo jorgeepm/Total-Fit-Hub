@@ -33,9 +33,14 @@ Route::middleware('auth')->group(function () {
     Route::patch('/nutrition/log/{id}', [App\Http\Controllers\NutritionController::class, 'update'])->name('nutrition.update');
     Route::delete('/nutrition/log/{id}', [App\Http\Controllers\NutritionController::class, 'destroy'])->name('nutrition.destroy');
 
-    Route::get('/trainings', function () {
-        return Inertia::render('Trainings/Index');
-    })->name('trainings.index');
+    Route::get('/trainings', [App\Http\Controllers\ExerciseController::class, 'index'])->name('trainings.index');
+    Route::post('/exercises', [App\Http\Controllers\ExerciseController::class, 'store'])->name('exercises.store');
+    Route::delete('/exercises/{id}', [App\Http\Controllers\ExerciseController::class, 'destroy'])->name('exercises.destroy');
+
+    // --- Rutinas ---
+    Route::get('/routines', [App\Http\Controllers\RoutineController::class, 'index'])->name('routines.index');
+    Route::get('/routines/create', [App\Http\Controllers\RoutineController::class, 'create'])->name('routines.create');
+    Route::post('/routines', [App\Http\Controllers\RoutineController::class, 'store'])->name('routines.store');
 });
 
 Route::get('/forzar-migracion', function () {

@@ -38,6 +38,13 @@ export default function AuthenticatedLayout({ header, children }) {
                                     Entrenamientos
                                 </NavLink>
                                 <NavLink
+                                    id="nav-routines"
+                                    href={route('routines.index')}
+                                    active={route().current('routines.*')}
+                                >
+                                    Rutinas
+                                </NavLink>
+                                <NavLink
                                     href={route('nutrition.index')}
                                     active={route().current('nutrition.index')}
                                 >
@@ -152,6 +159,13 @@ export default function AuthenticatedLayout({ header, children }) {
                             active={route().current('trainings.index')}
                         >
                             Entrenamientos
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            id="nav-routines-responsive"
+                            href={route('routines.index')}
+                            active={route().current('routines.*')}
+                        >
+                            Rutinas
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
                             href={route('nutrition.index')}

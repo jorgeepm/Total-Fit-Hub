@@ -23,5 +23,8 @@ class DatabaseSeeder extends Seeder
             'contrasenia' => bcrypt('password'),
             'rol' => 'admin',
         ]);
+
+        // Seed exercises
+        $this->call(ExerciseSeeder::class);
     }
 }

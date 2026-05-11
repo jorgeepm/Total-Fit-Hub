@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { Head } from '@inertiajs/react';
 import ExerciseCard from '@/Components/ExerciseCard';
 
-const ExerciseLibrary = () => {
+const ExerciseLibrary = ({ auth }) => {
     // 1. Datos simulados (Mock data) que luego vendrán de Laravel/MySQL
     const dummyExercises = [
         { id: 1, title: 'Press de Banca', difficulty: 'Intermedio', imageUrl: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&q=80&w=400' },
@@ -15,24 +17,10 @@ const ExerciseLibrary = () => {
     const [searchTerm, setSearchTerm] = useState('');
 
     return (
-        <div className="min-h-screen bg-gray-50 flex flex-col font-sans">
-            
-            {/* BARRA DE NAVEGACIÓN SUPERIOR (Mockup) */}
-            <nav className="bg-white shadow-sm border-b border-gray-100 py-4 px-8 flex justify-between items-center z-10">
-                <div className="flex items-center space-x-2">
-                    <div className="w-8 h-8 bg-teal-500 rounded-lg flex items-center justify-center text-white font-bold text-xl">
-                        TH
-                    </div>
-                    <span className="text-xl font-bold text-gray-800">Total Fit Hub</span>
-                </div>
-                <div className="hidden md:flex space-x-8 text-sm font-semibold text-gray-500">
-                    <a href="#" className="hover:text-teal-600 transition-colors">Panel de Control</a>
-                    <a href="#" className="text-teal-600 border-b-2 border-teal-600 pb-1">Entrenamientos</a>
-                    <a href="#" className="hover:text-teal-600 transition-colors">Nutrición</a>
-                    <a href="#" className="hover:text-teal-600 transition-colors">Perfil</a>
-                </div>
-                <div className="w-8 h-8 bg-gray-200 rounded-full"></div> {/* Avatar placeholder */}
-            </nav>
+        <AuthenticatedLayout
+            header={<h2 className="text-2xl font-black text-slate-800 tracking-tight">Biblioteca de Ejercicios</h2>}
+        >
+            <Head title="Ejercicios" />
 
             {/* CONTENEDOR PRINCIPAL */}
             <div className="flex flex-1 max-w-7xl mx-auto w-full p-6 gap-8">
@@ -99,7 +87,7 @@ const ExerciseLibrary = () => {
 
                 </main>
             </div>
-        </div>
+        </AuthenticatedLayout>
     );
 };
 
