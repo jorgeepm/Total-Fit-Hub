@@ -84,12 +84,15 @@ export default function RoutinesIndex({ routines = [] }) {
                                         </div>
 
                                         <div className="pt-4 border-t border-slate-50 flex items-center justify-between">
-                                            <button className="flex items-center gap-2 text-sm font-black text-primary hover:text-primary-dark transition-colors">
-                                                <Play className="w-4 h-4 fill-current" />
-                                                Empezar ahora
-                                            </button>
                                             <Link 
-                                                href="#" 
+                                                href={route('routines.start', routine.id)}
+                                                className="flex items-center gap-2 text-sm font-black text-primary hover:text-primary-dark transition-colors"
+                                            >
+                                                <Play className="w-4 h-4 fill-current" />
+                                                ▶ Iniciar Entrenamiento
+                                            </Link>
+                                            <Link 
+                                                href={route('routines.show', routine.id)} 
                                                 className="p-2 bg-slate-50 rounded-xl text-slate-400 hover:bg-primary hover:text-white transition-all"
                                             >
                                                 <ChevronRight className="w-5 h-5" />

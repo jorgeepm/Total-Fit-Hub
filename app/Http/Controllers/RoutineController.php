@@ -18,7 +18,7 @@ class RoutineController extends Controller
         $routines = Routine::where('id_usuario', Auth::id())
             ->withCount('exercises')
             ->latest()
-            ->get(['id', 'nombre', 'estado', 'created_at']);
+            ->get(['id', 'nombre', 'descripcion', 'estado', 'created_at']);
 
         return Inertia::render('Routines/Index', [
             'routines' => $routines,
@@ -64,6 +64,7 @@ class RoutineController extends Controller
     {
         $request->validate([
             'routineName'             => ['required', 'string', 'max:255'],
+            'description'             => ['nullable', 'string', 'max:1000'],
             'exercises'               => ['required', 'array', 'min:1'],
             'exercises.*.id'          => ['required', 'integer', 'exists:ejercicios,id'],
             'exercises.*.sets'        => ['required', 'array', 'min:1'],
@@ -72,9 +73,10 @@ class RoutineController extends Controller
 
         // 1. Crear la rutina asociada al usuario
         $routine = Routine::create([
-            'id_usuario' => Auth::id(),
-            'nombre'     => $request->routineName,
-            'estado'     => 'activa',
+            'id_usuario'  => Auth::id(),
+            'nombre'      => $request->routineName,
+            'descripcion' => $request->description,
+            'estado'      => 'activa',
         ]);
 
         // 2. Construir el array para sync() con los datos pivot
@@ -100,5 +102,13 @@ class RoutineController extends Controller
         return redirect()
             ->route('routines.index')
             ->with('success', "¡Rutina \"{$routine->nombre}\" creada con éxito!");
+    }
+
+    public function start($id) {
+        $rutina = \App\Models\Routine::with('exercises')->findOrFail($id);
+
+        return \Inertia\Inertia::render('Trainings/ActiveWorkout', [
+            'rutina' => $rutina,
+        ]);
     }
 }

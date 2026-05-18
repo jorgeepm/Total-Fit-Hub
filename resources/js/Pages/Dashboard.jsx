@@ -187,7 +187,7 @@ export default function Dashboard({ auth, nutritionSummary, macroTargets, entren
                                             {entreno?.routine?.nombre || 'Sesión completada'}
                                         </p>
                                         <p className="text-xs text-gray-500 mt-1">
-                                            Volumen: {entreno?.total_calorias_quemadas || '0'} kcal
+                                            Volumen: {entreno?.total_calorias_quemadas || '0'} kg
                                         </p>
                                     </div>
                                 ))

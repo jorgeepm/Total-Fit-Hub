@@ -67,11 +67,15 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     // Buzón de errores
     Route::patch('/error-reports/{id}', [App\Http\Controllers\AdminController::class, 'updateErrorStatus'])->name('error-reports.update');
     Route::delete('/error-reports/{id}', [App\Http\Controllers\AdminController::class, 'deleteError'])->name('error-reports.destroy');
+    Route::get('/routines/{id}', [App\Http\Controllers\RoutineController::class, 'show'])->name('routines.show');
+    Route::get('/routines/{id}/start', [App\Http\Controllers\RoutineController::class, 'start'])->name('routines.start');
+    Route::post('/trainings', [App\Http\Controllers\TrainingController::class, 'store'])->name('trainings.store');
+    Route::post('/rutinas', [App\Http\Controllers\RoutineController::class, 'store'])->name('routines.store');
 });
 
 Route::get('/forzar-migracion', function () {
-    \Illuminate\Support\Facades\Artisan::call('migrate:fresh', ['--force' => true]);
-    return '¡Base de datos sincronizada con éxito! Ya puedes revisar tu gestor de base de datos. (Recuerda actualizar la vista)';
+    \Illuminate\Support\Facades\Artisan::call('migrate:fresh', ['--force' => true, '--seed' => true]);
+    return '¡Base de datos sincronizada y sembrada con éxito! Ya puedes revisar tu gestor de base de datos. (Recuerda actualizar la vista)';
 });
 
 require __DIR__.'/auth.php';

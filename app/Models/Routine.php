@@ -8,7 +8,7 @@ class Routine extends Model
 {
     protected $table = 'rutinas';
 
-    protected $fillable = ['id_usuario', 'nombre', 'estado'];
+    protected $fillable = ['id_usuario', 'nombre', 'descripcion', 'estado'];
 
     public function user()
     {

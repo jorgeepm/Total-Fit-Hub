@@ -164,6 +164,7 @@ export default function CreateRoutine({ exercises = [] }) {
     // useForm de Inertia para enviar al backend
     const { data, setData, post, processing, errors, reset } = useForm({
         routineName: '',
+        description: '',
         exercises: [],
     });
 
@@ -258,6 +259,7 @@ export default function CreateRoutine({ exercises = [] }) {
             route('routines.store'),
             {
                 routineName: data.routineName,
+                description: data.description,
                 exercises: selectedExercises.map((ex) => ({
                     id: ex.id,
                     sets: ex.sets,
@@ -297,6 +299,23 @@ export default function CreateRoutine({ exercises = [] }) {
                     />
                     {errors.routineName && (
                         <p className="text-red-500 text-xs mt-2">{errors.routineName}</p>
+                    )}
+                </div>
+
+                {/* ── Descripción de la Rutina ──────────────────────────────── */}
+                <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 mb-5">
+                    <label htmlFor="routine-description-input" className="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
+                        Descripción
+                    </label>
+                    <textarea
+                        id="routine-description-input"
+                        placeholder="Ej: Rutina enfocada en fuerza hipertrofia..."
+                        value={data.description}
+                        onChange={(e) => setData('description', e.target.value)}
+                        className="w-full text-sm text-gray-600 placeholder-gray-300 border-none outline-none focus:ring-0 bg-transparent p-0 resize-none h-20"
+                    />
+                    {errors.description && (
+                        <p className="text-red-500 text-xs mt-2">{errors.description}</p>
                     )}
                 </div>
 

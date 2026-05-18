@@ -61,7 +61,7 @@ export default function Onboarding({ user }) {
                                         id="peso"
                                         type="number"
                                         step="0.1"
-                                        className="mt-1 block w-full text-lg py-3"
+                                        className="mt-1 block w-full text-lg py-3 pl-4"
                                         value={data.peso}
                                         onChange={(e) => setData('peso', e.target.value)}
                                         placeholder="ej: 75.5"
@@ -75,7 +75,7 @@ export default function Onboarding({ user }) {
                                     <TextInput
                                         id="altura"
                                         type="number"
-                                        className="mt-1 block w-full text-lg py-3"
+                                        className="mt-1 block w-full text-lg py-3 pl-4"
                                         value={data.altura}
                                         onChange={(e) => setData('altura', e.target.value)}
                                         placeholder="ej: 175"
@@ -109,7 +109,7 @@ export default function Onboarding({ user }) {
                                         id="peso_objetivo"
                                         type="number"
                                         step="0.1"
-                                        className="mt-1 block w-full text-lg py-3"
+                                        className="mt-1 block w-full text-lg py-3 pl-4"
                                         value={data.peso_objetivo}
                                         onChange={(e) => setData('peso_objetivo', e.target.value)}
                                         placeholder="ej: 70.0"
@@ -123,7 +123,7 @@ export default function Onboarding({ user }) {
                                     <TextInput
                                         id="calorias_diarias"
                                         type="number"
-                                        className="mt-1 block w-full text-lg py-3 font-bold text-indigo-600"
+                                        className="mt-1 block w-full text-lg py-3 pl-4 font-bold text-indigo-600"
                                         value={data.calorias_diarias}
                                         onChange={(e) => setData('calorias_diarias', e.target.value)}
                                         placeholder="ej: 2500"
@@ -169,7 +169,7 @@ export default function Onboarding({ user }) {
                                             type="number" 
                                             value={data.target_proteins} 
                                             onChange={e => setData('target_proteins', e.target.value)}
-                                            className="w-20 bg-transparent text-right font-bold text-blue-900 border-none focus:ring-0"
+                                            className="w-20 bg-transparent text-right font-bold text-blue-900 border-none focus:ring-0 pl-4"
                                         />
                                     </div>
                                     <div className="flex items-center justify-between p-4 bg-green-50 rounded-xl border border-green-100">
@@ -178,7 +178,7 @@ export default function Onboarding({ user }) {
                                             type="number" 
                                             value={data.target_carbs} 
                                             onChange={e => setData('target_carbs', e.target.value)}
-                                            className="w-20 bg-transparent text-right font-bold text-green-900 border-none focus:ring-0"
+                                            className="w-20 bg-transparent text-right font-bold text-green-900 border-none focus:ring-0 pl-4"
                                         />
                                     </div>
                                     <div className="flex items-center justify-between p-4 bg-yellow-50 rounded-xl border border-yellow-100">
@@ -187,7 +187,7 @@ export default function Onboarding({ user }) {
                                             type="number" 
                                             value={data.target_fats} 
                                             onChange={e => setData('target_fats', e.target.value)}
-                                            className="w-20 bg-transparent text-right font-bold text-yellow-900 border-none focus:ring-0"
+                                            className="w-20 bg-transparent text-right font-bold text-yellow-900 border-none focus:ring-0 pl-4"
                                         />
                                     </div>
                                 </div>
