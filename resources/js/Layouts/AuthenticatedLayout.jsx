@@ -1,5 +1,6 @@
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import Dropdown from '@/Components/Dropdown';
+import Footer from '@/Components/Footer';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link, usePage } from '@inertiajs/react';
@@ -50,6 +51,14 @@ export default function AuthenticatedLayout({ header, children }) {
                                 >
                                     Nutrición
                                 </NavLink>
+                                {user.rol === 'admin' && (
+                                    <NavLink
+                                        href={route('admin.index')}
+                                        active={route().current('admin.*')}
+                                    >
+                                        Admin
+                                    </NavLink>
+                                )}
                             </div>
                         </div>
 
@@ -173,6 +182,14 @@ export default function AuthenticatedLayout({ header, children }) {
                         >
                             Nutrición
                         </ResponsiveNavLink>
+                        {user.rol === 'admin' && (
+                            <ResponsiveNavLink
+                                href={route('admin.index')}
+                                active={route().current('admin.*')}
+                            >
+                                Admin
+                            </ResponsiveNavLink>
+                        )}
                     </div>
 
                     <div className="border-t border-gray-200 pb-1 pt-4">
@@ -210,6 +227,7 @@ export default function AuthenticatedLayout({ header, children }) {
             )}
 
             <main>{children}</main>
+            <Footer />
         </div>
     );
 }

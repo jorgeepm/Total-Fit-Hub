@@ -13,7 +13,19 @@ Route::get('/', function () {
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
-});
+})->name('welcome');
+
+Route::get('/privacidad', function () {
+    return Inertia::render('Privacidad');
+})->name('privacidad');
+
+Route::get('/terminos', function () {
+    return Inertia::render('Terminos');
+})->name('terminos');
+
+Route::get('/cookies', function () {
+    return Inertia::render('Cookies');
+})->name('cookies');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -41,6 +53,20 @@ Route::middleware('auth')->group(function () {
     Route::get('/routines', [App\Http\Controllers\RoutineController::class, 'index'])->name('routines.index');
     Route::get('/routines/create', [App\Http\Controllers\RoutineController::class, 'create'])->name('routines.create');
     Route::post('/routines', [App\Http\Controllers\RoutineController::class, 'store'])->name('routines.store');
+
+    // --- Reporte de Errores ---
+    Route::post('/error-reports', [App\Http\Controllers\ErrorReportController::class, 'store'])->name('error-reports.store');
+});
+
+// --- Panel de Administrador ---
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', [App\Http\Controllers\AdminController::class, 'index'])->name('index');
+    Route::patch('/users/{id}', [App\Http\Controllers\AdminController::class, 'updateUser'])->name('users.update');
+    Route::delete('/users/{id}', [App\Http\Controllers\AdminController::class, 'deleteUser'])->name('users.destroy');
+    
+    // Buzón de errores
+    Route::patch('/error-reports/{id}', [App\Http\Controllers\AdminController::class, 'updateErrorStatus'])->name('error-reports.update');
+    Route::delete('/error-reports/{id}', [App\Http\Controllers\AdminController::class, 'deleteError'])->name('error-reports.destroy');
 });
 
 Route::get('/forzar-migracion', function () {

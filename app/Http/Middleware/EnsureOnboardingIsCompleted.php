@@ -19,7 +19,7 @@ class EnsureOnboardingIsCompleted
         $user = Auth::user();
 
         // Si el usuario está autenticado, no ha completado el onboarding y no está ya en la ruta de onboarding
-        if ($user && !$user->onboarding_completed && !$request->routeIs('onboarding.*') && !$request->routeIs('logout')) {
+        if ($user && !$user->onboarding_completed && !$request->routeIs('onboarding.*') && !$request->routeIs('logout') && !$request->routeIs('admin.*')) {
             return redirect()->route('onboarding.index');
         }
 

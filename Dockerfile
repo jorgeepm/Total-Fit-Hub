@@ -20,5 +20,5 @@ RUN composer install --no-dev --optimize-autoloader
 RUN npm install
 RUN npm run build
 
-# 5. Comando de arranque: ¡Hace las migraciones automáticas y levanta la web!
+# 5. Comando de arranque: Hace las migraciones automáticas y levanta la web
 CMD php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=$PORT

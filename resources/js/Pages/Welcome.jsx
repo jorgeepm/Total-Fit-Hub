@@ -1,5 +1,6 @@
 import { Head, Link } from '@inertiajs/react';
-import { ChevronRight, Target, Activity, Zap, CheckCircle2 } from 'lucide-react';
+import { ChevronRight, Target, Activity, Zap } from 'lucide-react';
+import Footer from '@/Components/Footer';
 
 export default function Welcome({ auth }) {
     return (
@@ -157,40 +158,7 @@ export default function Welcome({ auth }) {
             </section>
 
             {/* Footer */}
-            <footer className="bg-slate-950 text-white py-20">
-                <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-20 items-center border-b border-white/10 pb-20">
-                    <div>
-                        <div className="flex items-center space-x-3 mb-8">
-                            <img src="/images/logo.png" alt="Logo" className="h-12 w-12" />
-                            <span className="text-2xl font-black tracking-tight">Total Fit Hub</span>
-                        </div>
-                        <p className="text-slate-400 max-w-md text-lg leading-relaxed">
-                            Elevando los estándares del bienestar personal a través de la innovación y el diseño premium.
-                        </p>
-                    </div>
-                    <div className="space-y-6">
-                        <p className="text-sm font-black text-slate-500 uppercase tracking-[0.3em]">Suscríbete a nuestra newsletter</p>
-                        <div className="flex">
-                            <input 
-                                type="email" 
-                                placeholder="tu@email.com" 
-                                className="flex-1 bg-white/5 border-none px-6 py-4 rounded-l-2xl focus:ring-2 focus:ring-primary text-white"
-                            />
-                            <button className="bg-primary hover:bg-primary-dark px-8 py-4 rounded-r-2xl font-bold transition-all">
-                                Unirse
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div className="max-w-7xl mx-auto px-6 py-10 flex flex-col md:row-span-1 md:flex-row justify-between items-center space-y-4 md:space-y-0 text-slate-500 text-sm font-bold">
-                    <p>&copy; 2026 Total Fit Hub. Todos los derechos reservados.</p>
-                    <div className="flex space-x-8">
-                        <a href="#" className="hover:text-white">Privacidad</a>
-                        <a href="#" className="hover:text-white">Términos</a>
-                        <a href="#" className="hover:text-white">Cookies</a>
-                    </div>
-                </div>
-            </footer>
+            <Footer />
 
             <style dangerouslySetInnerHTML={{ __html: `
                 @keyframes float {
