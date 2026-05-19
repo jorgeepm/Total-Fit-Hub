@@ -25,9 +25,12 @@ class OnboardingController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'genero' => ['required', 'string', 'in:masculino,femenino'],
+            'edad' => ['required', 'integer', 'min:1', 'max:120'],
             'peso' => ['required', 'numeric', 'min:30', 'max:500'],
             'altura' => ['required', 'numeric', 'min:50', 'max:300'],
             'peso_objetivo' => ['required', 'numeric', 'min:30', 'max:500'],
+            'nivel_actividad' => ['required', 'string', 'in:1.2,1.375,1.55,1.725,1.9'],
             'calorias_diarias' => ['required', 'integer', 'min:500', 'max:10000'],
             'target_proteins' => ['nullable', 'integer', 'min:0'],
             'target_carbs' => ['nullable', 'integer', 'min:0'],

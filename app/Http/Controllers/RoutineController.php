@@ -104,11 +104,13 @@ class RoutineController extends Controller
             ->with('success', "¡Rutina \"{$routine->nombre}\" creada con éxito!");
     }
 
-    public function start($id) {
-        $rutina = \App\Models\Routine::with('exercises')->findOrFail($id);
+    public function start(Request $request, $id)
+    {
+        // Buscamos la rutina SOLO dentro de las que le pertenecen al usuario logueado
+        $rutina = $request->user()->rutinas()->with('exercises')->findOrFail($id);
 
         return \Inertia\Inertia::render('Trainings/ActiveWorkout', [
-            'rutina' => $rutina,
+            'rutina' => $rutina
         ]);
     }
 }

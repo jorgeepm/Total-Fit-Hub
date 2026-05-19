@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, router } from '@inertiajs/react';
+import { Head, router, Link } from '@inertiajs/react';
 
 export default function ActiveWorkout({ rutina }) {
   // ==================== ESTADO DEL CRONÓMETRO ====================
@@ -164,6 +164,12 @@ export default function ActiveWorkout({ rutina }) {
                 >
                   {isSubmitting ? 'Guardando...' : 'Finalizar'}
                 </button>
+                <Link
+                  href="/routines"
+                  className="px-8 py-3 rounded-xl font-black bg-gray-500 hover:bg-gray-600 text-white transition-all shadow-lg block text-center"
+                >
+                  Salir sin guardar
+                </Link>
               </div>
             </div>
           </div>

@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Entrenamiento;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Inertia\Inertia;
 
 class TrainingController extends Controller
 {
@@ -22,6 +21,11 @@ class TrainingController extends Controller
             'ejercicios.*.dbId' => 'required|exists:ejercicios,id',
             'ejercicios.*.series' => 'required|array',
         ]);
+
+        // Verificar que la rutina pertenece al usuario autenticado
+        $rutina = \App\Models\Routine::where('id', $request->id_rutina)
+            ->where('id_usuario', auth()->id())
+            ->firstOrFail();
 
         try {
             DB::beginTransaction();

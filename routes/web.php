@@ -53,6 +53,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/routines', [App\Http\Controllers\RoutineController::class, 'index'])->name('routines.index');
     Route::get('/routines/create', [App\Http\Controllers\RoutineController::class, 'create'])->name('routines.create');
     Route::post('/routines', [App\Http\Controllers\RoutineController::class, 'store'])->name('routines.store');
+    Route::get('/routines/{id}', [App\Http\Controllers\RoutineController::class, 'show'])->name('routines.show');
+    Route::get('/routines/{id}/start', [App\Http\Controllers\RoutineController::class, 'start'])->name('routines.start');
+
+    // --- Guardado de entrenamiento ---
+    Route::post('/trainings', [App\Http\Controllers\TrainingController::class, 'store'])->name('trainings.store');
 
     // --- Reporte de Errores ---
     Route::post('/error-reports', [App\Http\Controllers\ErrorReportController::class, 'store'])->name('error-reports.store');
@@ -67,10 +72,6 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     // Buzón de errores
     Route::patch('/error-reports/{id}', [App\Http\Controllers\AdminController::class, 'updateErrorStatus'])->name('error-reports.update');
     Route::delete('/error-reports/{id}', [App\Http\Controllers\AdminController::class, 'deleteError'])->name('error-reports.destroy');
-    Route::get('/routines/{id}', [App\Http\Controllers\RoutineController::class, 'show'])->name('routines.show');
-    Route::get('/routines/{id}/start', [App\Http\Controllers\RoutineController::class, 'start'])->name('routines.start');
-    Route::post('/trainings', [App\Http\Controllers\TrainingController::class, 'store'])->name('trainings.store');
-    Route::post('/rutinas', [App\Http\Controllers\RoutineController::class, 'store'])->name('routines.store');
 });
 
 Route::get('/forzar-migracion', function () {

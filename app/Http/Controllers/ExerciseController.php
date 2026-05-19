@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Exercise;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Http;
 use Inertia\Inertia;
 
 class ExerciseController extends Controller
@@ -16,13 +14,6 @@ class ExerciseController extends Controller
      * globales + los creados por el usuario autenticado.
      */
     public function index() {
-        $ejercicios = Cache::remember('api_ejercicios', 86400, function () {
-            // Hace la petición a la API externa (ej. Wger o ExerciseDB)
-            $response = Http::get("https://wger.de/api/v2/exerciseinfo/");
-            return $response->json();
-        });
-
-        return Inertia::render('Trainings/Index', ['ejercicios' => $ejercicios]);
         try {
             $exercises = Exercise::forUser(Auth::id())
                 ->orderByRaw('ISNULL(id_usuario) ASC') // personalizados primero

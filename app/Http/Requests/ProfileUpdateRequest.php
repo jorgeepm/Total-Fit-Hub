@@ -30,6 +30,8 @@ class ProfileUpdateRequest extends FormRequest
             'altura' => ['nullable', 'numeric', 'min:0', 'max:300'],
             'peso_objetivo' => ['nullable', 'numeric', 'min:0', 'max:500'],
             'calorias_diarias' => ['nullable', 'integer', 'min:0', 'max:10000'],
+            'genero' => ['nullable', 'string', 'in:masculino,femenino'],
+            'edad' => ['nullable', 'integer', 'min:1', 'max:120'],
             'target_proteins' => ['nullable', 'integer', 'min:0', 'max:1000'],
             'target_carbs' => ['nullable', 'integer', 'min:0', 'max:1000'],
             'target_fats' => ['nullable', 'integer', 'min:0', 'max:1000'],

@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['nombre_usuario', 'email', 'contrasenia', 'rol', 'peso', 'altura', 'peso_objetivo', 'calorias_diarias', 'target_proteins', 'target_carbs', 'target_fats', 'onboarding_completed'])]
+#[Fillable(['nombre_usuario', 'email', 'contrasenia', 'rol', 'peso', 'altura', 'peso_objetivo', 'calorias_diarias', 'genero', 'edad', 'nivel_actividad', 'target_proteins', 'target_carbs', 'target_fats', 'onboarding_completed'])]
 #[Hidden(['contrasenia', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -39,7 +39,7 @@ class User extends Authenticatable
 
     public function rutinas()
     {
-        return $this->hasMany(Rutina::class, 'id_usuario');
+        return $this->hasMany(Routine::class, 'id_usuario');
     }
 
     public function entrenamientos()
