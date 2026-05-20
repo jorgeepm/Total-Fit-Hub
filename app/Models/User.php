@@ -47,9 +47,9 @@ class User extends Authenticatable
         return $this->hasMany(Entrenamiento::class, 'id_usuario');
     }
 
-    public function entradasComidas()
+    public function foodLogs()
     {
-        return $this->hasMany(EntradaComida::class, 'id_usuario');
+        return $this->hasMany(FoodLog::class, 'user_id');
     }
 
     public function weightLogs()

@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, router, Link } from '@inertiajs/react';
+import { Check } from 'lucide-react';
 
 export default function ActiveWorkout({ rutina }) {
   // ==================== ESTADO DEL CRONÓMETRO ====================
@@ -252,7 +253,7 @@ export default function ActiveWorkout({ rutina }) {
                           onClick={() => handleToggleComplete(exercise.dbId, serie.id)}
                           className={`w-10 h-10 rounded-lg flex items-center justify-center font-black transition-all shadow-sm ${serie.completado ? 'bg-emerald-500 text-white hover:bg-emerald-600' : 'bg-white border border-slate-200 text-slate-300 hover:text-slate-500 hover:border-slate-300'}`}
                         >
-                          {serie.completado ? '✓' : '—'}
+                          <Check className={serie.completado ? 'w-5 h-5 text-white stroke-[3px]' : 'w-5 h-5 text-slate-300 stroke-[2px] opacity-40'} />
                         </button>
                       </div>
                     ))}

@@ -29,10 +29,10 @@ class NutritionController extends Controller
             'summary' => $summary,
             'selectedDate' => $date,
             'goals' => [
-                'calories' => 2500, // Hardcoded for now or fetch from user profile
-                'proteins' => 150,
-                'carbs' => 300,
-                'fats' => 70,
+                'calories' => auth()->user()->calorias_diarias ?? 2500,
+                'proteins' => auth()->user()->target_proteins ?? 150,
+                'carbs' => auth()->user()->target_carbs ?? 300,
+                'fats' => auth()->user()->target_fats ?? 70,
             ]
         ]);
     }

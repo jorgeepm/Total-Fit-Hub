@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { useForm, usePage } from '@inertiajs/react';
+import { useForm, usePage, router } from '@inertiajs/react';
 import { Transition } from '@headlessui/react';
 
 // ─── Fórmula Mifflin-St Jeor ──────────────────────────────────────────────────
@@ -101,22 +101,34 @@ export default function TdeeCalculator() {
 
     const macros = useMemo(() => calcularMacros(tdee), [tdee]);
 
-    // ─── Formulario Inertia (sólo guarda las calorías + datos TDEE) ───────
-    const { data, setData, patch, processing, recentlySuccessful } = useForm({
-        genero:           calc.genero,
-        edad:             calc.edad,
-        calorias_diarias: tdee || '',
-    });
+    const [isSaving, setIsSaving] = useState(false);
+    const [recentlySuccessful, setRecentlySuccessful] = useState(false);
 
     // Sincronizamos el form con el cálculo antes de guardar
     const handleSave = (e) => {
         e.preventDefault();
-        patch(route('profile.update'), {
-            data: {
-                genero:           calc.genero,
-                edad:             Number(calc.edad),
-                calorias_diarias: tdee,
+        if (!tdee) return;
+
+        setIsSaving(true);
+        router.patch(route('profile.update'), {
+            genero:           calc.genero,
+            edad:             parseInt(calc.edad) || null,
+            altura:           parseFloat(calc.altura) || null,
+            peso:             parseFloat(calc.peso) || null,
+            nivel_actividad:  calc.nivelActividad,
+            calorias_diarias: tdee,
+            target_proteins:  macros?.proteinas || null,
+            target_carbs:     macros?.carbos || null,
+            target_fats:      macros?.grasas || null,
+        }, {
+            onSuccess: () => {
+                setIsSaving(false);
+                setRecentlySuccessful(true);
+                setTimeout(() => setRecentlySuccessful(false), 3000);
             },
+            onError: () => {
+                setIsSaving(false);
+            }
         });
     };
 
@@ -272,14 +284,14 @@ export default function TdeeCalculator() {
                     <form onSubmit={handleSave} className="w-full">
                         <button
                             type="submit"
-                            disabled={!tdee || processing}
+                            disabled={!tdee || isSaving}
                             className={`w-full py-3 rounded-xl text-sm font-bold tracking-wide transition-all duration-200 ${
                                 tdee
                                     ? 'bg-emerald-500 hover:bg-emerald-400 text-white shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 active:scale-[0.98]'
                                     : 'bg-slate-700 text-slate-500 cursor-not-allowed'
                             }`}
                         >
-                            {processing ? 'Guardando…' : `Guardar Objetivo${tdee ? ` (${Math.round(tdee).toLocaleString()} kcal)` : ''}`}
+                            {isSaving ? 'Guardando…' : `Guardar Objetivo${tdee ? ` (${Math.round(tdee).toLocaleString()} kcal)` : ''}`}
                         </button>
                         <Transition
                             show={recentlySuccessful}

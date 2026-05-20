@@ -47,8 +47,8 @@ class TrainingController extends Controller
                             'id_entrenamiento' => $entrenamiento->id,
                             'id_ejercicio' => $ejercicio['dbId'],
                             'numero_series' => $index + 1,
-                            'repeticiones_hechas' => $serie['repeticiones'],
-                            'peso_usado' => $serie['peso'],
+                            'repeticiones_hechas' => (int) ($serie['repeticiones'] ?: 0),
+                            'peso_usado' => (float) ($serie['peso'] ?: 0),
                             'created_at' => now(),
                             'updated_at' => now(),
                         ]);
@@ -75,7 +75,9 @@ class TrainingController extends Controller
         foreach ($ejercicios as $ejercicio) {
             foreach ($ejercicio['series'] as $serie) {
                 if ($serie['completado']) {
-                    $totalVolume += ($serie['peso'] * $serie['repeticiones']);
+                    $peso = (float) ($serie['peso'] ?: 0);
+                    $reps = (int) ($serie['repeticiones'] ?: 0);
+                    $totalVolume += ($peso * $reps);
                 }
             }
         }

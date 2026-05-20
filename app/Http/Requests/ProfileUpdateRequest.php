@@ -32,6 +32,7 @@ class ProfileUpdateRequest extends FormRequest
             'calorias_diarias' => ['nullable', 'integer', 'min:0', 'max:10000'],
             'genero' => ['nullable', 'string', 'in:masculino,femenino'],
             'edad' => ['nullable', 'integer', 'min:1', 'max:120'],
+            'nivel_actividad' => ['nullable', 'string', 'max:255'],
             'target_proteins' => ['nullable', 'integer', 'min:0', 'max:1000'],
             'target_carbs' => ['nullable', 'integer', 'min:0', 'max:1000'],
             'target_fats' => ['nullable', 'integer', 'min:0', 'max:1000'],

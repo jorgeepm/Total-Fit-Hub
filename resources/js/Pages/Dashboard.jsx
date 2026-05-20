@@ -273,7 +273,7 @@ export default function Dashboard({ auth, nutritionSummary, macroTargets, entren
                         </div>
 
                         <div className="h-80 w-full">
-                            <ResponsiveContainer width="100%" height="100%">
+                            <ResponsiveContainer width="100%" height={320}>
                                 <AreaChart 
                                     data={weightHistory}
                                     onMouseMove={(v) => {
@@ -291,13 +291,9 @@ export default function Dashboard({ auth, nutritionSummary, macroTargets, entren
                                     </defs>
                                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
                                     <XAxis 
-                                        dataKey="timestamp" 
+                                        dataKey="fecha" 
                                         axisLine={false} 
                                         tickLine={false} 
-                                        tickFormatter={(val) => {
-                                            const date = new Date(val);
-                                            return `${date.getDate()}/${date.getMonth() + 1}`;
-                                        }}
                                         tick={{fill: '#64748b', fontSize: 11, fontWeight: 600}}
                                         dy={10}
                                     />
