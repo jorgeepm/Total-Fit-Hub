@@ -281,9 +281,9 @@ export default function Dashboard({ auth, nutritionSummary, macroTargets, entren
 
                     {/* Fila 2: Evolución del Peso y Agua */}
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col">
+                        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col" style={{userSelect: 'none', WebkitUserSelect: 'none'}}>
                             <div className="flex justify-between items-center mb-6">
-                                <div>
+                                <div style={{userSelect: 'text'}}>
                                     <h2 className="text-lg font-semibold text-gray-800">Evolución del Peso</h2>
                                 <p className="text-sm text-gray-500">Historial de tus registros</p>
                             </div>
@@ -294,7 +294,7 @@ export default function Dashboard({ auth, nutritionSummary, macroTargets, entren
                                 >
                                     <Plus size={18} /> Registrar Peso
                                 </button>
-                                <div className="text-right border-l pl-4 border-gray-100 min-w-[140px]">
+                                <div className="text-right border-l pl-4 border-gray-100 min-w-[140px]" style={{userSelect: 'none'}}>
                                     <div className="flex flex-col">
                                         <span className="text-2xl font-black text-indigo-600 leading-none">
                                             {hoveredWeight ? `${hoveredWeight.peso} kg` : `${auth.user.peso} kg`}
@@ -307,7 +307,15 @@ export default function Dashboard({ auth, nutritionSummary, macroTargets, entren
                             </div>
                         </div>
 
-                        <div className="h-80 w-full">
+                        <div 
+                            className="h-80 w-full" 
+                            style={{
+                                userSelect: 'none', 
+                                WebkitUserSelect: 'none'
+                            }}
+                            onMouseDown={(e) => e.preventDefault()}
+                            draggable={false}
+                        >
                             <ResponsiveContainer width="100%" height={320}>
                                 <AreaChart 
                                     data={weightHistory}
@@ -317,6 +325,7 @@ export default function Dashboard({ auth, nutritionSummary, macroTargets, entren
                                         }
                                     }}
                                     onMouseLeave={() => setHoveredWeight(null)}
+                                    margin={{ top: 10, right: 10, left: -20, bottom: 10 }}
                                 >
                                     <defs>
                                         <linearGradient id="colorWeight" x1="0" y1="0" x2="0" y2="1">
@@ -334,7 +343,7 @@ export default function Dashboard({ auth, nutritionSummary, macroTargets, entren
                                     />
                                     <YAxis 
                                         hide 
-                                        domain={['dataMin - 1', 'dataMax + 1']} 
+                                        domain={['dataMin - 1', 'dataMax + 1']}
                                     />
                                     <Tooltip 
                                         shared={false}
