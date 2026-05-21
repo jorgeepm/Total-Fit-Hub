@@ -136,12 +136,22 @@ export default function Dashboard({ auth, nutritionSummary, macroTargets, entren
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
                         {/* TARJETA 1: CALORÍAS 🍩 */}
-                        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center">
-                            <h2 className="text-lg font-semibold text-gray-800 mb-4 self-start">Mi Progreso Diario</h2>
+                        <div 
+                            className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center" 
+                            style={{userSelect: 'none', WebkitUserSelect: 'none', cursor: 'default', WebkitTouchCallout: 'none'}}
+                            onMouseDown={(e) => e.preventDefault()}
+                            draggable={false}
+                        >
+                            <h2 className="text-lg font-semibold text-gray-800 mb-4 self-start" style={{userSelect: 'none'}}>Mi Progreso Diario</h2>
                             
-                            <div className="h-64 w-full">
+                            <div 
+                                className="h-64 w-full" 
+                                style={{userSelect: 'none', WebkitUserSelect: 'none', touchAction: 'none'}}
+                                onMouseDown={(e) => e.preventDefault()}
+                                draggable={false}
+                            >
                                 <ResponsiveContainer width="100%" height="100%">
-                                    <PieChart>
+                                    <PieChart style={{userSelect: 'none', WebkitUserSelect: 'none'}} draggable={false}>
                                         <defs>
                                             <linearGradient id="colorUv" x1="0" y1="0" x2="1" y2="1">
                                                 <stop offset="0%" stopColor="#4FD1C5" />
@@ -167,12 +177,13 @@ export default function Dashboard({ auth, nutritionSummary, macroTargets, entren
                                                 value={`${Math.round(caloriasConsumidas)} / ${Math.round(caloriasObjetivo)}`}
                                                 position="center"
                                                 className="text-2xl font-bold fill-gray-800"
+                                                style={{userSelect: 'none', pointerEvents: 'none'}}
                                             />
                                         </Pie>
                                     </PieChart>
                                 </ResponsiveContainer>
                             </div>
-                            <p className="text-sm text-gray-500 mt-2">Calorías consumidas</p>
+                            <p className="text-sm text-gray-500 mt-2" style={{userSelect: 'none'}}>Calorías consumidas</p>
                         </div>
 
                         <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col">

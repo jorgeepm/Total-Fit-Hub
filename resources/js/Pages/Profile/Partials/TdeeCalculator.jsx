@@ -36,14 +36,14 @@ function CalorieGauge({ calories }) {
     const strokeDash = circumference * pct;
 
     const color =
-        calories < 1500 ? '#f87171' :
-        calories < 2000 ? '#fb923c' :
-        calories < 2800 ? '#34d399' : '#60a5fa';
+        calories < 1500 ? '#dc2626' :
+        calories < 2000 ? '#f97316' :
+        calories < 2800 ? '#14b8a6' : '#0ea5e9';
 
     return (
         <div className="relative inline-flex items-center justify-center">
             <svg width="144" height="144" className="-rotate-90">
-                <circle cx="72" cy="72" r={radius} fill="none" stroke="#1e293b" strokeWidth="12" />
+                <circle cx="72" cy="72" r={radius} fill="none" stroke="#e2e8f0" strokeWidth="12" />
                 <circle
                     cx="72" cy="72" r={radius} fill="none"
                     stroke={color} strokeWidth="12"
@@ -53,10 +53,10 @@ function CalorieGauge({ calories }) {
                 />
             </svg>
             <div className="absolute flex flex-col items-center rotate-0">
-                <span className="text-2xl font-black text-white leading-none" style={{ color }}>
+                <span className="text-2xl font-black text-slate-900 leading-none" style={{ color }}>
                     {calories ? Math.round(calories).toLocaleString() : '—'}
                 </span>
-                <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mt-0.5">kcal/día</span>
+                <span className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mt-0.5">kcal/día</span>
             </div>
         </div>
     );
@@ -65,9 +65,9 @@ function CalorieGauge({ calories }) {
 // ─── MacroPill ────────────────────────────────────────────────────────────────
 function MacroPill({ label, value, unit, color }) {
     return (
-        <div className={`flex flex-col items-center px-4 py-3 rounded-xl bg-slate-800/60 border border-slate-700/50`}>
+        <div className={`flex flex-col items-center px-4 py-3 rounded-xl bg-slate-50 border border-slate-200`}>
             <span className="text-[10px] font-bold uppercase tracking-widest mb-1" style={{ color }}>{label}</span>
-            <span className="text-xl font-black text-white">{value ?? '—'}</span>
+            <span className="text-xl font-black text-slate-900">{value ?? '—'}</span>
             <span className="text-[10px] text-slate-500">{unit}</span>
         </div>
     );
@@ -135,23 +135,23 @@ export default function TdeeCalculator() {
     };
 
     const inputClass =
-        'w-full bg-slate-800 border border-slate-700 text-white rounded-xl px-4 py-2.5 text-sm ' +
-        'focus:outline-none focus:ring-2 focus:ring-emerald-500/70 focus:border-emerald-500 transition placeholder-slate-500';
+        'w-full bg-white border border-slate-200 text-slate-900 rounded-xl px-4 py-2.5 text-sm ' +
+        'focus:outline-none focus:ring-2 focus:ring-teal-500/50 focus:border-teal-500 transition placeholder-slate-400';
 
-    const labelClass = 'block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5';
+    const labelClass = 'block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5';
 
     return (
-        <section className="rounded-2xl bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border border-slate-700/60 shadow-xl overflow-hidden">
+        <section className="rounded-2xl bg-white border border-slate-200 shadow-sm overflow-hidden">
             {/* Header */}
-            <div className="px-6 py-5 border-b border-slate-700/60 flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-emerald-500/20 flex items-center justify-center shrink-0">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <div className="px-6 py-5 border-b border-slate-200 flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-teal-100 flex items-center justify-center shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 11h.01M12 11h.01M15 11h.01M4 19h16a2 2 0 002-2V7a2 2 0 00-2-2H4a2 2 0 00-2 2v10a2 2 0 002 2z" />
                     </svg>
                 </div>
                 <div>
-                    <h2 className="text-base font-bold text-white">Calculadora de Calorías (TDEE)</h2>
-                    <p className="text-xs text-slate-400 mt-0.5">Fórmula científica de Mifflin-St Jeor · Actualización en tiempo real</p>
+                    <h2 className="text-base font-bold text-slate-900">Calculadora de Calorías (TDEE)</h2>
+                    <p className="text-xs text-slate-500 mt-0.5">Fórmula científica de Mifflin-St Jeor · Actualización en tiempo real</p>
                 </div>
             </div>
 
@@ -174,8 +174,8 @@ export default function TdeeCalculator() {
                                     onClick={() => setCalc((p) => ({ ...p, genero: val }))}
                                     className={`flex items-center gap-2 px-4 py-3 rounded-xl border text-sm font-semibold transition-all duration-200 ${
                                         calc.genero === val
-                                            ? 'bg-emerald-500/20 border-emerald-500 text-emerald-300 shadow-lg shadow-emerald-500/10'
-                                            : 'bg-slate-800 border-slate-700 text-slate-400 hover:border-slate-500'
+                                            ? 'bg-teal-50 border-teal-300 text-teal-700 shadow-sm shadow-teal-100'
+                                            : 'bg-slate-50 border-slate-200 text-slate-600 hover:border-slate-300'
                                     }`}
                                 >
                                     <span className="text-lg">{icon}</span> {label}
@@ -223,8 +223,8 @@ export default function TdeeCalculator() {
                                     onClick={() => setCalc((p) => ({ ...p, nivelActividad: value }))}
                                     className={`w-full flex items-center justify-between px-4 py-2.5 rounded-xl border text-sm transition-all duration-200 ${
                                         calc.nivelActividad === value
-                                            ? 'bg-emerald-500/15 border-emerald-500 text-emerald-200 shadow-md shadow-emerald-500/5'
-                                            : 'bg-slate-800/50 border-slate-700/50 text-slate-400 hover:border-slate-600 hover:text-slate-300'
+                                            ? 'bg-teal-50 border-teal-300 text-teal-700 shadow-sm shadow-teal-100'
+                                            : 'bg-slate-50 border-slate-200 text-slate-600 hover:border-slate-300 hover:text-slate-700'
                                     }`}
                                 >
                                     <span className="font-semibold">{label}</span>
@@ -236,10 +236,10 @@ export default function TdeeCalculator() {
 
                     {/* TMB info */}
                     {tmb && (
-                        <div className="text-xs text-slate-500 bg-slate-800/40 rounded-lg px-4 py-2.5 border border-slate-700/40">
-                            <span className="text-slate-400 font-semibold">TMB (Basal):</span>
+                        <div className="text-xs text-slate-600 bg-slate-50 rounded-lg px-4 py-2.5 border border-slate-200">
+                            <span className="text-slate-700 font-semibold">TMB (Basal):</span>
                             &nbsp;{Math.round(tmb).toLocaleString()} kcal &nbsp;·&nbsp;
-                            <span className="text-slate-400 font-semibold">Factor:</span>
+                            <span className="text-slate-700 font-semibold">Factor:</span>
                             &nbsp;×{calc.nivelActividad}
                         </div>
                     )}
@@ -252,16 +252,16 @@ export default function TdeeCalculator() {
 
                         {tdee && (
                             <div className="text-center">
-                                <p className="text-xs text-slate-400 font-medium">Calorías de mantenimiento diarias</p>
+                                <p className="text-xs text-slate-600 font-medium">Calorías de mantenimiento diarias</p>
                                 <div className="flex gap-3 mt-3 justify-center">
                                     <div className="text-center">
                                         <div className="text-xs text-slate-500 mb-0.5">Déficit (−500)</div>
-                                        <div className="text-sm font-bold text-red-400">{(tdee - 500).toLocaleString()} kcal</div>
+                                        <div className="text-sm font-bold text-red-600">{(tdee - 500).toLocaleString()} kcal</div>
                                     </div>
-                                    <div className="w-px bg-slate-700"/>
+                                    <div className="w-px bg-slate-200"/>
                                     <div className="text-center">
                                         <div className="text-xs text-slate-500 mb-0.5">Superávit (+300)</div>
-                                        <div className="text-sm font-bold text-blue-400">{(tdee + 300).toLocaleString()} kcal</div>
+                                        <div className="text-sm font-bold text-blue-600">{(tdee + 300).toLocaleString()} kcal</div>
                                     </div>
                                 </div>
                             </div>
@@ -289,8 +289,8 @@ export default function TdeeCalculator() {
                             disabled={!tdee || isSaving}
                             className={`w-full py-3 rounded-xl text-sm font-bold tracking-wide transition-all duration-200 ${
                                 tdee
-                                    ? 'bg-emerald-500 hover:bg-emerald-400 text-white shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 active:scale-[0.98]'
-                                    : 'bg-slate-700 text-slate-500 cursor-not-allowed'
+                                    ? 'bg-teal-500 hover:bg-teal-600 text-white shadow-md shadow-teal-200 hover:shadow-teal-300 active:scale-[0.98]'
+                                    : 'bg-slate-200 text-slate-400 cursor-not-allowed'
                             }`}
                         >
                             {isSaving ? 'Guardando…' : `Guardar Objetivo${tdee ? ` (${Math.round(tdee).toLocaleString()} kcal)` : ''}`}
@@ -303,7 +303,7 @@ export default function TdeeCalculator() {
                             leave="transition ease-in duration-200"
                             leaveTo="opacity-0"
                         >
-                            <p className="mt-2 text-center text-xs text-emerald-400 font-medium">
+                            <p className="mt-2 text-center text-xs text-teal-600 font-medium">
                                 ✓ Objetivo calórico guardado
                             </p>
                         </Transition>

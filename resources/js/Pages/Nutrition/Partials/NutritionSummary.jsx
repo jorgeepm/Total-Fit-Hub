@@ -7,11 +7,26 @@ export default function NutritionSummary({ summary, goals }) {
     return (
         <div className="space-y-6">
             {/* Calories Radial Card */}
-            <div className="bg-white rounded-3xl p-8 shadow-sm border border-slate-100 flex flex-col items-center">
-                <h3 className="text-xl font-bold text-slate-800 mb-6 self-start">Mi Progreso Diario</h3>
+            <div 
+                className="bg-white rounded-3xl p-8 shadow-sm border border-slate-100 flex flex-col items-center" 
+                style={{userSelect: 'none', WebkitUserSelect: 'none', cursor: 'default', WebkitTouchCallout: 'none'}}
+                onMouseDown={(e) => e.preventDefault()}
+                draggable={false}
+            >
+                <h3 className="text-xl font-bold text-slate-800 mb-6 self-start" style={{userSelect: 'none'}}>Mi Progreso Diario</h3>
                 
-                <div className="relative w-48 h-48 flex items-center justify-center">
-                    <svg className="w-full h-full transform -rotate-90">
+                <div 
+                    className="relative w-48 h-48 flex items-center justify-center" 
+                    style={{userSelect: 'none', WebkitUserSelect: 'none', touchAction: 'none'}}
+                    onMouseDown={(e) => e.preventDefault()}
+                    draggable={false}
+                >
+                    <svg 
+                        className="w-full h-full transform -rotate-90 pointer-events-none" 
+                        style={{userSelect: 'none', WebkitUserSelect: 'none', touchAction: 'none'}}
+                        draggable={false}
+                        onMouseDown={(e) => e.preventDefault()}
+                    >
                         <circle
                             cx="96"
                             cy="96"
@@ -40,9 +55,9 @@ export default function NutritionSummary({ summary, goals }) {
                             </linearGradient>
                         </defs>
                     </svg>
-                    <div className="absolute inset-0 flex flex-col items-center justify-center">
-                        <span className="text-4xl font-black text-slate-900">{Math.round(summary.calories)}</span>
-                        <span className="text-slate-500 font-medium">{Math.round(goals.calories)} Calorías</span>
+                    <div className="absolute inset-0 flex flex-col items-center justify-center" style={{userSelect: 'none', pointerEvents: 'none'}}>
+                        <span className="text-4xl font-black text-slate-900" style={{userSelect: 'none'}}>{Math.round(summary.calories)}</span>
+                        <span className="text-slate-500 font-medium" style={{userSelect: 'none'}}>{Math.round(goals.calories)} Calorías</span>
                     </div>
                 </div>
 
