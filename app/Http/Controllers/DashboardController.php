@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\FoodLog;
 use App\Models\Entrenamiento;
+use App\Models\WaterLog;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
@@ -68,6 +69,11 @@ class DashboardController extends Controller
                 'peso' => (float) $log->weight,
             ]);
 
+        $waterLog = WaterLog::where('user_id', $user->id)
+            ->whereDate('date', $today)
+            ->first();
+        $water = $waterLog ? $waterLog->glasses : 0;
+
         return Inertia::render('Dashboard', [
             'nutritionSummary' => [
                 'consumidas' => (int) $caloriasConsumidas,
@@ -79,6 +85,7 @@ class DashboardController extends Controller
             'macroTargets' => $macroTargets,
             'entrenamientos' => $entrenamientosHoy,
             'weightHistory' => $weightHistory,
+            'water' => $water,
         ]);
     }
 }

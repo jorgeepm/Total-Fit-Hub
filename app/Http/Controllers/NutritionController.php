@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\FoodLog;
+use App\Models\WaterLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Inertia\Inertia;
@@ -24,6 +25,12 @@ class NutritionController extends Controller
             'fats' => $logs->sum('fats'),
         ];
 
+        $waterLog = WaterLog::where('user_id', auth()->id())
+            ->where('date', $date)
+            ->first();
+
+        $water = $waterLog ? $waterLog->glasses : 0;
+
         return Inertia::render('Nutrition/Index', [
             'logs' => $logs,
             'summary' => $summary,
@@ -33,7 +40,8 @@ class NutritionController extends Controller
                 'proteins' => auth()->user()->target_proteins ?? 150,
                 'carbs' => auth()->user()->target_carbs ?? 300,
                 'fats' => auth()->user()->target_fats ?? 70,
-            ]
+            ],
+            'water' => $water
         ]);
     }
 
@@ -113,5 +121,20 @@ class NutritionController extends Controller
         $log->delete();
 
         return redirect()->back()->with('success', 'Alimento eliminado');
+    }
+
+    public function updateWater(Request $request)
+    {
+        $validated = $request->validate([
+            'date' => 'required|date',
+            'glasses' => 'required|integer|min:0'
+        ]);
+
+        WaterLog::updateOrCreate(
+            ['user_id' => auth()->id(), 'date' => $validated['date']],
+            ['glasses' => $validated['glasses']]
+        );
+
+        return redirect()->back();
     }
 }

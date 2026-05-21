@@ -44,6 +44,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/nutrition/log', [App\Http\Controllers\NutritionController::class, 'store'])->name('nutrition.store');
     Route::patch('/nutrition/log/{id}', [App\Http\Controllers\NutritionController::class, 'update'])->name('nutrition.update');
     Route::delete('/nutrition/log/{id}', [App\Http\Controllers\NutritionController::class, 'destroy'])->name('nutrition.destroy');
+    Route::post('/nutrition/water', [App\Http\Controllers\NutritionController::class, 'updateWater'])->name('nutrition.water.update');
 
     Route::get('/trainings', [App\Http\Controllers\ExerciseController::class, 'index'])->name('trainings.index');
     Route::post('/exercises', [App\Http\Controllers\ExerciseController::class, 'store'])->name('exercises.store');

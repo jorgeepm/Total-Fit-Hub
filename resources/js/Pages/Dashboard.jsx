@@ -9,9 +9,10 @@ import TextInput from '@/Components/TextInput';
 import InputError from '@/Components/InputError';
 import SecondaryButton from '@/Components/SecondaryButton';
 import PrimaryButton from '@/Components/PrimaryButton';
+import WaterTracker from './Nutrition/Partials/WaterTracker';
 
 // ¡Aquí "atrapamos" la mochila de datos que envía Laravel!
-export default function Dashboard({ auth, nutritionSummary, macroTargets, entrenamientos, weightHistory }) {
+export default function Dashboard({ auth, nutritionSummary, macroTargets, entrenamientos, weightHistory, water }) {
     const [showingWeightModal, setShowingWeightModal] = useState(false);
     const [hoveredWeight, setHoveredWeight] = useState(null);
 
@@ -245,11 +246,12 @@ export default function Dashboard({ auth, nutritionSummary, macroTargets, entren
 
                     </div>
 
-                    {/* Fila 2: Evolución del Peso */}
-                    <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                        <div className="flex justify-between items-center mb-6">
-                            <div>
-                                <h2 className="text-lg font-semibold text-gray-800">Evolución del Peso</h2>
+                    {/* Fila 2: Evolución del Peso y Agua */}
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col">
+                            <div className="flex justify-between items-center mb-6">
+                                <div>
+                                    <h2 className="text-lg font-semibold text-gray-800">Evolución del Peso</h2>
                                 <p className="text-sm text-gray-500">Historial de tus registros</p>
                             </div>
                             <div className="flex items-center gap-4">
@@ -333,6 +335,15 @@ export default function Dashboard({ auth, nutritionSummary, macroTargets, entren
                             </ResponsiveContainer>
                         </div>
                     </div>
+                    
+                    {/* Componente de Agua */}
+                    <div>
+                        <WaterTracker 
+                            water={water} 
+                            selectedDate={new Date().toISOString().slice(0, 10)} 
+                        />
+                    </div>
+                </div>
 
                 </div>
 

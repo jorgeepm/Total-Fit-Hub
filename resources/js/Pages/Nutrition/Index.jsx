@@ -3,11 +3,12 @@ import { Head } from '@inertiajs/react';
 import { useState } from 'react';
 import { Plus } from 'lucide-react';
 import NutritionSummary from './Partials/NutritionSummary';
+import WaterTracker from './Partials/WaterTracker';
 import MealDiary from './Partials/MealDiary';
 import FoodSearch from './Partials/FoodSearch';
 import DateNavigator from './Partials/DateNavigator';
 
-export default function Index({ auth, logs, summary, goals, selectedDate }) {
+export default function Index({ auth, logs, summary, goals, selectedDate, water }) {
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [activeMealType, setActiveMealType] = useState('Desayuno');
 
@@ -41,7 +42,9 @@ export default function Index({ auth, logs, summary, goals, selectedDate }) {
                         </div>
 
                         {/* Diary Column */}
-                        <div className="lg:col-span-2">
+                        <div className="lg:col-span-2 space-y-8">
+                            <WaterTracker water={water} selectedDate={selectedDate} />
+                            
                             <MealDiary 
                                 logs={logs} 
                                 onAddFood={handleAddFood} 
