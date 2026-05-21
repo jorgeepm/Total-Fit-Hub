@@ -162,7 +162,7 @@ export default function CreateRoutine({ exercises = [] }) {
     const [selectedExercises, setSelectedExercises] = useState([]);
 
     // useForm de Inertia para enviar al backend
-    const { data, setData, post, processing, errors, reset } = useForm({
+    const { data, setData, post, processing, errors, reset, transform } = useForm({
         routineName: '',
         description: '',
         exercises: [],
@@ -232,42 +232,26 @@ export default function CreateRoutine({ exercises = [] }) {
     // ── Submit al backend ────────────────────────────────────────────────────
     const handleSubmit = (e) => {
         e.preventDefault();
-
-        // Sincronizamos el estado local a useForm justo antes de enviar
-        post(route('routines.store'), {
-            data: {
-                routineName: data.routineName,
-                exercises: selectedExercises.map((ex) => ({
-                    id: ex.id,
-                    sets: ex.sets,
-                })),
-            },
-            onSuccess: () => reset(),
-        });
-    };
-
-    // ── Envío con los datos actuales usando router directamente ──────────────
-    const handleSave = (e) => {
-        e.preventDefault();
         if (!data.routineName.trim()) {
             document.getElementById('routine-name-input').focus();
             return;
         }
         if (selectedExercises.length === 0) return;
 
-        router.post(
-            route('routines.store'),
-            {
-                routineName: data.routineName,
-                description: data.description,
-                exercises: selectedExercises.map((ex) => ({
-                    id: ex.id,
-                    sets: ex.sets,
-                })),
-            },
-            { preserveScroll: true }
-        );
+        transform((data) => ({
+            ...data,
+            exercises: selectedExercises.map((ex) => ({
+                id: ex.id,
+                sets: ex.sets,
+            })),
+        }));
+
+        post(route('routines.store'), {
+            onSuccess: () => reset(),
+        });
     };
+
+
 
     const canSave = data.routineName.trim().length > 0 && selectedExercises.length > 0;
 
@@ -429,7 +413,7 @@ export default function CreateRoutine({ exercises = [] }) {
 
                 {/* ── Botón Guardar ───────────────────────────────────────── */}
                 <button
-                    onClick={handleSave}
+                    onClick={handleSubmit}
                     disabled={!canSave || processing}
                     className="mt-4 w-full py-4 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold rounded-2xl shadow-md hover:shadow-lg transition-all text-base"
                 >

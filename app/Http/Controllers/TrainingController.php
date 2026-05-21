@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Entrenamiento;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Inertia\Inertia;
 
 class TrainingController extends Controller
 {
@@ -30,13 +31,51 @@ class TrainingController extends Controller
         try {
             DB::beginTransaction();
 
+            $horaInicio = \Carbon\Carbon::parse($request->hora_inicio);
+            $horaFin = \Carbon\Carbon::parse($request->hora_fin);
+            $duracionMinutos = $horaFin->diffInMinutes($horaInicio) ?: 1; // Mínimo 1 minuto
+            
+            // Recuperar ejercicios de la base de datos para obtener peso_base y calorias_minuto
+            $ejercicioIds = collect($request->ejercicios)->pluck('dbId')->unique();
+            $ejerciciosDb = \App\Models\Exercise::whereIn('id', $ejercicioIds)->get()->keyBy('id');
+
+            $volumenTotal = 0;
+            $ejerciciosRealizadosCount = 0;
+            $caloriasPorMinutoSuma = 0;
+
+            foreach ($request->ejercicios as $ej) {
+                $dbEx = $ejerciciosDb->get($ej['dbId']);
+                $pesoBase = $dbEx ? (float) $dbEx->peso_base : 0;
+                $calsMin = $dbEx ? (float) $dbEx->calorias_minuto : 0;
+                
+                $seriesCompletadas = 0;
+                foreach ($ej['series'] as $serie) {
+                    if (!empty($serie['completado'])) {
+                        $peso = (float) ($serie['peso'] ?: 0);
+                        $reps = (int) ($serie['repeticiones'] ?: 0);
+                        $volumenTotal += (($peso + $pesoBase) * $reps);
+                        $seriesCompletadas++;
+                    }
+                }
+                
+                if ($seriesCompletadas > 0) {
+                    $caloriasPorMinutoSuma += $calsMin;
+                    $ejerciciosRealizadosCount++;
+                }
+            }
+            
+            // Calculamos calorías aproximadas
+            $avgCaloriasMin = $ejerciciosRealizadosCount > 0 ? ($caloriasPorMinutoSuma / $ejerciciosRealizadosCount) : 0;
+            $caloriasQuemadas = $duracionMinutos * $avgCaloriasMin;
+
             // 1. Crear el registro principal del entrenamiento
             $entrenamiento = Entrenamiento::create([
                 'id_usuario' => auth()->id(),
                 'id_rutina' => $request->id_rutina,
                 'hora_inicio' => $request->hora_inicio,
                 'hora_fin' => $request->hora_fin,
-                'total_calorias_quemadas' => $this->calculateVolume($request->ejercicios), // Usaremos volumen como calorías por ahora
+                'total_calorias_quemadas' => $caloriasQuemadas,
+                'volumen_total' => $volumenTotal,
             ]);
 
             // 2. Guardar cada serie de cada ejercicio
@@ -67,20 +106,31 @@ class TrainingController extends Controller
     }
 
     /**
-     * Cálculo simple del volumen total (peso * reps)
+     * Display a listing of the user's past training sessions.
      */
-    private function calculateVolume($ejercicios)
+    public function history()
     {
-        $totalVolume = 0;
-        foreach ($ejercicios as $ejercicio) {
-            foreach ($ejercicio['series'] as $serie) {
-                if ($serie['completado']) {
-                    $peso = (float) ($serie['peso'] ?: 0);
-                    $reps = (int) ($serie['repeticiones'] ?: 0);
-                    $totalVolume += ($peso * $reps);
-                }
-            }
-        }
-        return $totalVolume;
+        $entrenamientos = auth()->user()->entrenamientos()
+            ->with(['routine', 'ejercicios'])
+            ->orderBy('hora_inicio', 'desc')
+            ->get();
+
+        return Inertia::render('Trainings/History', [
+            'entrenamientos' => $entrenamientos
+        ]);
+    }
+
+    /**
+     * Remove the specified training session from storage.
+     */
+    public function destroy($id)
+    {
+        $entrenamiento = Entrenamiento::where('id', $id)
+            ->where('id_usuario', auth()->id())
+            ->firstOrFail();
+
+        $entrenamiento->delete();
+
+        return back()->with('success', 'Entrenamiento eliminado con éxito.');
     }
 }

@@ -39,6 +39,9 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/weight-logs', [App\Http\Controllers\WeightLogController::class, 'store'])->name('weight-logs.store');
 
+    Route::post('/resistance-bands', [App\Http\Controllers\ResistanceBandController::class, 'store'])->name('resistance-bands.store');
+    Route::delete('/resistance-bands/{id}', [App\Http\Controllers\ResistanceBandController::class, 'destroy'])->name('resistance-bands.destroy');
+
     Route::get('/nutrition', [App\Http\Controllers\NutritionController::class, 'index'])->name('nutrition.index');
     Route::get('/nutrition/search', [App\Http\Controllers\NutritionController::class, 'search'])->name('nutrition.search');
     Route::post('/nutrition/log', [App\Http\Controllers\NutritionController::class, 'store'])->name('nutrition.store');
@@ -48,6 +51,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/trainings', [App\Http\Controllers\ExerciseController::class, 'index'])->name('trainings.index');
     Route::post('/exercises', [App\Http\Controllers\ExerciseController::class, 'store'])->name('exercises.store');
+    Route::put('/exercises/{id}', [App\Http\Controllers\ExerciseController::class, 'update'])->name('exercises.update');
     Route::delete('/exercises/{id}', [App\Http\Controllers\ExerciseController::class, 'destroy'])->name('exercises.destroy');
 
     // --- Rutinas ---
@@ -56,9 +60,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/routines', [App\Http\Controllers\RoutineController::class, 'store'])->name('routines.store');
     Route::get('/routines/{id}', [App\Http\Controllers\RoutineController::class, 'show'])->name('routines.show');
     Route::get('/routines/{id}/start', [App\Http\Controllers\RoutineController::class, 'start'])->name('routines.start');
+    Route::patch('/routines/{id}/toggle-status', [App\Http\Controllers\RoutineController::class, 'toggleStatus'])->name('routines.toggle-status');
 
     // --- Guardado de entrenamiento ---
     Route::post('/trainings', [App\Http\Controllers\TrainingController::class, 'store'])->name('trainings.store');
+    Route::get('/trainings/history', [App\Http\Controllers\TrainingController::class, 'history'])->name('trainings.history');
+    Route::delete('/trainings/{id}', [App\Http\Controllers\TrainingController::class, 'destroy'])->name('trainings.destroy');
 
     // --- Reporte de Errores ---
     Route::post('/error-reports', [App\Http\Controllers\ErrorReportController::class, 'store'])->name('error-reports.store');

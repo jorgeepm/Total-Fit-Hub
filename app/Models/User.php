@@ -56,4 +56,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(WeightLog::class, 'user_id');
     }
+
+    public function resistanceBands()
+    {
+        return $this->hasMany(ResistanceBand::class, 'user_id');
+    }
 }

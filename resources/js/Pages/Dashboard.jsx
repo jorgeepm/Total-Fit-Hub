@@ -1,5 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, useForm, Link } from '@inertiajs/react';
 import { PieChart, Pie, Cell, Label, ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, AreaChart, Area } from 'recharts';
 import { useMemo, useState } from 'react';
 import { Plus, Scale } from 'lucide-react';
@@ -15,6 +15,7 @@ import WaterTracker from './Nutrition/Partials/WaterTracker';
 export default function Dashboard({ auth, nutritionSummary, macroTargets, entrenamientos, weightHistory, water }) {
     const [showingWeightModal, setShowingWeightModal] = useState(false);
     const [hoveredWeight, setHoveredWeight] = useState(null);
+    const [selectedWorkout, setSelectedWorkout] = useState(null);
 
     // Formulario para nuevo peso
     const { data, setData, post, processing, reset, errors } = useForm({
@@ -174,24 +175,39 @@ export default function Dashboard({ auth, nutritionSummary, macroTargets, entren
                             <p className="text-sm text-gray-500 mt-2">Calorías consumidas</p>
                         </div>
 
-                        {/* TARJETA 2: ENTRENAMIENTOS REALES */}
-                        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                            <h2 className="text-lg font-semibold text-gray-800 mb-4">Entrenamiento de Hoy</h2>
+                        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col">
+                            <div className="mb-4">
+                                <h2 className="text-lg font-semibold text-gray-800">Entrenamiento de Hoy</h2>
+                            </div>
                             
                             {Array.isArray(entrenamientos) && entrenamientos.length > 0 ? (
-                                entrenamientos.map((entreno) => (
-                                    <div 
-                                        key={entreno?.id || Math.random()} 
-                                        className="mb-3 p-4 bg-gray-50 rounded-lg border border-gray-100"
-                                    >
-                                        <p className="font-medium text-gray-800">
-                                            {entreno?.routine?.nombre || 'Sesión completada'}
-                                        </p>
-                                        <p className="text-xs text-gray-500 mt-1">
-                                            Volumen: {entreno?.total_calorias_quemadas || '0'} kg
-                                        </p>
-                                    </div>
-                                ))
+                                entrenamientos.map((entreno) => {
+                                    const gruposMusculares = entreno?.ejercicios 
+                                        ? [...new Set(entreno.ejercicios.map(e => e.grupo_muscular).filter(Boolean))].join(', ')
+                                        : '';
+
+                                    return (
+                                        <div 
+                                            key={entreno?.id || Math.random()} 
+                                            onClick={() => setSelectedWorkout(entreno)}
+                                            className="mb-3 p-4 bg-gray-50 rounded-lg border border-gray-100 cursor-pointer hover:bg-gray-100 transition-colors"
+                                        >
+                                            <p className="font-bold text-gray-800">
+                                                {entreno?.routine?.nombre || 'Sesión completada'}
+                                            </p>
+                                            <div className="flex flex-wrap gap-2 mt-2">
+                                                <span className="text-xs font-bold text-indigo-700 bg-indigo-50 border border-indigo-100 px-2.5 py-1 rounded-md flex items-center gap-1.5">
+                                                    🏋️ Volumen: {entreno?.volumen_total || '0'} kg
+                                                </span>
+                                                {gruposMusculares && (
+                                                    <span className="text-xs font-bold text-teal-700 bg-teal-50 border border-teal-100 px-2.5 py-1 rounded-md flex items-center gap-1.5">
+                                                        💪 {gruposMusculares}
+                                                    </span>
+                                                )}
+                                            </div>
+                                        </div>
+                                    );
+                                })
                             ) : (
                                 <div className="h-full flex items-center justify-center pb-8">
                                     <p className="text-gray-400 text-sm text-center">
@@ -199,6 +215,12 @@ export default function Dashboard({ auth, nutritionSummary, macroTargets, entren
                                     </p>
                                 </div>
                             )}
+
+                            <div className="mt-auto pt-4 flex justify-end border-t border-gray-50">
+                                <Link href={route('trainings.history')} className="text-sm font-semibold text-indigo-600 hover:text-indigo-800 transition-colors flex items-center gap-1">
+                                    Ver todos los entrenamientos <span>&rarr;</span>
+                                </Link>
+                            </div>
                         </div>
 
                         {/* TARJETA 3: MACROS REALES */}
@@ -395,6 +417,84 @@ export default function Dashboard({ auth, nutritionSummary, macroTargets, entren
                             </PrimaryButton>
                         </div>
                     </form>
+                </Modal>
+
+                {/* Modal para detalles del entrenamiento */}
+                <Modal show={!!selectedWorkout} onClose={() => setSelectedWorkout(null)} maxWidth="2xl">
+                    {selectedWorkout && (
+                        <div className="p-6 max-h-[85vh] overflow-y-auto">
+                            <div className="flex items-center justify-between mb-6">
+                                <div>
+                                    <h2 className="text-xl font-black text-gray-900">
+                                        {selectedWorkout.routine?.nombre || 'Detalles del Entrenamiento'}
+                                    </h2>
+                                    <p className="text-sm text-gray-500 mt-1">
+                                        Volumen total: <span className="font-bold text-indigo-600">{selectedWorkout.volumen_total} kg</span>
+                                    </p>
+                                </div>
+                                <button 
+                                    onClick={() => setSelectedWorkout(null)}
+                                    className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition-colors"
+                                >
+                                    ✕
+                                </button>
+                            </div>
+
+                            <div className="space-y-6">
+                                {Object.values(
+                                    (selectedWorkout.ejercicios || []).reduce((acc, ex) => {
+                                        if (!acc[ex.id]) {
+                                            acc[ex.id] = { ...ex, series_hechas: [] };
+                                        }
+                                        if (ex.pivot) {
+                                            acc[ex.id].series_hechas.push({
+                                                numero: ex.pivot.numero_series,
+                                                reps: ex.pivot.repeticiones_hechas,
+                                                peso: ex.pivot.peso_usado,
+                                            });
+                                        }
+                                        return acc;
+                                    }, {})
+                                ).map((ejercicio, idx) => (
+                                    <div key={ejercicio.id || idx} className="bg-gray-50 rounded-xl p-5 border border-gray-100">
+                                        <div className="flex items-center gap-3 mb-4">
+                                            <div className="w-10 h-10 rounded-lg bg-white shadow-sm flex items-center justify-center font-black text-gray-400 text-lg">
+                                                {ejercicio.nombre?.[0] || '?'}
+                                            </div>
+                                            <div>
+                                                <h4 className="font-bold text-gray-800 text-lg leading-tight">{ejercicio.nombre}</h4>
+                                                <p className="text-xs text-gray-500 font-bold uppercase tracking-wider">{ejercicio.grupo_muscular}</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div className="space-y-2">
+                                            {ejercicio.series_hechas
+                                                .sort((a, b) => a.numero - b.numero)
+                                                .map((serie, sIdx) => (
+                                                <div key={sIdx} className="grid grid-cols-3 gap-4 items-center bg-white p-3 rounded-lg border border-gray-100">
+                                                    <div className="text-center">
+                                                        <span className="text-xs font-bold text-gray-400 uppercase">Serie</span>
+                                                        <p className="font-black text-gray-700">{serie.numero}</p>
+                                                    </div>
+                                                    <div className="text-center">
+                                                        <span className="text-xs font-bold text-gray-400 uppercase">Peso</span>
+                                                        <p className="font-black text-indigo-600">{serie.peso} kg</p>
+                                                    </div>
+                                                    <div className="text-center">
+                                                        <span className="text-xs font-bold text-gray-400 uppercase">Reps</span>
+                                                        <p className="font-black text-gray-700">{serie.reps}</p>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                            {(!ejercicio.series_hechas || ejercicio.series_hechas.length === 0) && (
+                                                <p className="text-sm text-gray-400 italic text-center py-2">Sin series registradas</p>
+                                            )}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
                 </Modal>
             </div>
         </AuthenticatedLayout>

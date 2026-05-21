@@ -62,7 +62,20 @@ export default function EditFoodModal({ log, onClose }) {
                             <input 
                                 type="number"
                                 value={data.quantity}
-                                onChange={(e) => setData('quantity', e.target.value)}
+                                onChange={(e) => {
+                                    const val = e.target.value;
+                                    const newQty = parseFloat(val) || 0;
+                                    const oldQty = parseFloat(log.quantity) || 1;
+                                    const ratio = newQty / oldQty;
+                                    setData(d => ({
+                                        ...d,
+                                        quantity: val,
+                                        calories: Math.round(log.calories * ratio),
+                                        proteins: Math.round((log.proteins * ratio) * 10) / 10,
+                                        carbs: Math.round((log.carbs * ratio) * 10) / 10,
+                                        fats: Math.round((log.fats * ratio) * 10) / 10,
+                                    }));
+                                }}
                                 className="w-full p-4 bg-slate-50 border-none rounded-2xl text-lg font-bold text-slate-800 focus:ring-4 focus:ring-teal-500/10"
                             />
                         </div>

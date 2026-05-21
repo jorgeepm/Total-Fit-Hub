@@ -1,6 +1,6 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm, router } from '@inertiajs/react';
-import { Search, Plus, Trash2, X, Dumbbell, ChevronDown } from 'lucide-react';
+import { Search, Plus, Trash2, X, Dumbbell, ChevronDown, Edit2 } from 'lucide-react';
 import { useState, useMemo } from 'react';
 
 // ─── Opciones de filtros ─────────────────────────────────────────────────────
@@ -31,25 +31,39 @@ const DIFF_COLORS = {
     'Avanzado':     'bg-rose-50 text-rose-600',
 };
 
-// ─── Modal de creación de ejercicio ─────────────────────────────────────────
-function CreateExerciseModal({ onClose }) {
-    const { data, setData, post, processing, errors, reset } = useForm({
-        nombre:                  '',
-        grupo_muscular:          'Pecho',
-        equipamiento_necesario:  'Sin equipo',
-        dificultad:              'Intermedio',
-        calorias_minuto:         '',
-        descripcion:             '',
+// ─── Modal de creación / edición de ejercicio ─────────────────────────────────────────
+function ExerciseModal({ onClose, exercise = null, isAdmin = false }) {
+    const isEditing = !!exercise;
+    
+    const { data, setData, post, put, processing, errors, reset } = useForm({
+        nombre:                  exercise?.nombre || '',
+        grupo_muscular:          exercise?.grupo_muscular || 'Pecho',
+        equipamiento_necesario:  exercise?.equipamiento_necesario || 'Sin equipo',
+        dificultad:              exercise?.dificultad || 'Intermedio',
+        peso_base:               exercise?.peso_base || '',
+        calorias_minuto:         exercise?.calorias_minuto || '',
+        descripcion:             exercise?.descripcion || '',
+        is_global:               exercise ? (exercise.id_usuario === null) : false,
     });
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        post(route('exercises.store'), {
-            onSuccess: () => {
-                reset();
-                onClose();
-            },
-        });
+        
+        if (isEditing) {
+            put(route('exercises.update', exercise.id), {
+                onSuccess: () => {
+                    reset();
+                    onClose();
+                },
+            });
+        } else {
+            post(route('exercises.store'), {
+                onSuccess: () => {
+                    reset();
+                    onClose();
+                },
+            });
+        }
     };
 
     return (
@@ -62,9 +76,11 @@ function CreateExerciseModal({ onClose }) {
                 <div className="bg-gradient-to-r from-teal-500 to-indigo-600 p-6 flex items-center justify-between">
                     <div className="flex items-center gap-3">
                         <div className="p-2 bg-white/20 rounded-xl">
-                            <Dumbbell className="w-6 h-6 text-white" />
+                            {isEditing ? <Edit2 className="w-6 h-6 text-white" /> : <Dumbbell className="w-6 h-6 text-white" />}
                         </div>
-                        <h2 className="text-xl font-black text-white">Nuevo Ejercicio</h2>
+                        <h2 className="text-xl font-black text-white">
+                            {isEditing ? 'Editar Ejercicio' : 'Nuevo Ejercicio'}
+                        </h2>
                     </div>
                     <button onClick={onClose}
                             className="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors">
@@ -163,6 +179,26 @@ function CreateExerciseModal({ onClose }) {
                         </div>
                     </div>
 
+                    {/* Peso Base (Condicional) */}
+                    {['Barra', 'Máquinas', 'Mancuernas', 'Kettlebell', 'Otro'].includes(data.equipamiento_necesario) && (
+                        <div>
+                            <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">
+                                Peso base del equipamiento (kg) <span className="font-normal text-slate-400">(opcional)</span>
+                            </label>
+                            <input
+                                type="number"
+                                step="0.5"
+                                min="0"
+                                value={data.peso_base}
+                                onChange={e => setData('peso_base', e.target.value)}
+                                placeholder="Ej: 20 (peso de la barra)"
+                                className="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 font-medium placeholder-slate-300 focus:ring-2 focus:ring-teal-400 focus:border-transparent outline-none transition"
+                            />
+                            <p className="text-[11px] text-slate-400 mt-1.5">Este peso se sumará automáticamente al cálculo del volumen total levantado.</p>
+                            {errors.peso_base && <p className="text-red-500 text-xs mt-1">{errors.peso_base}</p>}
+                        </div>
+                    )}
+
                     {/* Descripción */}
                     <div>
                         <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">
@@ -177,6 +213,22 @@ function CreateExerciseModal({ onClose }) {
                         />
                     </div>
 
+                    {/* Admin: Crear como global */}
+                    {isAdmin && (
+                        <label className="flex items-center gap-3 mt-4 p-3 rounded-xl border border-teal-100 bg-teal-50/50 cursor-pointer hover:bg-teal-50 transition-colors">
+                            <input
+                                type="checkbox"
+                                checked={data.is_global}
+                                onChange={e => setData('is_global', e.target.checked)}
+                                className="rounded text-teal-500 focus:ring-teal-400 h-5 w-5 border-teal-300"
+                            />
+                            <div className="flex flex-col">
+                                <span className="text-sm font-bold text-teal-800">Ejercicio Global</span>
+                                <span className="text-xs text-teal-600/70">Será visible y utilizable por todos los usuarios</span>
+                            </div>
+                        </label>
+                    )}
+
                     {/* Botones */}
                     <div className="flex gap-3 pt-2">
                         <button type="button" onClick={onClose}
@@ -188,9 +240,9 @@ function CreateExerciseModal({ onClose }) {
                             {processing ? (
                                 <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                             ) : (
-                                <Plus className="w-4 h-4" />
+                                isEditing ? <Edit2 className="w-4 h-4" /> : <Plus className="w-4 h-4" />
                             )}
-                            {processing ? 'Guardando...' : 'Crear Ejercicio'}
+                            {processing ? 'Guardando...' : (isEditing ? 'Actualizar Ejercicio' : 'Crear Ejercicio')}
                         </button>
                     </div>
                 </form>
@@ -199,17 +251,40 @@ function CreateExerciseModal({ onClose }) {
     );
 }
 
+// ─── Modal de Confirmación de Eliminación ──────────────────────────────────────────
+function DeleteConfirmModal({ exercise, onClose, onConfirm, processing }) {
+    if (!exercise) return null;
+    
+    return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4" onClick={onClose}>
+            <div className="bg-white w-full max-w-sm rounded-3xl shadow-2xl overflow-hidden text-center p-8 animate-in fade-in zoom-in-95 duration-200" onClick={e => e.stopPropagation()}>
+                <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4 border-8 border-red-50/50">
+                    <Trash2 className="w-7 h-7 text-red-500" />
+                </div>
+                <h3 className="text-xl font-black text-slate-800 mb-2">¿Eliminar ejercicio?</h3>
+                <p className="text-slate-500 text-sm mb-8 leading-relaxed">
+                    Estás a punto de eliminar <strong className="text-slate-700">{exercise.nombre}</strong>. Esta acción es permanente y no se podrá deshacer.
+                </p>
+                <div className="flex gap-3">
+                    <button type="button" onClick={onClose} disabled={processing}
+                            className="flex-1 py-3 rounded-xl border border-slate-200 text-slate-600 font-bold hover:bg-slate-50 hover:text-slate-800 transition-all">
+                        Cancelar
+                    </button>
+                    <button type="button" onClick={onConfirm} disabled={processing}
+                            className="flex-1 py-3 rounded-xl bg-red-500 text-white font-bold hover:bg-red-600 hover:shadow-lg hover:shadow-red-500/20 transition-all flex items-center justify-center gap-2">
+                        {processing ? <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : 'Sí, eliminar'}
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+}
+
 // ─── Tarjeta de ejercicio ────────────────────────────────────────────────────
-function ExerciseCard({ exercise, canDelete }) {
+function ExerciseCard({ exercise, canManage, onEdit, onDelete }) {
     const isCustom = exercise.id_usuario !== null;
     const muscleColor = getMuscleColor(exercise.grupo_muscular);
     const diffColor = DIFF_COLORS[exercise.dificultad] ?? 'bg-slate-50 text-slate-600';
-
-    const handleDelete = () => {
-        if (confirm(`¿Eliminar el ejercicio "${exercise.nombre}"?`)) {
-            router.delete(route('exercises.destroy', exercise.id));
-        }
-    };
 
     return (
         <div className="bg-white rounded-[28px] shadow-sm border border-slate-100 overflow-hidden group hover:border-teal-200 hover:shadow-md transition-all duration-300 hover:-translate-y-1 flex flex-col">
@@ -220,12 +295,19 @@ function ExerciseCard({ exercise, canDelete }) {
                 {/* Título + acciones */}
                 <div className="flex items-start justify-between gap-2">
                     <h4 className="font-black text-slate-900 text-base leading-snug flex-1">{exercise.nombre}</h4>
-                    {isCustom && canDelete && (
-                        <button onClick={handleDelete}
-                                className="flex-shrink-0 p-1.5 rounded-lg text-slate-300 hover:text-red-500 hover:bg-red-50 transition-all"
-                                title="Eliminar ejercicio">
-                            <Trash2 className="w-4 h-4" />
-                        </button>
+                    {canManage && (
+                        <div className="flex items-center gap-1">
+                            <button onClick={() => onEdit(exercise)}
+                                    className="flex-shrink-0 p-1.5 rounded-lg text-slate-300 hover:text-indigo-500 hover:bg-indigo-50 transition-all"
+                                    title="Editar ejercicio">
+                                <Edit2 className="w-4 h-4" />
+                            </button>
+                            <button onClick={() => onDelete(exercise)}
+                                    className="flex-shrink-0 p-1.5 rounded-lg text-slate-300 hover:text-red-500 hover:bg-red-50 transition-all"
+                                    title="Eliminar ejercicio">
+                                <Trash2 className="w-4 h-4" />
+                            </button>
+                        </div>
                     )}
                 </div>
 
@@ -262,10 +344,39 @@ function ExerciseCard({ exercise, canDelete }) {
 }
 
 // ─── Página principal ────────────────────────────────────────────────────────
-export default function Trainings({ exercises = [] }) {
+export default function Trainings({ exercises = [], isAdmin = false }) {
     const [searchTerm, setSearchTerm]         = useState('');
     const [selectedGroups, setSelectedGroups] = useState([]);
-    const [showCreateModal, setShowCreateModal] = useState(false);
+    const [editingExercise, setEditingExercise] = useState(null);
+    const [showModal, setShowModal] = useState(false);
+    
+    const [deletingExercise, setDeletingExercise] = useState(null);
+    const [isDeleting, setIsDeleting] = useState(false);
+
+    const handleCreateNew = () => {
+        setEditingExercise(null);
+        setShowModal(true);
+    };
+
+    const handleEdit = (exercise) => {
+        setEditingExercise(exercise);
+        setShowModal(true);
+    };
+
+    const handleDeleteClick = (exercise) => {
+        setDeletingExercise(exercise);
+    };
+
+    const confirmDelete = () => {
+        if (!deletingExercise) return;
+        setIsDeleting(true);
+        router.delete(route('exercises.destroy', deletingExercise.id), {
+            onFinish: () => {
+                setIsDeleting(false);
+                setDeletingExercise(null);
+            }
+        });
+    };
 
     const toggleGroup = (group) => {
         setSelectedGroups(prev =>
@@ -303,7 +414,7 @@ export default function Trainings({ exercises = [] }) {
                     </div>
                     <button
                         id="btn-create-exercise"
-                        onClick={() => setShowCreateModal(true)}
+                        onClick={handleCreateNew}
                         className="flex items-center gap-2 px-5 py-2.5 bg-primary text-white font-bold rounded-2xl shadow-lg shadow-primary/20 hover:opacity-90 hover:scale-[1.02] transition-all text-sm"
                     >
                         <Plus className="w-4 h-4" />
@@ -374,7 +485,9 @@ export default function Trainings({ exercises = [] }) {
                                         <ExerciseCard
                                             key={exercise.id}
                                             exercise={exercise}
-                                            canDelete={true}
+                                            canManage={isAdmin || exercise.id_usuario !== null}
+                                            onEdit={handleEdit}
+                                            onDelete={handleDeleteClick}
                                         />
                                     ))}
                                 </div>
@@ -392,7 +505,7 @@ export default function Trainings({ exercises = [] }) {
                                                 Crea tu primer ejercicio personalizado para empezar a construir tus rutinas.
                                             </p>
                                             <button
-                                                onClick={() => setShowCreateModal(true)}
+                                                onClick={handleCreateNew}
                                                 className="flex items-center gap-3 px-8 py-4 bg-primary text-white font-black rounded-2xl shadow-xl shadow-primary/20 hover:opacity-90 transition-all"
                                             >
                                                 <Plus className="w-5 h-5" />
@@ -412,8 +525,21 @@ export default function Trainings({ exercises = [] }) {
                 </div>
             </div>
 
-            {showCreateModal && (
-                <CreateExerciseModal onClose={() => setShowCreateModal(false)} />
+            {showModal && (
+                <ExerciseModal 
+                    exercise={editingExercise}
+                    isAdmin={isAdmin}
+                    onClose={() => setShowModal(false)} 
+                />
+            )}
+
+            {deletingExercise && (
+                <DeleteConfirmModal
+                    exercise={deletingExercise}
+                    onClose={() => setDeletingExercise(null)}
+                    onConfirm={confirmDelete}
+                    processing={isDeleting}
+                />
             )}
         </AuthenticatedLayout>
     );

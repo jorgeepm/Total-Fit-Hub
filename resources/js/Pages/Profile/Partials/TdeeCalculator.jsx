@@ -111,6 +111,8 @@ export default function TdeeCalculator() {
 
         setIsSaving(true);
         router.patch(route('profile.update'), {
+            nombre_usuario:   user.nombre_usuario,
+            email:            user.email,
             genero:           calc.genero,
             edad:             parseInt(calc.edad) || null,
             altura:           parseFloat(calc.altura) || null,

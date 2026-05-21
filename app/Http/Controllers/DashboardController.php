@@ -45,7 +45,7 @@ class DashboardController extends Controller
 
         // Obtenemos los entrenamientos de hoy con eager loading para evitar N+1
         $entrenamientosHoy = $user->entrenamientos()
-            ->with('routine')
+            ->with(['routine', 'ejercicios'])
             ->whereDate('hora_inicio', $today)
             ->get();
 

@@ -13,6 +13,7 @@ class Exercise extends Model
         'nombre',
         'grupo_muscular',
         'equipamiento_necesario',
+        'peso_base',
         'calorias_minuto',
         'descripcion',
         'dificultad',

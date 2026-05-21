@@ -4,8 +4,9 @@ import DeleteUserForm from './Partials/DeleteUserForm';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm';
 import TdeeCalculator from './Partials/TdeeCalculator';
+import ResistanceBandsManager from './Partials/ResistanceBandsManager';
 
-export default function Edit({ auth, mustVerifyEmail, status }) {
+export default function Edit({ auth, mustVerifyEmail, status, resistanceBands }) {
     return (
         <AuthenticatedLayout
             header={
@@ -30,6 +31,10 @@ export default function Edit({ auth, mustVerifyEmail, status }) {
                     {/* ─── Calculadora TDEE ─── */}
                     <div className="sm:px-0">
                         <TdeeCalculator />
+                    </div>
+
+                    <div className="bg-white p-4 shadow sm:rounded-lg sm:p-8">
+                        <ResistanceBandsManager bands={resistanceBands} />
                     </div>
 
                     <div className="bg-white p-4 shadow sm:rounded-lg sm:p-8">

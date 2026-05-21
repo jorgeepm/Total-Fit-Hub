@@ -1,8 +1,17 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, Link } from '@inertiajs/react';
-import { Plus, Play, Clock, ChevronRight, Activity } from 'lucide-react';
+import { Head, Link, router } from '@inertiajs/react';
+import { Plus, Play, Clock, ChevronRight, Activity, Archive, ArchiveRestore } from 'lucide-react';
+import { useState } from 'react';
 
 export default function RoutinesIndex({ routines = [] }) {
+    const [filter, setFilter] = useState('activa');
+    const filteredRoutines = routines.filter(r => r.estado === filter);
+
+    const handleToggleStatus = (id) => {
+        router.patch(route('routines.toggle-status', id), {}, {
+            preserveScroll: true
+        });
+    };
     return (
         <AuthenticatedLayout
             header={
@@ -28,6 +37,32 @@ export default function RoutinesIndex({ routines = [] }) {
             <div className="py-8 bg-background min-h-screen">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     
+                    {routines.length > 0 && (
+                        <div className="flex items-center gap-2 mb-8 bg-white p-1 rounded-2xl border border-slate-100 shadow-sm w-max">
+                            <button
+                                onClick={() => setFilter('activa')}
+                                className={`px-6 py-2.5 rounded-xl text-sm font-bold transition-all ${
+                                    filter === 'activa'
+                                        ? 'bg-primary text-white shadow-md'
+                                        : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
+                                }`}
+                            >
+                                Activas
+                            </button>
+                            <button
+                                onClick={() => setFilter('inactiva')}
+                                className={`px-6 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center gap-2 ${
+                                    filter === 'inactiva'
+                                        ? 'bg-slate-800 text-white shadow-md'
+                                        : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
+                                }`}
+                            >
+                                <Archive className="w-4 h-4" />
+                                Archivadas
+                            </button>
+                        </div>
+                    )}
+
                     {routines.length === 0 ? (
                         <div className="flex flex-col items-center justify-center py-24 text-center">
                             <div className="w-20 h-20 rounded-[30px] bg-white shadow-sm flex items-center justify-center mb-6 border border-slate-100">
@@ -47,9 +82,21 @@ export default function RoutinesIndex({ routines = [] }) {
                                 Crear mi primera rutina
                             </Link>
                         </div>
+                    ) : filteredRoutines.length === 0 ? (
+                        <div className="flex flex-col items-center justify-center py-16 text-center bg-white rounded-[35px] border border-slate-100 border-dashed">
+                            <Archive className="w-12 h-12 text-slate-200 mb-4" />
+                            <h3 className="text-lg font-black text-slate-700 mb-2">
+                                No hay rutinas {filter === 'activa' ? 'activas' : 'archivadas'}
+                            </h3>
+                            <p className="text-slate-400 text-sm">
+                                {filter === 'activa' 
+                                    ? 'Todas tus rutinas están archivadas.' 
+                                    : 'Aún no has archivado ninguna rutina.'}
+                            </p>
+                        </div>
                     ) : (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {routines.map((routine) => (
+                            {filteredRoutines.map((routine) => (
                                 <div
                                     key={routine.id}
                                     className="bg-white rounded-[35px] shadow-sm border border-slate-100 overflow-hidden group hover:border-primary/30 hover:shadow-md transition-all duration-300 flex flex-col"
@@ -91,12 +138,25 @@ export default function RoutinesIndex({ routines = [] }) {
                                                 <Play className="w-4 h-4 fill-current" />
                                                 Iniciar Entrenamiento
                                             </Link>
-                                            <Link 
-                                                href={route('routines.show', routine.id)} 
-                                                className="p-2 bg-slate-50 rounded-xl text-slate-400 hover:bg-primary hover:text-white transition-all"
-                                            >
-                                                <ChevronRight className="w-5 h-5" />
-                                            </Link>
+                                            <div className="flex items-center gap-2">
+                                                <button
+                                                    onClick={() => handleToggleStatus(routine.id)}
+                                                    className={`p-2 rounded-xl transition-all ${
+                                                        routine.estado === 'activa' 
+                                                            ? 'bg-slate-50 text-slate-400 hover:bg-amber-100 hover:text-amber-600'
+                                                            : 'bg-emerald-50 text-emerald-600 hover:bg-emerald-100'
+                                                    }`}
+                                                    title={routine.estado === 'activa' ? 'Archivar rutina' : 'Activar rutina'}
+                                                >
+                                                    {routine.estado === 'activa' ? <Archive className="w-5 h-5" /> : <ArchiveRestore className="w-5 h-5" />}
+                                                </button>
+                                                <Link 
+                                                    href={route('routines.show', routine.id)} 
+                                                    className="p-2 bg-slate-50 rounded-xl text-slate-400 hover:bg-primary hover:text-white transition-all"
+                                                >
+                                                    <ChevronRight className="w-5 h-5" />
+                                                </Link>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

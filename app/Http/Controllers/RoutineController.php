@@ -18,7 +18,7 @@ class RoutineController extends Controller
         $routines = Routine::where('id_usuario', Auth::id())
             ->withCount('exercises')
             ->latest()
-            ->get(['id', 'nombre', 'descripcion', 'estado', 'created_at']);
+            ->get();
 
         return Inertia::render('Routines/Index', [
             'routines' => $routines,
@@ -110,7 +110,35 @@ class RoutineController extends Controller
         $rutina = $request->user()->rutinas()->with('exercises')->findOrFail($id);
 
         return \Inertia\Inertia::render('Trainings/ActiveWorkout', [
-            'rutina' => $rutina
+            'rutina' => $rutina,
+            'resistanceBands' => $request->user()->resistanceBands()->get()
         ]);
+    }
+
+    /**
+     * Muestra el detalle de una rutina.
+     */
+    public function show(Request $request, $id)
+    {
+        // Buscamos la rutina SOLO dentro de las que le pertenecen al usuario logueado
+        $routine = $request->user()->rutinas()->with('exercises')->findOrFail($id);
+
+        return Inertia::render('Routines/Show', [
+            'routine' => $routine
+        ]);
+    }
+
+    /**
+     * Alterna el estado de la rutina (activa/inactiva).
+     */
+    public function toggleStatus(Request $request, $id)
+    {
+        $routine = $request->user()->rutinas()->findOrFail($id);
+        
+        $routine->estado = $routine->estado === 'activa' ? 'inactiva' : 'activa';
+        $routine->save();
+
+        $action = $routine->estado === 'activa' ? 'activada' : 'archivada';
+        return redirect()->back()->with('success', "Rutina {$action} con éxito.");
     }
 }

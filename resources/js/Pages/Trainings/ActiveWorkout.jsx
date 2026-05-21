@@ -3,7 +3,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, router, Link } from '@inertiajs/react';
 import { Check } from 'lucide-react';
 
-export default function ActiveWorkout({ rutina }) {
+export default function ActiveWorkout({ rutina, resistanceBands = [] }) {
   // ==================== ESTADO DEL CRONÓMETRO ====================
   const [elapsedTime, setElapsedTime] = useState(0); // en segundos
   const [isRunning, setIsRunning] = useState(true);
@@ -17,6 +17,7 @@ export default function ActiveWorkout({ rutina }) {
       dbId: ex.id,
       nombre: ex.nombre,
       grupo_muscular: ex.grupo_muscular,
+      equipamiento_necesario: ex.equipamiento_necesario,
       series: Array.from({ length: ex.pivot?.objetivo_series || 1 }, (_, i) => ({
         id: i + 1,
         peso: '', // Empezamos vacío para que el placeholder sea visible
@@ -230,14 +231,32 @@ export default function ActiveWorkout({ rutina }) {
                       >
                         <div className="text-center font-black text-slate-400 text-sm">S{index + 1}</div>
                         <div className="relative group">
-                          <input
-                            type="number"
-                            value={serie.peso}
-                            onChange={(e) => handleUpdateSerie(exercise.dbId, serie.id, 'peso', e.target.value)}
-                            className="w-full bg-white border-slate-200 rounded-lg text-center font-bold text-slate-700 focus:ring-blue-500 focus:border-blue-500 pr-7 transition-shadow"
-                            placeholder="0"
-                          />
-                          <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] font-bold text-slate-300 group-focus-within:text-blue-400">kg</span>
+                          {exercise.equipamiento_necesario?.toLowerCase().includes('bandas') ? (
+                            <select
+                                value={serie.peso}
+                                onChange={(e) => handleUpdateSerie(exercise.dbId, serie.id, 'peso', e.target.value)}
+                                className="w-full bg-white border-slate-200 rounded-lg text-center font-bold text-slate-700 focus:ring-blue-500 focus:border-blue-500 transition-shadow appearance-none px-2"
+                                style={{ textAlignLast: 'center' }}
+                            >
+                                <option value="">---</option>
+                                {resistanceBands.map(band => (
+                                    <option key={band.id} value={band.peso_equivalente}>
+                                        {band.color_nombre}
+                                    </option>
+                                ))}
+                            </select>
+                          ) : (
+                            <>
+                              <input
+                                type="number"
+                                value={serie.peso}
+                                onChange={(e) => handleUpdateSerie(exercise.dbId, serie.id, 'peso', e.target.value)}
+                                className="w-full bg-white border-slate-200 rounded-lg text-center font-bold text-slate-700 focus:ring-blue-500 focus:border-blue-500 pr-7 transition-shadow"
+                                placeholder="0"
+                              />
+                              <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] font-bold text-slate-300 group-focus-within:text-blue-400">kg</span>
+                            </>
+                          )}
                         </div>
                         <div className="relative group">
                           <input
