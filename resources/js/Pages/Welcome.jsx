@@ -141,7 +141,7 @@ export default function Welcome({ auth }) {
                             desc: "Acceso a la base de datos de OpenFoodFacts para registrar cada caloría con precisión quirúrgica."
                         },
                         {
-                            icon: <Target className="h-8 w-8 text-indigo-500" />,
+                            icon: <Target className="h-8 w-8 text-teal-600" />,
                             title: "Planes Personalizados",
                             desc: "Algoritmos avanzados que adaptan tus rutinas según tu nivel de fatiga y objetivos."
                         }

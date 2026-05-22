@@ -168,7 +168,7 @@ export default function ActiveWorkout() {
       {/* Contenedor principal */}
       <div className="max-w-6xl mx-auto space-y-6">
         {/* ==================== TARJETA DEL CRONÓMETRO ====================  */}
-        <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl shadow-2xl p-8">
+        <div className="bg-gradient-to-r from-teal-600 to-teal-700 rounded-2xl shadow-2xl p-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             {/* Tiempo transcurrido */}
             <div className="flex-1 text-center">
@@ -208,7 +208,7 @@ export default function ActiveWorkout() {
               {/* Editar Inicio */}
               <button
                 onClick={handleEditStart}
-                className="px-6 py-3 rounded-lg font-semibold bg-blue-500 hover:bg-blue-600 text-white transition-all duration-200 transform hover:scale-105 active:scale-95"
+                className="px-6 py-3 rounded-lg font-semibold bg-teal-600 hover:bg-teal-700 text-white transition-all duration-200 transform hover:scale-105 active:scale-95"
               >
                 Editar Inicio
               </button>
@@ -277,8 +277,8 @@ export default function ActiveWorkout() {
             </h2>
             <div className="grid grid-cols-2 gap-4">
               {/* Series Completadas */}
-              <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-6 text-center">
-                <p className="text-blue-100 text-sm font-semibold mb-2 uppercase tracking-wide">
+              <div className="bg-gradient-to-br from-teal-500 to-teal-600 rounded-xl p-6 text-center">
+                <p className="text-teal-100 text-sm font-semibold mb-2 uppercase tracking-wide">
                   Series Completadas
                 </p>
                 <p className="text-5xl font-bold text-white">{seriesCompletadas}</p>
@@ -307,7 +307,7 @@ export default function ActiveWorkout() {
                 <div className="w-32 h-48 bg-slate-700 rounded-lg overflow-hidden">
                   <BodyHighlighter
                     bodyPart="front"
-                    highlightedColors={['#3b82f6']}
+                    highlightedColors={['#0d9488']}
                     highlights={getActiveMuscles()}
                     scale={0.8}
                   />
@@ -320,7 +320,7 @@ export default function ActiveWorkout() {
                 <div className="w-32 h-48 bg-slate-700 rounded-lg overflow-hidden">
                   <BodyHighlighter
                     bodyPart="back"
-                    highlightedColors={['#3b82f6']}
+                    highlightedColors={['#0d9488']}
                     highlights={getActiveMuscles()}
                     scale={0.8}
                   />
@@ -352,7 +352,7 @@ export default function ActiveWorkout() {
               <div key={exercise.id} className="bg-slate-700 rounded-xl p-6 border border-slate-600">
                 {/* Nombre del Ejercicio */}
                 <h3 className="text-xl font-bold text-white mb-4 flex items-center">
-                  <span className="w-2 h-2 rounded-full bg-indigo-500 mr-3"></span>
+                  <span className="w-2 h-2 rounded-full bg-teal-500 mr-3"></span>
                   {exercise.nombre}
                 </h3>
 
@@ -368,7 +368,7 @@ export default function ActiveWorkout() {
                       }`}
                     >
                       {/* Número de Serie */}
-                      <div className="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center flex-shrink-0">
+                      <div className="w-10 h-10 rounded-full bg-teal-600 flex items-center justify-center flex-shrink-0">
                         <span className="text-white font-bold text-sm">S{index + 1}</span>
                       </div>
 
@@ -388,7 +388,7 @@ export default function ActiveWorkout() {
                               parseFloat(e.target.value) || 0
                             )
                           }
-                          className="w-full pl-3 pr-2 py-2 rounded bg-slate-700 text-white border border-slate-500 focus:border-indigo-500 focus:outline-none transition-colors font-mono text-center"
+                          className="w-full pl-3 pr-2 py-2 rounded bg-slate-700 text-white border border-slate-500 focus:border-teal-500 focus:outline-none transition-colors font-mono text-center"
                           placeholder="0"
                         />
                       </div>
@@ -409,7 +409,7 @@ export default function ActiveWorkout() {
                               parseFloat(e.target.value) || 0
                             )
                           }
-                          className="w-full pl-3 pr-2 py-2 rounded bg-slate-700 text-white border border-slate-500 focus:border-indigo-500 focus:outline-none transition-colors font-mono text-center"
+                          className="w-full pl-3 pr-2 py-2 rounded bg-slate-700 text-white border border-slate-500 focus:border-teal-500 focus:outline-none transition-colors font-mono text-center"
                           placeholder="0"
                         />
                       </div>
@@ -440,7 +440,7 @@ export default function ActiveWorkout() {
                       <>
                         {' '}
                         • Volumen:{' '}
-                        <span className="font-semibold text-indigo-300">
+                        <span className="font-semibold text-teal-300">
                           {exercise.series
                             .filter((s) => s.completado)
                             .reduce((acc, s) => acc + s.peso * s.repeticiones, 0)}{' '}

@@ -3,7 +3,9 @@
 @theme {
   --color-primary: #0d9488;
   --color-primary-dark: #0f766e;
-  --color-secondary: #f97316;
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-danger: #dc2626;
   --color-surface: #ffffff;
   --color-background: #f1f5f9;
   
@@ -23,5 +25,5 @@
 }
 
 .gradient-text {
-  @apply bg-clip-text text-transparent bg-linear-to-r from-teal-500 to-orange-400;
+  @apply bg-clip-text text-transparent bg-linear-to-r from-teal-500 to-teal-400;
 }

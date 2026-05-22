@@ -50,8 +50,8 @@ export default function NutritionSummary({ summary, goals }) {
                         />
                         <defs>
                             <linearGradient id="calorieGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                                <stop offset="0%" stopColor="#0d9488" />
-                                <stop offset="100%" stopColor="#f97316" />
+                                <stop offset="0%" stopColor="#14b8a6" />
+                                <stop offset="100%" stopColor="#0d9488" />
                             </linearGradient>
                         </defs>
                     </svg>

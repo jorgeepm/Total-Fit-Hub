@@ -46,9 +46,9 @@ export default function Dashboard({ auth, nutritionSummary, macroTargets, entren
         if (active && payload && payload.length) {
             const data = payload[0].payload;
             return (
-                <div className="bg-white p-3 rounded-xl shadow-2xl border border-indigo-50 ring-4 ring-indigo-50/50">
+                <div className="bg-white p-3 rounded-xl shadow-2xl border border-teal-50 ring-4 ring-teal-50/50">
                     <div className="flex flex-col">
-                        <span className="text-[10px] font-bold text-indigo-400 uppercase tracking-wider mb-1">
+                        <span className="text-[10px] font-bold text-teal-400 uppercase tracking-wider mb-1">
                             {data.full_date}
                         </span>
                         <div className="flex items-baseline gap-1">
@@ -207,7 +207,7 @@ export default function Dashboard({ auth, nutritionSummary, macroTargets, entren
                                                 {entreno?.routine?.nombre || 'Sesión completada'}
                                             </p>
                                             <div className="flex flex-wrap gap-2 mt-2">
-                                                <span className="text-xs font-bold text-indigo-700 bg-indigo-50 border border-indigo-100 px-2.5 py-1 rounded-md flex items-center gap-1.5">
+                                                <span className="text-xs font-bold text-teal-700 bg-teal-50 border border-teal-100 px-2.5 py-1 rounded-md flex items-center gap-1.5">
                                                     🏋️ Volumen: {entreno?.volumen_total || '0'} kg
                                                 </span>
                                                 {gruposMusculares && (
@@ -228,7 +228,7 @@ export default function Dashboard({ auth, nutritionSummary, macroTargets, entren
                             )}
 
                             <div className="mt-auto pt-4 flex justify-end border-t border-gray-50">
-                                <Link href={route('trainings.history')} className="text-sm font-semibold text-indigo-600 hover:text-indigo-800 transition-colors flex items-center gap-1">
+                                <Link href={route('trainings.history')} className="text-sm font-semibold text-teal-600 hover:text-teal-800 transition-colors flex items-center gap-1">
                                     Ver todos los entrenamientos <span>&rarr;</span>
                                 </Link>
                             </div>
@@ -247,7 +247,7 @@ export default function Dashboard({ auth, nutritionSummary, macroTargets, entren
                                         </span>
                                     </div>
                                     <div className="w-full bg-gray-100 rounded-full h-2.5">
-                                        <div className="bg-blue-500 h-2.5 rounded-full transition-all duration-500" style={{ width: `${proteinPercent}%` }}></div>
+                                        <div className="bg-teal-500 h-2.5 rounded-full transition-all duration-500" style={{ width: `${proteinPercent}%` }}></div>
                                     </div>
                                 </div>
 
@@ -290,13 +290,13 @@ export default function Dashboard({ auth, nutritionSummary, macroTargets, entren
                             <div className="flex items-center gap-4">
                                 <button 
                                     onClick={() => setShowingWeightModal(true)}
-                                    className="flex items-center gap-2 px-4 py-2 bg-indigo-50 text-indigo-600 rounded-lg font-bold hover:bg-indigo-100 transition-colors border border-indigo-100"
+                                    className="flex items-center gap-2 px-4 py-2 bg-teal-50 text-teal-600 rounded-lg font-bold hover:bg-teal-100 transition-colors border border-teal-100"
                                 >
                                     <Plus size={18} /> Registrar Peso
                                 </button>
                                 <div className="text-right border-l pl-4 border-gray-100 min-w-[140px]" style={{userSelect: 'none'}}>
                                     <div className="flex flex-col">
-                                        <span className="text-2xl font-black text-indigo-600 leading-none">
+                                        <span className="text-2xl font-black text-teal-600 leading-none">
                                             {hoveredWeight ? `${hoveredWeight.peso} kg` : `${auth.user.peso} kg`}
                                         </span>
                                         <span className="text-[10px] font-bold text-gray-400 uppercase mt-1">
@@ -329,8 +329,8 @@ export default function Dashboard({ auth, nutritionSummary, macroTargets, entren
                                 >
                                     <defs>
                                         <linearGradient id="colorWeight" x1="0" y1="0" x2="0" y2="1">
-                                            <stop offset="5%" stopColor="#4F46E5" stopOpacity={0.15}/>
-                                            <stop offset="95%" stopColor="#4F46E5" stopOpacity={0}/>
+                                            <stop offset="5%" stopColor="#0d9488" stopOpacity={0.15}/>
+                                            <stop offset="95%" stopColor="#0d9488" stopOpacity={0}/>
                                         </linearGradient>
                                     </defs>
                                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
@@ -347,13 +347,13 @@ export default function Dashboard({ auth, nutritionSummary, macroTargets, entren
                                     />
                                     <Tooltip 
                                         shared={false}
-                                        cursor={{ stroke: '#4F46E5', strokeWidth: 2, strokeDasharray: '6 6' }}
+                                        cursor={{ stroke: '#0d9488', strokeWidth: 2, strokeDasharray: '6 6' }}
                                         content={<CustomTooltip />}
                                     />
                                     <Area 
                                         type="monotone" 
                                         dataKey="peso" 
-                                        stroke="#4F46E5" 
+                                        stroke="#0d9488" 
                                         strokeWidth={4}
                                         fillOpacity={1} 
                                         fill="url(#colorWeight)" 
@@ -361,13 +361,13 @@ export default function Dashboard({ auth, nutritionSummary, macroTargets, entren
                                         dot={{ 
                                             r: 5, 
                                             fill: '#fff', 
-                                            stroke: '#4F46E5', 
+                                            stroke: '#0d9488', 
                                             strokeWidth: 3,
                                             fillOpacity: 1
                                         }}
                                         activeDot={{ 
                                             r: 8, 
-                                            fill: '#4F46E5', 
+                                            fill: '#0d9488', 
                                             stroke: '#fff', 
                                             strokeWidth: 4,
                                             fillOpacity: 1
@@ -393,7 +393,7 @@ export default function Dashboard({ auth, nutritionSummary, macroTargets, entren
                 <Modal show={showingWeightModal} onClose={() => setShowingWeightModal(false)}>
                     <form onSubmit={submitWeight} className="p-6">
                         <div className="flex items-center gap-3 mb-6">
-                            <div className="p-2 bg-indigo-100 rounded-lg text-indigo-600">
+                            <div className="p-2 bg-teal-100 rounded-lg text-teal-600">
                                 <Scale size={24} />
                             </div>
                             <h2 className="text-lg font-bold text-gray-900">Registrar Nuevo Peso</h2>
@@ -449,7 +449,7 @@ export default function Dashboard({ auth, nutritionSummary, macroTargets, entren
                                         {selectedWorkout.routine?.nombre || 'Detalles del Entrenamiento'}
                                     </h2>
                                     <p className="text-sm text-gray-500 mt-1">
-                                        Volumen total: <span className="font-bold text-indigo-600">{selectedWorkout.volumen_total} kg</span>
+                                        Volumen total: <span className="font-bold text-teal-600">{selectedWorkout.volumen_total} kg</span>
                                     </p>
                                 </div>
                                 <button 
@@ -498,7 +498,7 @@ export default function Dashboard({ auth, nutritionSummary, macroTargets, entren
                                                     </div>
                                                     <div className="text-center">
                                                         <span className="text-xs font-bold text-gray-400 uppercase">Peso</span>
-                                                        <p className="font-black text-indigo-600">{serie.peso} kg</p>
+                                                        <p className="font-black text-teal-600">{serie.peso} kg</p>
                                                     </div>
                                                     <div className="text-center">
                                                         <span className="text-xs font-bold text-gray-400 uppercase">Reps</span>

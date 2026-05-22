@@ -82,8 +82,8 @@ export default function Privacidad({ auth }) {
                     {/* Sección 2 */}
                     <section className="group">
                         <div className="flex items-start space-x-6">
-                            <div className="flex-shrink-0 w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center group-hover:bg-blue-100 transition-colors">
-                                <Database className="h-7 w-7 text-blue-500" />
+                            <div className="flex-shrink-0 w-14 h-14 bg-teal-50 rounded-2xl flex items-center justify-center group-hover:bg-teal-100 transition-colors">
+                                <Database className="h-7 w-7 text-teal-600" />
                             </div>
                             <div>
                                 <h2 className="text-2xl font-black text-slate-900 mb-4">2. ¿Qué datos recopilamos?</h2>

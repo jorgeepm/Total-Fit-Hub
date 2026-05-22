@@ -150,7 +150,7 @@ export default function RoutinesIndex({ rutinas = [], ejerciciosDisponibles = []
                   type="text"
                   value={nombreRutina}
                   onChange={(e) => setNombreRutina(e.target.value)}
-                  className="w-full pl-4 pr-4 py-3 rounded-lg bg-slate-700 text-white border border-slate-600 focus:border-indigo-500 focus:outline-none transition-colors placeholder-slate-500"
+                  className="w-full pl-4 pr-4 py-3 rounded-lg bg-slate-700 text-white border border-slate-600 focus:border-teal-500 focus:outline-none transition-colors placeholder-slate-500"
                   placeholder="Ej: Rutina de Pecho y Tríceps"
                 />
               </div>
@@ -163,7 +163,7 @@ export default function RoutinesIndex({ rutinas = [], ejerciciosDisponibles = []
                 <textarea
                   value={descripcionRutina}
                   onChange={(e) => setDescripcionRutina(e.target.value)}
-                  className="w-full pl-4 pr-4 py-3 rounded-lg bg-slate-700 text-white border border-slate-600 focus:border-indigo-500 focus:outline-none transition-colors placeholder-slate-500 resize-none"
+                  className="w-full pl-4 pr-4 py-3 rounded-lg bg-slate-700 text-white border border-slate-600 focus:border-teal-500 focus:outline-none transition-colors placeholder-slate-500 resize-none"
                   rows="3"
                   placeholder="Describe el propósito o características de esta rutina..."
                 />
@@ -178,7 +178,7 @@ export default function RoutinesIndex({ rutinas = [], ejerciciosDisponibles = []
                   <select
                     value={ejercicioSeleccionado}
                     onChange={(e) => setEjercicioSeleccionado(e.target.value)}
-                    className="flex-1 pl-4 pr-4 py-3 rounded-lg bg-slate-700 text-white border border-slate-600 focus:border-indigo-500 focus:outline-none transition-colors"
+                    className="flex-1 pl-4 pr-4 py-3 rounded-lg bg-slate-700 text-white border border-slate-600 focus:border-teal-500 focus:outline-none transition-colors"
                   >
                     <option value="">Selecciona un ejercicio...</option>
                     {ejerciciosDisponibles.map((ejercicio) => (
@@ -190,7 +190,7 @@ export default function RoutinesIndex({ rutinas = [], ejerciciosDisponibles = []
                   <button
                     type="button"
                     onClick={agregarEjercicio}
-                    className="px-6 py-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold transition-all transform hover:scale-105 active:scale-95"
+                    className="px-6 py-3 rounded-lg bg-teal-600 hover:bg-teal-700 text-white font-semibold transition-all transform hover:scale-105 active:scale-95"
                   >
                     + Agregar
                   </button>
@@ -301,7 +301,7 @@ export default function RoutinesIndex({ rutinas = [], ejerciciosDisponibles = []
               </p>
               <button
                 onClick={() => setShowCreator(true)}
-                className="px-8 py-3 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-semibold transition-all transform hover:scale-105 active:scale-95"
+                className="px-8 py-3 rounded-lg bg-teal-600 hover:bg-teal-700 text-white font-semibold transition-all transform hover:scale-105 active:scale-95"
               >
                 + Crear tu Primera Rutina
               </button>
@@ -311,14 +311,14 @@ export default function RoutinesIndex({ rutinas = [], ejerciciosDisponibles = []
               {rutinas.map((rutina) => (
                 <div
                   key={rutina.id}
-                  className="bg-slate-800 rounded-xl shadow-lg overflow-hidden border border-slate-700 hover:border-indigo-500 transition-all duration-300 transform hover:scale-105 flex flex-col"
+                  className="bg-slate-800 rounded-xl shadow-lg overflow-hidden border border-slate-700 hover:border-teal-500 transition-all duration-300 transform hover:scale-105 flex flex-col"
                 >
                   {/* Encabezado de la Tarjeta */}
-                  <div className="bg-gradient-to-r from-indigo-600 to-purple-600 p-6">
+                  <div className="bg-gradient-to-r from-teal-600 to-teal-700 p-6">
                     <h3 className="text-2xl font-bold text-white mb-2">
                       {rutina.nombre}
                     </h3>
-                    <p className="text-indigo-100 text-sm">
+                    <p className="text-teal-100 text-sm">
                       {rutina.descripcion || 'Sin descripción'}
                     </p>
                   </div>
@@ -344,7 +344,7 @@ export default function RoutinesIndex({ rutinas = [], ejerciciosDisponibles = []
                           <ul className="space-y-2">
                             {rutina.ejercicios.map((ejercicio, idx) => (
                               <li key={idx} className="text-slate-300 text-sm flex items-start">
-                                <span className="text-indigo-400 mr-2">•</span>
+                                <span className="text-teal-400 mr-2">•</span>
                                 <span>
                                   {ejercicio.nombre}
                                   {ejercicio.series_objetivo && (

@@ -3,7 +3,7 @@ import React from 'react';
 const ExerciseCard = ({ title, difficulty, imageUrl }) => {
     const difficultyColors = {
         Principiante: 'bg-green-100 text-green-700',
-        Intermedio: 'bg-orange-100 text-orange-700',
+        Intermedio: 'bg-amber-100 text-amber-700',
         Avanzado: 'bg-red-100 text-red-700',
     };
 

@@ -53,7 +53,7 @@ export default function RoutinesIndex({ routines = [] }) {
                                 onClick={() => setFilter('inactiva')}
                                 className={`px-6 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center gap-2 ${
                                     filter === 'inactiva'
-                                        ? 'bg-slate-800 text-white shadow-md'
+                                        ? 'bg-amber-500 text-white shadow-md'
                                         : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
                                 }`}
                             >
@@ -102,7 +102,7 @@ export default function RoutinesIndex({ routines = [] }) {
                                     className="bg-white rounded-[35px] shadow-sm border border-slate-100 overflow-hidden group hover:border-primary/30 hover:shadow-md transition-all duration-300 flex flex-col"
                                 >
                                     {/* Decoración superior */}
-                                    <div className="h-2 bg-linear-to-r from-primary to-primary-dark" />
+                                    <div className="h-2 bg-primary" />
                                     
                                     <div className="p-7 space-y-5 flex-1">
                                         <div className="flex justify-between items-start">
@@ -124,7 +124,7 @@ export default function RoutinesIndex({ routines = [] }) {
                                             <span className={`text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full ${
                                                 routine.estado === 'activa'
                                                     ? 'bg-emerald-50 text-emerald-600'
-                                                    : 'bg-slate-50 text-slate-400'
+                                                    : 'bg-amber-50 text-amber-600'
                                             }`}>
                                                 {routine.estado}
                                             </span>

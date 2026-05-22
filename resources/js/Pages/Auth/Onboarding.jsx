@@ -52,7 +52,7 @@ export default function Onboarding({ user }) {
     const nextStep = () => setStep(s => s + 1);
     const prevStep = () => setStep(s => s - 1);
 
-    const inputBase = 'block w-full border-slate-200 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl text-sm transition-colors duration-200';
+    const inputBase = 'block w-full border-slate-200 focus:border-teal-500 focus:ring-teal-500 rounded-xl text-sm transition-colors duration-200';
     const labelBase = 'block text-sm font-semibold text-slate-700 mb-1';
     const unitSpan  = 'absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-400 pointer-events-none';
 
@@ -64,7 +64,7 @@ export default function Onboarding({ user }) {
                 {/* Progress Bar */}
                 <div className="h-2 bg-slate-100 flex">
                     <div 
-                        className="bg-indigo-600 transition-all duration-500" 
+                        className="bg-teal-600 transition-all duration-500" 
                         style={{ width: `${(step / 4) * 100}%` }}
                     />
                 </div>
@@ -81,7 +81,7 @@ export default function Onboarding({ user }) {
                         {step === 1 && (
                             <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
                                 <div className="flex items-center gap-3 mb-4">
-                                    <div className="p-2 bg-indigo-100 rounded-lg text-indigo-600">
+                                    <div className="p-2 bg-teal-100 rounded-lg text-teal-600">
                                         <UserIcon size={24} />
                                     </div>
                                     <h2 className="text-lg font-semibold text-slate-800">Sobre ti</h2>
@@ -98,7 +98,7 @@ export default function Onboarding({ user }) {
                                                 onClick={() => setData('genero', val)}
                                                 className={`flex flex-col items-center justify-center p-4 rounded-2xl border-2 transition-all duration-200 ${
                                                     data.genero === val
-                                                        ? 'bg-indigo-50 border-indigo-500 text-indigo-600'
+                                                        ? 'bg-teal-50 border-teal-500 text-teal-600'
                                                         : 'bg-white border-slate-200 text-slate-500 hover:border-slate-300'
                                                 }`}
                                             >
@@ -124,7 +124,7 @@ export default function Onboarding({ user }) {
                                 <button
                                     type="button"
                                     onClick={nextStep}
-                                    className="w-full flex items-center justify-center gap-2 py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl font-bold transition-all mt-8"
+                                    className="w-full flex items-center justify-center gap-2 py-4 bg-teal-600 hover:bg-teal-700 text-white rounded-2xl font-bold transition-all mt-8"
                                 >
                                     Siguiente <ChevronRight size={20} />
                                 </button>
@@ -135,7 +135,7 @@ export default function Onboarding({ user }) {
                         {step === 2 && (
                             <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
                                 <div className="flex items-center gap-3 mb-4">
-                                    <div className="p-2 bg-indigo-100 rounded-lg text-indigo-600">
+                                    <div className="p-2 bg-teal-100 rounded-lg text-teal-600">
                                         <Scale size={24} />
                                     </div>
                                     <h2 className="text-lg font-semibold text-slate-800">Tus medidas</h2>
@@ -174,7 +174,7 @@ export default function Onboarding({ user }) {
                                     <button
                                         type="button"
                                         onClick={nextStep}
-                                        className="flex-[2] flex items-center justify-center gap-2 py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl font-bold transition-all"
+                                        className="flex-[2] flex items-center justify-center gap-2 py-4 bg-teal-600 hover:bg-teal-700 text-white rounded-2xl font-bold transition-all"
                                     >
                                         Siguiente <ChevronRight size={20} />
                                     </button>
@@ -213,15 +213,15 @@ export default function Onboarding({ user }) {
                                                 onClick={() => setData('nivel_actividad', n.value)}
                                                 className={`flex items-center justify-between py-2.5 px-3 rounded-xl border-2 transition-all duration-200 text-left ${
                                                     data.nivel_actividad === n.value
-                                                        ? 'bg-indigo-50 border-indigo-500 text-indigo-700'
+                                                        ? 'bg-teal-50 border-teal-500 text-teal-700'
                                                         : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300'
                                                 } ${idx === 4 ? 'col-span-2' : ''}`}
                                             >
                                                 <div>
-                                                    <span className={`block font-bold text-xs sm:text-sm ${data.nivel_actividad === n.value ? 'text-indigo-600' : 'text-slate-800'}`}>{n.label}</span>
-                                                    <span className={`block text-[10px] sm:text-xs ${data.nivel_actividad === n.value ? 'text-indigo-500' : 'text-slate-500'}`}>{n.desc}</span>
+                                                    <span className={`block font-bold text-xs sm:text-sm ${data.nivel_actividad === n.value ? 'text-teal-600' : 'text-slate-800'}`}>{n.label}</span>
+                                                    <span className={`block text-[10px] sm:text-xs ${data.nivel_actividad === n.value ? 'text-teal-500' : 'text-slate-500'}`}>{n.desc}</span>
                                                 </div>
-                                                <Activity className={`w-4 h-4 sm:w-5 sm:h-5 ml-1 flex-shrink-0 ${data.nivel_actividad === n.value ? 'text-indigo-500' : 'text-slate-400'}`} />
+                                                <Activity className={`w-4 h-4 sm:w-5 sm:h-5 ml-1 flex-shrink-0 ${data.nivel_actividad === n.value ? 'text-teal-500' : 'text-slate-400'}`} />
                                             </button>
                                         ))}
                                     </div>
@@ -241,7 +241,7 @@ export default function Onboarding({ user }) {
                                     <button
                                         type="button"
                                         onClick={nextStep}
-                                        className="flex-[2] flex items-center justify-center gap-2 py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl font-bold transition-all"
+                                        className="flex-[2] flex items-center justify-center gap-2 py-4 bg-teal-600 hover:bg-teal-700 text-white rounded-2xl font-bold transition-all"
                                     >
                                         Siguiente <ChevronRight size={20} />
                                     </button>
@@ -253,7 +253,7 @@ export default function Onboarding({ user }) {
                         {step === 4 && (
                             <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
                                 <div className="flex items-center gap-3 mb-4">
-                                    <div className="p-2 bg-orange-100 rounded-lg text-orange-600">
+                                    <div className="p-2 bg-amber-100 rounded-lg text-amber-600">
                                         <Zap size={24} />
                                     </div>
                                     <h2 className="text-lg font-semibold text-slate-800">Tus macronutrientes</h2>
@@ -269,13 +269,13 @@ export default function Onboarding({ user }) {
                                 <p className="text-sm text-slate-500 mb-4 text-center">Puedes ajustar estos valores para cuadrar con tus calorías calculadas.</p>
 
                                 <div className="grid grid-cols-1 gap-4">
-                                    <div className="flex items-center justify-between p-4 bg-blue-50 rounded-xl border border-blue-100">
-                                        <label className="text-sm font-bold text-blue-800">Proteínas (g)</label>
+                                    <div className="flex items-center justify-between p-4 bg-teal-50 rounded-xl border border-teal-100">
+                                        <label className="text-sm font-bold text-teal-800">Proteínas (g)</label>
                                         <input 
                                             type="number" 
                                             value={data.target_proteins} 
                                             onChange={e => setData('target_proteins', e.target.value)}
-                                            className="w-20 bg-transparent text-right font-bold text-blue-900 border-none focus:ring-0 pl-4"
+                                            className="w-20 bg-transparent text-right font-bold text-teal-900 border-none focus:ring-0 pl-4"
                                         />
                                     </div>
                                     <div className="flex items-center justify-between p-4 bg-green-50 rounded-xl border border-green-100">
@@ -307,7 +307,7 @@ export default function Onboarding({ user }) {
                                         <ChevronLeft size={20} /> Atrás
                                     </button>
                                     <PrimaryButton
-                                        className="flex-[2] justify-center py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl text-lg font-bold transition-all transform hover:scale-[1.02]"
+                                        className="flex-[2] justify-center py-4 bg-teal-600 hover:bg-teal-700 text-white rounded-2xl text-lg font-bold transition-all transform hover:scale-[1.02]"
                                         disabled={processing}
                                     >
                                         Finalizar

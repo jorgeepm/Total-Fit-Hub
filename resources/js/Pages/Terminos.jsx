@@ -43,13 +43,13 @@ export default function Terminos({ auth }) {
             </nav>
 
             {/* Hero */}
-            <section className="pt-32 pb-16 bg-gradient-to-br from-slate-50 via-white to-blue-50">
+            <section className="pt-32 pb-16 bg-gradient-to-br from-slate-50 via-white to-teal-50">
                 <div className="max-w-4xl mx-auto px-6 text-center">
-                    <div className="inline-flex items-center justify-center w-20 h-20 bg-blue-100 rounded-3xl mb-8">
-                        <Scale className="h-10 w-10 text-blue-600" />
+                    <div className="inline-flex items-center justify-center w-20 h-20 bg-teal-100 rounded-3xl mb-8">
+                        <Scale className="h-10 w-10 text-teal-600" />
                     </div>
                     <h1 className="text-5xl lg:text-6xl font-black text-slate-900 mb-6 leading-tight">
-                        Términos y <span className="text-blue-600">Condiciones</span>
+                        Términos y <span className="text-teal-600">Condiciones</span>
                     </h1>
                     <p className="text-xl text-slate-500 max-w-2xl mx-auto leading-relaxed">
                         Estas condiciones regulan el uso de Total Fit Hub. Al registrarte, aceptas estos términos en su totalidad. Por favor, léelos detenidamente.
@@ -65,7 +65,7 @@ export default function Terminos({ auth }) {
                     {/* Índice */}
                     <div className="bg-slate-50 rounded-3xl p-8 border border-slate-100">
                         <h2 className="text-lg font-black text-slate-900 mb-6 flex items-center space-x-2">
-                            <FileText className="h-5 w-5 text-blue-600" />
+                            <FileText className="h-5 w-5 text-teal-600" />
                             <span>Tabla de contenidos</span>
                         </h2>
                         <nav className="grid md:grid-cols-2 gap-3">
@@ -80,7 +80,7 @@ export default function Terminos({ auth }) {
                                 { num: '8', label: 'Modificaciones' },
                             ].map(item => (
                                 <a key={item.num} href={`#termino-${item.num}`} className="flex items-center space-x-3 p-3 rounded-xl hover:bg-white hover:shadow-sm transition-all group">
-                                    <span className="w-8 h-8 bg-blue-600 text-white rounded-lg flex items-center justify-center text-xs font-black flex-shrink-0">{item.num}</span>
+                                    <span className="w-8 h-8 bg-teal-600 text-white rounded-lg flex items-center justify-center text-xs font-black flex-shrink-0">{item.num}</span>
                                     <span className="text-slate-600 font-medium group-hover:text-slate-900 text-sm">{item.label}</span>
                                 </a>
                             ))}
@@ -90,7 +90,7 @@ export default function Terminos({ auth }) {
                     {/* Sección 1 */}
                     <section id="termino-1">
                         <h2 className="text-2xl font-black text-slate-900 mb-4 flex items-center space-x-3">
-                            <span className="w-10 h-10 bg-blue-600 text-white rounded-xl flex items-center justify-center text-lg font-black">1</span>
+                            <span className="w-10 h-10 bg-teal-600 text-white rounded-xl flex items-center justify-center text-lg font-black">1</span>
                             <span>Aceptación de los términos</span>
                         </h2>
                         <p className="text-slate-600 leading-relaxed text-lg">
@@ -103,7 +103,7 @@ export default function Terminos({ auth }) {
                     {/* Sección 2 */}
                     <section id="termino-2">
                         <h2 className="text-2xl font-black text-slate-900 mb-4 flex items-center space-x-3">
-                            <span className="w-10 h-10 bg-blue-600 text-white rounded-xl flex items-center justify-center text-lg font-black">2</span>
+                            <span className="w-10 h-10 bg-teal-600 text-white rounded-xl flex items-center justify-center text-lg font-black">2</span>
                             <span>Descripción del servicio</span>
                         </h2>
                         <p className="text-slate-600 leading-relaxed text-lg mb-6">
@@ -118,8 +118,8 @@ export default function Terminos({ auth }) {
                                 'Gestión de peso corporal y métricas de salud',
                                 'Base de datos de ejercicios y alimentos',
                             ].map((item, i) => (
-                                <div key={i} className="flex items-center space-x-3 p-4 bg-blue-50 rounded-2xl">
-                                    <CheckCircle className="h-5 w-5 text-blue-600 flex-shrink-0" />
+                                <div key={i} className="flex items-center space-x-3 p-4 bg-teal-50 rounded-2xl">
+                                    <CheckCircle className="h-5 w-5 text-teal-600 flex-shrink-0" />
                                     <span className="text-slate-700 font-medium">{item}</span>
                                 </div>
                             ))}
@@ -131,13 +131,13 @@ export default function Terminos({ auth }) {
                     {/* Sección 3 */}
                     <section id="termino-3">
                         <h2 className="text-2xl font-black text-slate-900 mb-4 flex items-center space-x-3">
-                            <span className="w-10 h-10 bg-blue-600 text-white rounded-xl flex items-center justify-center text-lg font-black">3</span>
+                            <span className="w-10 h-10 bg-teal-600 text-white rounded-xl flex items-center justify-center text-lg font-black">3</span>
                             <span>Registro y cuenta de usuario</span>
                         </h2>
                         <div className="space-y-4 text-slate-600 text-lg leading-relaxed">
                             <p>Para acceder a las funcionalidades completas de la plataforma, debes registrarte proporcionando información veraz, precisa y actualizada.</p>
                             <p>Eres el único responsable de mantener la confidencialidad de tu contraseña y de todas las actividades realizadas bajo tu cuenta.</p>
-                            <p>Debes notificarnos inmediatamente cualquier uso no autorizado de tu cuenta a través de <a href="mailto:soporte@totalfithub.com" className="text-blue-600 font-semibold hover:underline">soporte@totalfithub.com</a>.</p>
+                            <p>Debes notificarnos inmediatamente cualquier uso no autorizado de tu cuenta a través de <a href="mailto:soporte@totalfithub.com" className="text-teal-600 font-semibold hover:underline">soporte@totalfithub.com</a>.</p>
                             <div className="bg-amber-50 border border-amber-200 rounded-2xl p-6 flex items-start space-x-4">
                                 <AlertTriangle className="h-6 w-6 text-amber-500 flex-shrink-0 mt-0.5" />
                                 <p className="text-amber-800 font-medium">Debes tener al menos 16 años para registrarte en Total Fit Hub. Al registrarte, confirmas que cumples este requisito de edad.</p>
@@ -150,7 +150,7 @@ export default function Terminos({ auth }) {
                     {/* Sección 4 */}
                     <section id="termino-4">
                         <h2 className="text-2xl font-black text-slate-900 mb-6 flex items-center space-x-3">
-                            <span className="w-10 h-10 bg-blue-600 text-white rounded-xl flex items-center justify-center text-lg font-black">4</span>
+                            <span className="w-10 h-10 bg-teal-600 text-white rounded-xl flex items-center justify-center text-lg font-black">4</span>
                             <span>Uso permitido y prohibido</span>
                         </h2>
                         <div className="grid md:grid-cols-2 gap-6">
@@ -196,7 +196,7 @@ export default function Terminos({ auth }) {
                     {/* Sección 5 */}
                     <section id="termino-5">
                         <h2 className="text-2xl font-black text-slate-900 mb-4 flex items-center space-x-3">
-                            <span className="w-10 h-10 bg-blue-600 text-white rounded-xl flex items-center justify-center text-lg font-black">5</span>
+                            <span className="w-10 h-10 bg-teal-600 text-white rounded-xl flex items-center justify-center text-lg font-black">5</span>
                             <span>Propiedad intelectual</span>
                         </h2>
                         <p className="text-slate-600 leading-relaxed text-lg">
@@ -209,7 +209,7 @@ export default function Terminos({ auth }) {
                     {/* Sección 6 */}
                     <section id="termino-6">
                         <h2 className="text-2xl font-black text-slate-900 mb-4 flex items-center space-x-3">
-                            <span className="w-10 h-10 bg-blue-600 text-white rounded-xl flex items-center justify-center text-lg font-black">6</span>
+                            <span className="w-10 h-10 bg-teal-600 text-white rounded-xl flex items-center justify-center text-lg font-black">6</span>
                             <span>Limitación de responsabilidad</span>
                         </h2>
                         <div className="bg-slate-950 text-white p-8 rounded-3xl space-y-4">
@@ -227,7 +227,7 @@ export default function Terminos({ auth }) {
                     {/* Sección 7 */}
                     <section id="termino-7">
                         <h2 className="text-2xl font-black text-slate-900 mb-4 flex items-center space-x-3">
-                            <span className="w-10 h-10 bg-blue-600 text-white rounded-xl flex items-center justify-center text-lg font-black">7</span>
+                            <span className="w-10 h-10 bg-teal-600 text-white rounded-xl flex items-center justify-center text-lg font-black">7</span>
                             <span>Suspensión y cancelación</span>
                         </h2>
                         <p className="text-slate-600 leading-relaxed text-lg mb-4">
@@ -240,7 +240,7 @@ export default function Terminos({ auth }) {
                     {/* Sección 8 */}
                     <section id="termino-8">
                         <h2 className="text-2xl font-black text-slate-900 mb-4 flex items-center space-x-3">
-                            <span className="w-10 h-10 bg-blue-600 text-white rounded-xl flex items-center justify-center text-lg font-black">8</span>
+                            <span className="w-10 h-10 bg-teal-600 text-white rounded-xl flex items-center justify-center text-lg font-black">8</span>
                             <span>Modificaciones</span>
                         </h2>
                         <p className="text-slate-600 leading-relaxed text-lg">
@@ -250,12 +250,12 @@ export default function Terminos({ auth }) {
 
                     {/* CTA */}
                     <div className="bg-gradient-to-r from-slate-800 to-slate-900 rounded-[40px] p-12 text-center text-white">
-                        <Scale className="h-12 w-12 text-blue-400 mx-auto mb-6" />
+                        <Scale className="h-12 w-12 text-teal-400 mx-auto mb-6" />
                         <h2 className="text-3xl font-black mb-4">¿Necesitas más información?</h2>
                         <p className="text-slate-400 text-lg mb-8 max-w-xl mx-auto">Si tienes dudas sobre nuestros términos o necesitas aclaraciones legales, no dudes en contactarnos.</p>
                         <a
                             href="mailto:legal@totalfithub.com"
-                            className="inline-flex items-center space-x-2 bg-blue-600 text-white px-8 py-4 rounded-2xl font-bold hover:bg-blue-700 transition-all transform hover:scale-105"
+                            className="inline-flex items-center space-x-2 bg-teal-600 text-white px-8 py-4 rounded-2xl font-bold hover:bg-teal-700 transition-all transform hover:scale-105"
                         >
                             <Mail className="h-5 w-5" />
                             <span>Contactar con el equipo Legal</span>
