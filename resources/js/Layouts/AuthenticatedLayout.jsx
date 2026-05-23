@@ -4,13 +4,22 @@ import Footer from '@/Components/Footer';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link, usePage } from '@inertiajs/react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function AuthenticatedLayout({ header, children }) {
     const user = usePage().props.auth.user;
 
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
+
+    const [mostrarFeedback, setMostrarFeedback] = useState(false);
+
+    useEffect(() => {
+        const feedbackEnviado = localStorage.getItem('feedback_enviado');
+        if (!feedbackEnviado) {
+            setMostrarFeedback(true);
+        }
+    }, []);
 
     return (
         <div className="min-h-screen bg-gray-100">
@@ -51,6 +60,14 @@ export default function AuthenticatedLayout({ header, children }) {
                                 >
                                     Nutrición
                                 </NavLink>
+                                {mostrarFeedback && (
+                                    <NavLink
+                                        href={route('feedback')}
+                                        active={route().current('feedback')}
+                                    >
+                                        Danos tu opinión
+                                    </NavLink>
+                                )}
                                 {user.rol === 'admin' && (
                                     <NavLink
                                         href={route('admin.index')}
@@ -182,6 +199,14 @@ export default function AuthenticatedLayout({ header, children }) {
                         >
                             Nutrición
                         </ResponsiveNavLink>
+                        {mostrarFeedback && (
+                            <ResponsiveNavLink
+                                href={route('feedback')}
+                                active={route().current('feedback')}
+                            >
+                                Danos tu opinión
+                            </ResponsiveNavLink>
+                        )}
                         {user.rol === 'admin' && (
                             <ResponsiveNavLink
                                 href={route('admin.index')}

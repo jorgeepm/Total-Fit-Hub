@@ -69,6 +69,26 @@ Route::middleware('auth')->group(function () {
 
     // --- Reporte de Errores ---
     Route::post('/error-reports', [App\Http\Controllers\ErrorReportController::class, 'store'])->name('error-reports.store');
+
+    // --- Feedback ---
+    Route::get('/feedback', function () {
+        return Inertia::render('SatisfactionForm');
+    })->name('feedback');
+
+    Route::post('/feedback', function (Illuminate\Http\Request $request) {
+        $request->validate([
+            'rating' => 'required|integer|between:1,5',
+            'comentarios' => 'nullable|string|max:1000',
+        ]);
+
+        Illuminate\Support\Facades\Http::post('https://script.google.com/macros/s/AKfycbzsAS9qG60ClYBZH__zNVnw0NOPQ0KCUAaPKhnDoFdJGPiZKhkfyr7ZuvH8sgoF2oeC/exec', [
+            'correo_usuario' => $request->user()->email,
+            'nota_estrellas' => $request->input('rating'),
+            'opinion_texto'  => $request->input('comentarios'),
+        ]);
+
+        return back()->with('success', '¡Gracias! Tu opinión ha sido enviada.');
+    });
 });
 
 // --- Panel de Administrador ---
