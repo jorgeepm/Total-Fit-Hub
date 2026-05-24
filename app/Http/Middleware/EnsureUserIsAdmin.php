@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 class EnsureUserIsAdmin
 {
     /**
-     * Handle an incoming request.
+     * Maneja una solicitud entrante.
      */
     public function handle(Request $request, Closure $next): Response
     {

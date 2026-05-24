@@ -9,7 +9,7 @@ use App\Models\Exercise;
 class FetchExercises extends Command
 {
     /**
-     * Execute the console command.
+     * Ejecutar el comando de consola.
      */
     protected $signature = 'exercises:fetch';
     protected $description = 'Descarga la base de datos de ejercicios desde ExerciseDB (RapidAPI)';

@@ -17,7 +17,7 @@ use Inertia\Response;
 class NewPasswordController extends Controller
 {
     /**
-     * Display the password reset view.
+     * Mostrar la vista de restablecimiento de contraseña.
      */
     public function create(Request $request): Response
     {
@@ -28,7 +28,7 @@ class NewPasswordController extends Controller
     }
 
     /**
-     * Handle an incoming new password request.
+     * Manejar una solicitud de nueva contraseña entrante.
      *
      * @throws ValidationException
      */
@@ -40,9 +40,9 @@ class NewPasswordController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        // Here we will attempt to reset the user's password. If it is successful we
-        // will update the password on an actual user model and persist it to the
-        // database. Otherwise we will parse the error and return the response.
+        // Aquí intentaremos restablecer la contraseña del usuario. Si tiene éxito,
+        // actualizaremos la contraseña en el modelo de usuario real y la persistiremos en la
+        // base de datos. De lo contrario, analizaremos el error y devolveremos la respuesta.
         $status = Password::reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
             function ($user) use ($request) {
@@ -55,9 +55,9 @@ class NewPasswordController extends Controller
             }
         );
 
-        // If the password was successfully reset, we will redirect the user back to
-        // the application's home authenticated view. If there is an error we can
-        // redirect them back to where they came from with their error message.
+        // Si la contraseña se restableció correctamente, redirigiremos al usuario a
+        // la vista autenticada de inicio de la aplicación. Si hay un error, podemos
+        // redirigirlo de vuelta a donde vino con su mensaje de error.
         if ($status == Password::PASSWORD_RESET) {
             return redirect()->route('login')->with('status', __($status));
         }

@@ -66,7 +66,7 @@ class ExerciseController extends Controller
         $exercise = Exercise::findOrFail($id);
         $isAdmin = Auth::user()->rol === 'admin';
 
-        // Check permissions
+        // Comprobar permisos
         if ($exercise->id_usuario === null && !$isAdmin) {
             abort(403, 'Unauthorized action.');
         }

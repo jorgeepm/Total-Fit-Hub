@@ -11,7 +11,7 @@ class DatabaseSeeder extends Seeder
     use WithoutModelEvents;
 
     /**
-     * Seed the application's database.
+     * Sembrar la base de datos de la aplicación.
      */
     public function run(): void
     {
@@ -48,7 +48,7 @@ class DatabaseSeeder extends Seeder
             'target_fats'          => 65,
         ]);
 
-        // Seed exercises
+        // Sembrar ejercicios
         $this->call(ExerciseSeeder::class);
     }
 }

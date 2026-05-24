@@ -25,7 +25,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the attributes that should be cast.
+     * Obtiene los atributos que deben ser transformados.
      *
      * @return array<string, string>
      */

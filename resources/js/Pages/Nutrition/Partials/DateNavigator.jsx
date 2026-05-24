@@ -6,7 +6,7 @@ import { es } from 'date-fns/locale';
 export default function DateNavigator({ selectedDate }) {
     const current = new Date(selectedDate);
     
-    // Generate dates for the current week
+    // Genera fechas para la semana actual
     const firstDayOfWeek = startOfWeek(current, { weekStartsOn: 1 });
     const weekDays = [...Array(7)].map((_, i) => addDays(firstDayOfWeek, i));
 

@@ -3,7 +3,7 @@ import { Link } from '@inertiajs/react';
 export default function AuthLayout({ children, image }) {
     return (
         <div className="flex min-h-screen">
-            {/* Left side: Image */}
+            {/* Lado izquierdo: Imagen */}
             <div className="hidden lg:block lg:w-1/2 relative">
                 <img 
                     src={image} 
@@ -17,7 +17,7 @@ export default function AuthLayout({ children, image }) {
                 </div>
             </div>
 
-            {/* Right side: Form */}
+            {/* Lado derecho: Formulario */}
             <div className="w-full lg:w-1/2 flex flex-col items-center justify-center bg-background px-6 py-12 sm:px-12">
                 <div className="w-full max-w-md">
                     {children}

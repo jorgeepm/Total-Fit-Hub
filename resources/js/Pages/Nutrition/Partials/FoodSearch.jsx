@@ -10,7 +10,7 @@ export default function FoodSearch({ onClose, mealType, selectedDate }) {
     const [selectedFoods, setSelectedFoods] = useState([]);
     const [isCustomMode, setIsCustomMode] = useState(false);
 
-    // Custom food form state
+    // Estado del formulario de alimentos personalizados
     const [customFood, setCustomFood] = useState({
         name: '',
         calories_100g: '',
@@ -136,7 +136,7 @@ export default function FoodSearch({ onClose, mealType, selectedDate }) {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
             <div className="bg-white w-full max-w-5xl rounded-[40px] shadow-2xl overflow-hidden flex flex-col md:flex-row max-h-[85vh]">
                 
-                {/* Search / Custom Area */}
+                {/* Área de búsqueda / personalizada */}
                 <div className="flex-1 flex flex-col overflow-hidden border-r border-slate-100 bg-white">
                     <div className="p-8 border-b border-slate-50 flex items-center justify-between">
                         <h3 className="text-2xl font-black text-slate-800 tracking-tight">
@@ -304,7 +304,7 @@ export default function FoodSearch({ onClose, mealType, selectedDate }) {
                     )}
                 </div>
 
-                {/* Basket Area */}
+                {/* Cesta */}
                 <div className="w-full md:w-96 bg-slate-50 flex flex-col overflow-hidden border-l border-slate-100">
                     <div className="p-8 border-b border-slate-100 flex items-center justify-between bg-white/50">
                         <div className="flex items-center space-x-3">

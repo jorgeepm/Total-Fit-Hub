@@ -11,7 +11,7 @@ class ExerciseSeeder extends Seeder
     use WithoutModelEvents;
 
     /**
-     * Seed the database with sample exercises.
+     * Sembrar la base de datos con ejercicios de muestra.
      */
     public function run(): void
     {

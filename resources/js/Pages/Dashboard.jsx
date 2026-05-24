@@ -135,7 +135,7 @@ export default function Dashboard({ auth, nutritionSummary, macroTargets, entren
                     {/* Fila 1: Resumen rápido */}
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-                        {/* TARJETA 1: CALORÍAS 🍩 */}
+                        {/* TARJETA 1: CALORÍAS */}
                         <div 
                             className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center" 
                             style={{userSelect: 'none', WebkitUserSelect: 'none', cursor: 'default', WebkitTouchCallout: 'none'}}

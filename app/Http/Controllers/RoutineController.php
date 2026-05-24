@@ -27,7 +27,6 @@ class RoutineController extends Controller
 
     /**
      * Devuelve la vista de creación pasando TODOS los ejercicios disponibles.
-     * Solo seleccionamos las columnas necesarias para optimizar el payload.
      */
     public function create()
     {
@@ -50,15 +49,6 @@ class RoutineController extends Controller
     /**
      * Guarda la nueva rutina y vincula los ejercicios en la tabla pivot
      * rutina_ejercicio con objetivo_series y objetivo_repeticiones.
-     *
-     * Payload esperado:
-     * {
-     *   "routineName": "Día de Empuje",
-     *   "exercises": [
-     *     { "id": 3, "sets": [{ "target_reps": 12 }, { "target_reps": 10 }] },
-     *     { "id": 7, "sets": [{ "target_reps": 8 }] }
-     *   ]
-     * }
      */
     public function store(Request $request)
     {
@@ -79,11 +69,10 @@ class RoutineController extends Controller
             'estado'      => 'activa',
         ]);
 
-        // 2. Construir el array para sync() con los datos pivot
-        //    Como un ejercicio puede tener VARIAS series, guardamos:
+        // Construir el array para sync() con los datos pivot
+        // Como un ejercicio puede tener varias series, guardamos:
         //      - objetivo_series  = número total de series
-        //      - objetivo_repeticiones = reps de la primera serie (o la moda)
-        //    Si en el futuro necesitas series individuales, añade una tabla aparte.
+        //      - objetivo_repeticiones = reps de la primera serie
         $syncData = [];
         foreach ($request->exercises as $exerciseData) {
             $sets       = $exerciseData['sets'];

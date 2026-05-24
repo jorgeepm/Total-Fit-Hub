@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 class EnsureOnboardingIsCompleted
 {
     /**
-     * Handle an incoming request.
+     * Maneja una solicitud entrante.
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
@@ -18,7 +18,6 @@ class EnsureOnboardingIsCompleted
     {
         $user = Auth::user();
 
-        // Si el usuario está autenticado, no ha completado el onboarding y no está ya en la ruta de onboarding
         if ($user && !$user->onboarding_completed && !$request->routeIs('onboarding.*') && !$request->routeIs('logout') && !$request->routeIs('admin.*')) {
             return redirect()->route('onboarding.index');
         }

@@ -10,7 +10,7 @@ use Inertia\Inertia;
 class TrainingController extends Controller
 {
     /**
-     * Store a newly created training session in storage.
+     * Almacena una nueva sesión de entrenamiento.
      */
     public function store(Request $request)
     {
@@ -68,7 +68,7 @@ class TrainingController extends Controller
             $avgCaloriasMin = $ejerciciosRealizadosCount > 0 ? ($caloriasPorMinutoSuma / $ejerciciosRealizadosCount) : 0;
             $caloriasQuemadas = $duracionMinutos * $avgCaloriasMin;
 
-            // 1. Crear el registro principal del entrenamiento
+            // Crear el registro principal del entrenamiento
             $entrenamiento = Entrenamiento::create([
                 'id_usuario' => auth()->id(),
                 'id_rutina' => $request->id_rutina,
@@ -78,7 +78,7 @@ class TrainingController extends Controller
                 'volumen_total' => $volumenTotal,
             ]);
 
-            // 2. Guardar cada serie de cada ejercicio
+            // Guardar cada serie de cada ejercicio
             foreach ($request->ejercicios as $ejercicio) {
                 foreach ($ejercicio['series'] as $index => $serie) {
                     if ($serie['completado']) {
@@ -106,7 +106,7 @@ class TrainingController extends Controller
     }
 
     /**
-     * Display a listing of the user's past training sessions.
+     * Muestra un historial de las sesiones de entrenamiento pasadas del usuario.
      */
     public function history()
     {
@@ -121,7 +121,7 @@ class TrainingController extends Controller
     }
 
     /**
-     * Remove the specified training session from storage.
+     * Elimina la sesión de entrenamiento especificada.
      */
     public function destroy($id)
     {

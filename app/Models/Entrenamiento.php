@@ -23,7 +23,7 @@ class Entrenamiento extends Model
     }
 
     /**
-     * Get the user that owns this workout.
+     * Obtiene el usuario propietario de este entrenamiento.
      */
     public function user()
     {
@@ -31,7 +31,7 @@ class Entrenamiento extends Model
     }
 
     /**
-     * Get the routine associated with this workout.
+     * Obtiene la rutina asociada con este entrenamiento.
      */
     public function routine()
     {
@@ -39,7 +39,7 @@ class Entrenamiento extends Model
     }
 
     /**
-     * Get the exercises associated with this workout.
+     * Obtiene los ejercicios asociados con este entrenamiento.
      */
     public function ejercicios()
     {

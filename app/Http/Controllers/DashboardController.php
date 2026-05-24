@@ -22,7 +22,7 @@ class DashboardController extends Controller
         
         $today = now()->toDateString();
 
-        // Sumamos las calorías de todos los alimentos registrados HOY por este usuario
+        // Sumas de las calorías de todos los alimentos registrados HOY por este usuario
         $caloriasConsumidas = FoodLog::where('user_id', $user->id)
             ->whereDate('log_date', $today)
             ->sum('calories');
@@ -40,16 +40,16 @@ class DashboardController extends Controller
             ->whereDate('log_date', $today)
             ->sum('fats');
 
-        // Obtenemos su objetivo diario (o 2500 por defecto si no lo ha configurado)
+        // Obtenemos su objetivo diario
         $caloriasDiarias = $user->calorias_diarias ?? 2500;
 
-        // Obtenemos los entrenamientos de hoy con eager loading para evitar N+1
+        // Obtenemos los entrenamientos de hoy
         $entrenamientosHoy = $user->entrenamientos()
             ->with(['routine', 'ejercicios'])
             ->whereDate('hora_inicio', $today)
             ->get();
 
-        // Objetivos de macronutrientes (dinámicos, por usuario)
+        // Objetivos de macronutrientes
         $macroTargets = [
             'proteins' => $user->target_proteins ?? 150,
             'carbs' => $user->target_carbs ?? 250,

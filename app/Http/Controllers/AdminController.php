@@ -123,7 +123,7 @@ class AdminController extends Controller
         $user = User::findOrFail($id);
         $nombre = $user->nombre_usuario;
 
-        // Eliminar datos relacionados manualmente (cascada lógica)
+        // Eliminar datos relacionados manualmente
         FoodLog::where('user_id', $id)->delete();
         WeightLog::where('user_id', $id)->delete();
         Entrenamiento::where('id_usuario', $id)->delete();

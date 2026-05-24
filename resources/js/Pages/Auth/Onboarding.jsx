@@ -61,7 +61,6 @@ export default function Onboarding({ user }) {
             <Head title="Cuestionario Inicial" />
 
             <div className="max-w-md w-full bg-white rounded-3xl shadow-xl overflow-hidden">
-                {/* Progress Bar */}
                 <div className="h-2 bg-slate-100 flex">
                     <div 
                         className="bg-teal-600 transition-all duration-500" 
@@ -76,8 +75,6 @@ export default function Onboarding({ user }) {
                     </header>
 
                     <form onSubmit={submit}>
-                        
-                        {/* PASO 1: GÉNERO Y EDAD */}
                         {step === 1 && (
                             <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
                                 <div className="flex items-center gap-3 mb-4">
@@ -131,7 +128,6 @@ export default function Onboarding({ user }) {
                             </div>
                         )}
 
-                        {/* PASO 2: PESO Y ALTURA */}
                         {step === 2 && (
                             <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
                                 <div className="flex items-center gap-3 mb-4">
@@ -182,7 +178,6 @@ export default function Onboarding({ user }) {
                             </div>
                         )}
 
-                        {/* PASO 3: OBJETIVOS Y ACTIVIDAD */}
                         {step === 3 && (
                             <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
                                 <div className="flex items-center gap-3 mb-4">
@@ -249,7 +244,6 @@ export default function Onboarding({ user }) {
                             </div>
                         )}
 
-                        {/* PASO 4: MACRONUTRIENTES */}
                         {step === 4 && (
                             <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
                                 <div className="flex items-center gap-3 mb-4">

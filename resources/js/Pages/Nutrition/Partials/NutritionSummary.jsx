@@ -6,7 +6,7 @@ export default function NutritionSummary({ summary, goals }) {
 
     return (
         <div className="space-y-6">
-            {/* Calories Radial Card */}
+            {/* Resumen radial de calorías */}
             <div 
                 className="bg-white rounded-3xl p-8 shadow-sm border border-slate-100 flex flex-col items-center" 
                 style={{userSelect: 'none', WebkitUserSelect: 'none', cursor: 'default', WebkitTouchCallout: 'none'}}
@@ -77,7 +77,7 @@ export default function NutritionSummary({ summary, goals }) {
                 </div>
             </div>
 
-            {/* Macros Detailed Card */}
+            {/* Resumen nutricional detallado */}
             <div className="bg-white rounded-3xl p-8 shadow-sm border border-slate-100">
                 <h3 className="text-xl font-bold text-slate-800 mb-6">Resumen Nutricional</h3>
                 

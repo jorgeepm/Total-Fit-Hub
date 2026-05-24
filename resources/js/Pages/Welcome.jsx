@@ -7,7 +7,7 @@ export default function Welcome({ auth }) {
         <div className="bg-background text-slate-900 font-sans selection:bg-teal-500 selection:text-white">
             <Head title="Bienvenido a Total Fit Hub" />
             
-            {/* Navigation */}
+            {/* Navegación */}
             <nav className="fixed top-0 w-full z-50 bg-white/70 backdrop-blur-md border-b border-white/20">
                 <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
                     <div className="flex items-center space-x-3">
@@ -49,7 +49,7 @@ export default function Welcome({ auth }) {
                 </div>
             </nav>
 
-            {/* Hero Section */}
+            {/* Seccion principal */}
             <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
                 <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
                     <div className="relative z-10 space-y-8">
@@ -99,7 +99,7 @@ export default function Welcome({ auth }) {
                                 alt="Fitness Training" 
                                 className="w-full rounded-[40px] shadow-2xl rotate-2 hover:rotate-0 transition-transform duration-700" 
                             />
-                            {/* Floating Card */}
+                            {/* Tarjeta flotante */}
                             <div className="absolute -bottom-10 -left-10 glass p-6 rounded-3xl shadow-xl animate-bounce-slow">
                                 <Activity className="h-10 w-10 text-primary mb-3" />
                                 <div className="space-y-1">
@@ -119,7 +119,7 @@ export default function Welcome({ auth }) {
                 </div>
             </section>
 
-            {/* Features Section */}
+            {/* Seccion de Características */}
             <section id="features" className="py-24 bg-white">
                 <div className="max-w-7xl mx-auto px-6 text-center mb-20">
                     <h2 className="text-4xl lg:text-5xl font-black text-slate-900 mb-6">Todo lo que necesitas en un <span className="text-primary">mismo lugar</span>.</h2>

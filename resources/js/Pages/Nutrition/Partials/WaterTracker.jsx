@@ -6,7 +6,7 @@ export default function WaterTracker({ water = 0, selectedDate }) {
     const maxGlasses = 16; // 4L
     const [glasses, setGlasses] = useState(water);
 
-    // Sync state if props change (e.g. changing date)
+    // Sincroniza el estado si las props cambian (ej. al cambiar de fecha)
     useEffect(() => {
         setGlasses(water);
     }, [water, selectedDate]);
@@ -14,7 +14,7 @@ export default function WaterTracker({ water = 0, selectedDate }) {
     const updateWater = (newAmount) => {
         if (newAmount < 0) return;
         
-        // Optimistic update
+        // Actualización optimista
         setGlasses(newAmount);
 
         router.post(route('nutrition.water.update'), {
@@ -24,7 +24,7 @@ export default function WaterTracker({ water = 0, selectedDate }) {
             preserveScroll: true,
             preserveState: true,
             onError: () => {
-                // Revert on error
+                // Revertir en caso de error
                 setGlasses(water);
             }
         });

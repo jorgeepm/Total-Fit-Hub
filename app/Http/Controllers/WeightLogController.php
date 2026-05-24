@@ -23,8 +23,7 @@ class WeightLogController extends Controller
             'log_date' => $request->log_date,
         ]);
 
-        // Actualizar el peso actual del usuario si es el registro más reciente
-        // (Para simplificar, siempre actualizamos el peso actual del usuario)
+        // Actualiza el peso actual del usuario si es el registro más reciente
         $user->update(['peso' => $request->weight]);
 
         return back();

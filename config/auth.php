@@ -29,9 +29,9 @@ return [
     | Of course, a great default configuration has been defined for you
     | which utilizes session storage plus the Eloquent user provider.
     |
-    | All authentication guards have a user provider, which defines how the
-    | users are actually retrieved out of your database or other storage
-    | system used by the application. Typically, Eloquent is utilized.
+    | Todas las guardas de autenticación tienen un proveedor de usuarios, que define cómo los
+    | usuarios se recuperan de la base de datos u otro almacenamiento
+    | utilizado por la aplicación. Normalmente, se utiliza Eloquent.
     |
     | Supported: "session"
     |
@@ -49,9 +49,9 @@ return [
     | User Providers
     |--------------------------------------------------------------------------
     |
-    | All authentication guards have a user provider, which defines how the
-    | users are actually retrieved out of your database or other storage
-    | system used by the application. Typically, Eloquent is utilized.
+    | Todas las guardas de autenticación tienen un proveedor de usuarios, que define cómo los
+    | usuarios se recuperan de la base de datos u otro almacenamiento
+    | utilizado por la aplicación. Normalmente, se utiliza Eloquent.
     |
     | If you have multiple user tables or models you may configure multiple
     | providers to represent the model / table. These providers may then
