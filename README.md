@@ -1,58 +1,103 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Total Fit Hub
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+![Total Fit Hub](https://img.shields.io/badge/Versi%C3%B3n-1.0%20(MVP)-success)
+![Laravel](https://img.shields.io/badge/Laravel-11.x-FF2D20?logo=laravel)
+![React](https://img.shields.io/badge/React-18.x-61DAFB?logo=react)
+![Inertia.js](https://img.shields.io/badge/Inertia.js-React-9553E9?logo=inertia)
+![SQLite](https://img.shields.io/badge/Base%20de%20Datos-SQLite-003B57?logo=sqlite)
 
-## About Laravel
+**Total Fit Hub** es un ecosistema web integral (Single Page Application) que unifica el seguimiento del entrenamiento de fuerza y la planificación nutricional, eliminando la necesidad de usar múltiples aplicaciones fragmentadas.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Este proyecto ha sido desarrollado por **Jorge de Pablos** y **Vicente Romero** como Proyecto de Fin de Grado (DAW).
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 🛠 Requisitos Previos
 
-## Learning Laravel
+Antes de instalar el proyecto en tu ordenador, asegúrate de tener instalado el siguiente software:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+* **PHP** (v8.2 o superior)
+* **Composer** (Gestor de dependencias de PHP)
+* **Node.js** y **NPM** (Para compilar los recursos del Frontend)
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+## 🚀 Guía de Instalación y Despliegue Local
 
-## Agentic Development
+Sigue estos pasos en tu terminal de comandos para arrancar la aplicación en tu entorno local. Todo el proceso está estandarizado mediante comandos nativos de Laravel y Node.
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
-
+### 1. Descomprimir el archivo
+Extrae el contenido del archivo `.zip` en la carpeta que prefieras de tu ordenador.
+Abre tu terminal de comandos y navega hasta la carpeta raíz del proyecto extraído:
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+cd ruta/hasta/Total-Fit-Hub
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+### 2. Instalar dependencias del Backend (PHP)
+Instala todos los paquetes necesarios de Laravel utilizando Composer:
+```bash
+composer install
+```
 
-## Contributing
+### 3. Instalar dependencias del Frontend (React/NPM)
+Instala los paquetes de Node y Tailwind CSS:
+```bash
+npm install
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 4. Configurar el archivo de Entorno (.env)
+Duplica el archivo de configuración de ejemplo para crear tu propio archivo de variables de entorno:
+```bash
+# En Windows (CMD o PowerShell):
+copy .env.example .env
 
-## Code of Conduct
+# En Mac/Linux:
+cp .env.example .env
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 5. Generar la Clave de Aplicación (App Key)
+Genera la clave criptográfica única que Laravel utiliza para encriptar las sesiones de los usuarios:
+```bash
+php artisan key:generate
+```
 
-## Security Vulnerabilities
+### 6. Configurar la Base de Datos (SQLite) y Migraciones
+Al tratarse de un MVP optimizado, el proyecto utiliza SQLite. Laravel 11 lo configura por defecto en tu archivo `.env`.
+Solo tienes que ejecutar las migraciones para construir las tablas. Laravel detectará que el archivo SQLite no existe y te preguntará si deseas crearlo. **Responde que sí (yes)**.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+php artisan migrate
+```
+*(Nota: Si dispones de Seeders para cargar datos de prueba, puedes usar `php artisan migrate --seed`)*.
 
-## License
+### 7. Compilar los archivos estáticos del Frontend
+Para que React, Tailwind e Inertia funcionen, debes compilar el código JavaScript y CSS.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Para **entorno de desarrollo** (se queda escuchando los cambios en vivo):
+```bash
+npm run dev
+```
+
+*(Si quisieras compilarlo para producción definitiva, usarías `npm run build`)*.
+
+### 8. Arrancar el Servidor de Laravel
+Abre una **nueva pestaña/ventana en tu terminal** (dejando `npm run dev` ejecutándose en la anterior), asegúrate de estar en la carpeta del proyecto y arranca el servidor nativo de Laravel:
+```bash
+php artisan serve
+```
+
+---
+
+## 🎉 ¡Listo!
+La aplicación ya está funcionando en tu ordenador. 
+Abre tu navegador web y visita: **http://localhost:8000**
+
+Ya puedes registrar un nuevo usuario y comenzar a utilizar Total Fit Hub.
+
+---
+
+## 🏗 Arquitectura del Proyecto
+
+* **Backend:** Arquitectura MVC utilizando Laravel 11. Base de datos SQLite gestionada a través del ORM Eloquent. Autenticación manejada con Laravel Sanctum.
+* **Frontend:** Interfaces construidas con React.js y maquetadas con Tailwind CSS (diseño Mobile First y Glassmorphism).
+* **Capa de Enlace:** Inertia.js actúa como puente, permitiendo enviar datos del controlador de Laravel directamente a las vistas de React sin necesidad de construir una API REST externa.
