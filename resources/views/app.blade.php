@@ -13,6 +13,18 @@
         <!-- Favicon -->
         <link rel="icon" type="image/png" href="/images/logo.png">
 
+        <!-- Anti-FOUC: aplicar tema antes de que se pinte nada -->
+        <script>
+            (function() {
+                var theme = localStorage.getItem('theme');
+                if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                    document.documentElement.classList.add('dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                }
+            })();
+        </script>
+
         <!-- Scripts -->
         @routes
         @viteReactRefresh

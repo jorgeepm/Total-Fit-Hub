@@ -1,20 +1,22 @@
 import { Head, Link } from '@inertiajs/react';
 import Footer from '@/Components/Footer';
+import ThemeToggle from '@/Components/ThemeToggle';
 import { Shield, Lock, Eye, Database, UserCheck, Mail } from 'lucide-react';
 
 export default function Privacidad({ auth }) {
     return (
-        <div className="bg-white text-slate-900 font-sans min-h-screen flex flex-col">
+        <div className="bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans min-h-screen flex flex-col">
             <Head title="Política de Privacidad – Total Fit Hub" />
 
             {/* Navigation */}
-            <nav className="fixed top-0 w-full z-50 bg-white/70 backdrop-blur-md border-b border-white/20">
+            <nav className="fixed top-0 w-full z-50 bg-white/70 dark:bg-slate-900/70 backdrop-blur-md border-b border-white/20 dark:border-slate-800">
                 <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
                     <Link href={route('welcome')} className="flex items-center space-x-3">
                         <img src="/images/logo.png" alt="Logo" className="h-10 w-10" />
-                        <span className="text-xl font-black tracking-tight text-slate-900">Total Fit Hub</span>
+                        <span className="text-xl font-black tracking-tight text-slate-900 dark:text-white">Total Fit Hub</span>
                     </Link>
                     <div className="flex items-center space-x-4">
+                        <ThemeToggle />
                         {auth?.user ? (
                             <Link
                                 href={route('dashboard')}
@@ -26,7 +28,7 @@ export default function Privacidad({ auth }) {
                             <>
                                 <Link
                                     href={route('login')}
-                                    className="text-slate-600 font-bold text-sm hover:text-slate-900 px-4"
+                                    className="text-slate-600 dark:text-gray-400 font-bold text-sm hover:text-slate-900 dark:hover:text-white px-4"
                                 >
                                     Iniciar Sesión
                                 </Link>
@@ -43,18 +45,18 @@ export default function Privacidad({ auth }) {
             </nav>
 
             {/* Hero */}
-            <section className="pt-32 pb-16 bg-gradient-to-br from-teal-50 via-white to-slate-50">
+            <section className="pt-32 pb-16 bg-gradient-to-br from-teal-50 via-white to-slate-50 dark:from-slate-900 dark:via-slate-950 dark:to-teal-950/20">
                 <div className="max-w-4xl mx-auto px-6 text-center">
-                    <div className="inline-flex items-center justify-center w-20 h-20 bg-teal-100 rounded-3xl mb-8">
+                    <div className="inline-flex items-center justify-center w-20 h-20 bg-teal-100 dark:bg-teal-900/30 rounded-3xl mb-8">
                         <Shield className="h-10 w-10 text-primary" />
                     </div>
-                    <h1 className="text-5xl lg:text-6xl font-black text-slate-900 mb-6 leading-tight">
+                    <h1 className="text-5xl lg:text-6xl font-black text-slate-900 dark:text-white mb-6 leading-tight">
                         Política de <span className="text-primary">Privacidad</span>
                     </h1>
-                    <p className="text-xl text-slate-500 max-w-2xl mx-auto leading-relaxed">
+                    <p className="text-xl text-slate-500 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed">
                         Tu privacidad es nuestra prioridad. Aquí te explicamos de forma clara y transparente cómo gestionamos tu información.
                     </p>
-                    <p className="mt-6 text-sm text-slate-400 font-medium">Última actualización: 18 de mayo de 2026</p>
+                    <p className="mt-6 text-sm text-slate-400 dark:text-gray-500 font-medium">Última actualización: 18 de mayo de 2026</p>
                 </div>
             </section>
 
@@ -65,29 +67,29 @@ export default function Privacidad({ auth }) {
                     {/* Sección 1 */}
                     <section className="group">
                         <div className="flex items-start space-x-6">
-                            <div className="flex-shrink-0 w-14 h-14 bg-teal-50 rounded-2xl flex items-center justify-center group-hover:bg-teal-100 transition-colors">
+                            <div className="flex-shrink-0 w-14 h-14 bg-teal-50 dark:bg-teal-900/20 rounded-2xl flex items-center justify-center group-hover:bg-teal-100 dark:group-hover:bg-teal-900/40 transition-colors">
                                 <Eye className="h-7 w-7 text-primary" />
                             </div>
                             <div>
-                                <h2 className="text-2xl font-black text-slate-900 mb-4">1. ¿Quiénes somos?</h2>
-                                <p className="text-slate-600 leading-relaxed text-lg">
+                                <h2 className="text-2xl font-black text-slate-900 dark:text-white mb-4">1. ¿Quiénes somos?</h2>
+                                <p className="text-slate-600 dark:text-gray-300 leading-relaxed text-lg">
                                     Total Fit Hub es una plataforma integral de salud y bienestar personal. El responsable del tratamiento de tus datos es <strong>Total Fit Hub S.L.</strong>, con domicilio en España. Si tienes cualquier pregunta sobre esta política, puedes contactarnos en <a href="mailto:privacidad@totalfithub.com" className="text-primary font-semibold hover:underline">privacidad@totalfithub.com</a>.
                                 </p>
                             </div>
                         </div>
                     </section>
 
-                    <div className="border-t border-slate-100"></div>
+                    <div className="border-t border-slate-100 dark:border-slate-800"></div>
 
                     {/* Sección 2 */}
                     <section className="group">
                         <div className="flex items-start space-x-6">
-                            <div className="flex-shrink-0 w-14 h-14 bg-teal-50 rounded-2xl flex items-center justify-center group-hover:bg-teal-100 transition-colors">
+                            <div className="flex-shrink-0 w-14 h-14 bg-teal-50 dark:bg-teal-900/20 rounded-2xl flex items-center justify-center group-hover:bg-teal-100 dark:group-hover:bg-teal-900/40 transition-colors">
                                 <Database className="h-7 w-7 text-teal-600" />
                             </div>
                             <div>
-                                <h2 className="text-2xl font-black text-slate-900 mb-4">2. ¿Qué datos recopilamos?</h2>
-                                <p className="text-slate-600 leading-relaxed text-lg mb-6">
+                                <h2 className="text-2xl font-black text-slate-900 dark:text-white mb-4">2. ¿Qué datos recopilamos?</h2>
+                                <p className="text-slate-600 dark:text-gray-300 leading-relaxed text-lg mb-6">
                                     Recogemos únicamente los datos necesarios para prestarte el servicio con la máxima calidad:
                                 </p>
                                 <div className="grid md:grid-cols-2 gap-4">
@@ -97,9 +99,9 @@ export default function Privacidad({ auth }) {
                                         { title: 'Datos de actividad', desc: 'Registros de entrenamientos, rutinas, nutrición y progreso físico que tú mismo introduces.' },
                                         { title: 'Datos técnicos', desc: 'Dirección IP, tipo de navegador y datos de sesión para garantizar la seguridad de tu cuenta.' },
                                     ].map((item, i) => (
-                                        <div key={i} className="p-5 bg-slate-50 rounded-2xl border border-slate-100">
-                                            <h3 className="font-black text-slate-900 mb-2">{item.title}</h3>
-                                            <p className="text-slate-500 text-sm leading-relaxed">{item.desc}</p>
+                                        <div key={i} className="p-5 bg-slate-50 dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800">
+                                            <h3 className="font-black text-slate-900 dark:text-white mb-2">{item.title}</h3>
+                                            <p className="text-slate-500 dark:text-gray-400 text-sm leading-relaxed">{item.desc}</p>
                                         </div>
                                     ))}
                                 </div>
@@ -107,17 +109,17 @@ export default function Privacidad({ auth }) {
                         </div>
                     </section>
 
-                    <div className="border-t border-slate-100"></div>
+                    <div className="border-t border-slate-100 dark:border-slate-800"></div>
 
                     {/* Sección 3 */}
                     <section className="group">
                         <div className="flex items-start space-x-6">
-                            <div className="flex-shrink-0 w-14 h-14 bg-purple-50 rounded-2xl flex items-center justify-center group-hover:bg-purple-100 transition-colors">
+                            <div className="flex-shrink-0 w-14 h-14 bg-purple-50 dark:bg-purple-900/20 rounded-2xl flex items-center justify-center group-hover:bg-purple-100 dark:group-hover:bg-purple-900/40 transition-colors">
                                 <UserCheck className="h-7 w-7 text-purple-500" />
                             </div>
                             <div>
-                                <h2 className="text-2xl font-black text-slate-900 mb-4">3. ¿Para qué usamos tus datos?</h2>
-                                <ul className="space-y-3 text-slate-600 text-lg">
+                                <h2 className="text-2xl font-black text-slate-900 dark:text-white mb-4">3. ¿Para qué usamos tus datos?</h2>
+                                <ul className="space-y-3 text-slate-600 dark:text-gray-300 text-lg">
                                     {[
                                         'Gestionar y personalizar tu cuenta de usuario.',
                                         'Ofrecer seguimiento de tu progreso físico y nutricional.',
@@ -127,7 +129,7 @@ export default function Privacidad({ auth }) {
                                         'Cumplir con nuestras obligaciones legales.',
                                     ].map((item, i) => (
                                         <li key={i} className="flex items-start space-x-3">
-                                            <span className="flex-shrink-0 w-6 h-6 bg-teal-100 text-primary rounded-full flex items-center justify-center text-xs font-black mt-0.5">{i + 1}</span>
+                                            <span className="flex-shrink-0 w-6 h-6 bg-teal-100 dark:bg-teal-900/40 text-primary rounded-full flex items-center justify-center text-xs font-black mt-0.5">{i + 1}</span>
                                             <span>{item}</span>
                                         </li>
                                     ))}
@@ -136,17 +138,17 @@ export default function Privacidad({ auth }) {
                         </div>
                     </section>
 
-                    <div className="border-t border-slate-100"></div>
+                    <div className="border-t border-slate-100 dark:border-slate-800"></div>
 
                     {/* Sección 4 */}
                     <section className="group">
                         <div className="flex items-start space-x-6">
-                            <div className="flex-shrink-0 w-14 h-14 bg-green-50 rounded-2xl flex items-center justify-center group-hover:bg-green-100 transition-colors">
+                            <div className="flex-shrink-0 w-14 h-14 bg-green-50 dark:bg-green-900/20 rounded-2xl flex items-center justify-center group-hover:bg-green-100 dark:group-hover:bg-green-900/40 transition-colors">
                                 <Lock className="h-7 w-7 text-green-500" />
                             </div>
                             <div>
-                                <h2 className="text-2xl font-black text-slate-900 mb-4">4. Seguridad de tus datos</h2>
-                                <p className="text-slate-600 leading-relaxed text-lg mb-4">
+                                <h2 className="text-2xl font-black text-slate-900 dark:text-white mb-4">4. Seguridad de tus datos</h2>
+                                <p className="text-slate-600 dark:text-gray-300 leading-relaxed text-lg mb-4">
                                     Aplicamos las medidas técnicas y organizativas más estrictas para proteger tu información:
                                 </p>
                                 <div className="bg-slate-950 text-white p-8 rounded-3xl space-y-4">
@@ -166,17 +168,17 @@ export default function Privacidad({ auth }) {
                         </div>
                     </section>
 
-                    <div className="border-t border-slate-100"></div>
+                    <div className="border-t border-slate-100 dark:border-slate-800"></div>
 
                     {/* Sección 5 */}
                     <section>
                         <div className="flex items-start space-x-6">
-                            <div className="flex-shrink-0 w-14 h-14 bg-orange-50 rounded-2xl flex items-center justify-center">
+                            <div className="flex-shrink-0 w-14 h-14 bg-orange-50 dark:bg-orange-900/20 rounded-2xl flex items-center justify-center">
                                 <Mail className="h-7 w-7 text-orange-500" />
                             </div>
                             <div>
-                                <h2 className="text-2xl font-black text-slate-900 mb-4">5. Tus derechos</h2>
-                                <p className="text-slate-600 leading-relaxed text-lg mb-6">
+                                <h2 className="text-2xl font-black text-slate-900 dark:text-white mb-4">5. Tus derechos</h2>
+                                <p className="text-slate-600 dark:text-gray-300 leading-relaxed text-lg mb-6">
                                     De acuerdo con el Reglamento General de Protección de Datos (RGPD), tienes derecho a:
                                 </p>
                                 <div className="grid md:grid-cols-3 gap-4">
@@ -188,13 +190,13 @@ export default function Privacidad({ auth }) {
                                         { title: 'Oposición', desc: 'Oponerte al tratamiento de tus datos con fines específicos.' },
                                         { title: 'Limitación', desc: 'Solicitar que restrinjamos el tratamiento de tus datos.' },
                                     ].map((item, i) => (
-                                        <div key={i} className="p-5 border border-slate-200 rounded-2xl hover:border-primary hover:shadow-md transition-all">
-                                            <h3 className="font-black text-slate-900 mb-2 text-primary">{item.title}</h3>
-                                            <p className="text-slate-500 text-sm leading-relaxed">{item.desc}</p>
+                                        <div key={i} className="p-5 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 rounded-2xl hover:border-primary hover:shadow-md transition-all">
+                                            <h3 className="font-black text-slate-900 dark:text-white mb-2 text-primary">{item.title}</h3>
+                                            <p className="text-slate-500 dark:text-gray-400 text-sm leading-relaxed">{item.desc}</p>
                                         </div>
                                     ))}
                                 </div>
-                                <p className="mt-6 text-slate-600 text-lg">
+                                <p className="mt-6 text-slate-600 dark:text-gray-300 text-lg">
                                     Para ejercer cualquiera de estos derechos, escríbenos a <a href="mailto:privacidad@totalfithub.com" className="text-primary font-semibold hover:underline">privacidad@totalfithub.com</a>.
                                 </p>
                             </div>

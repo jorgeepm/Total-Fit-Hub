@@ -17,8 +17,8 @@ export default function RoutinesIndex({ routines = [] }) {
             header={
                 <div className="flex items-center justify-between">
                     <div>
-                        <h2 className="text-2xl font-black text-slate-800 tracking-tight">Mis Rutinas</h2>
-                        <p className="text-sm text-slate-400 mt-0.5">
+                        <h2 className="text-2xl font-black text-slate-800 dark:text-white tracking-tight">Mis Rutinas</h2>
+                        <p className="text-sm text-slate-400 dark:text-gray-400 mt-0.5">
                             {routines.length} rutinas guardadas
                         </p>
                     </div>
@@ -34,17 +34,17 @@ export default function RoutinesIndex({ routines = [] }) {
         >
             <Head title="Mis Rutinas" />
 
-            <div className="py-8 bg-background min-h-screen">
+            <div className="py-8 bg-background dark:bg-slate-950 min-h-screen">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     
                     {routines.length > 0 && (
-                        <div className="flex items-center gap-2 mb-8 bg-white p-1 rounded-2xl border border-slate-100 shadow-sm w-max">
+                        <div className="flex items-center gap-2 mb-8 bg-white dark:bg-slate-900 p-1 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm w-max">
                             <button
                                 onClick={() => setFilter('activa')}
                                 className={`px-6 py-2.5 rounded-xl text-sm font-bold transition-all ${
                                     filter === 'activa'
                                         ? 'bg-primary text-white shadow-md'
-                                        : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
+                                        : 'text-slate-400 dark:text-gray-400 hover:text-slate-600 dark:hover:text-gray-200 hover:bg-slate-50 dark:hover:bg-slate-800'
                                 }`}
                             >
                                 Activas
@@ -54,7 +54,7 @@ export default function RoutinesIndex({ routines = [] }) {
                                 className={`px-6 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center gap-2 ${
                                     filter === 'inactiva'
                                         ? 'bg-amber-500 text-white shadow-md'
-                                        : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
+                                        : 'text-slate-400 dark:text-gray-400 hover:text-slate-600 dark:hover:text-gray-200 hover:bg-slate-50 dark:hover:bg-slate-800'
                                 }`}
                             >
                                 <Archive className="w-4 h-4" />
@@ -65,13 +65,13 @@ export default function RoutinesIndex({ routines = [] }) {
 
                     {routines.length === 0 ? (
                         <div className="flex flex-col items-center justify-center py-24 text-center">
-                            <div className="w-20 h-20 rounded-[30px] bg-white shadow-sm flex items-center justify-center mb-6 border border-slate-100">
+                            <div className="w-20 h-20 rounded-[30px] bg-white dark:bg-slate-900 shadow-sm flex items-center justify-center mb-6 border border-slate-100 dark:border-slate-800">
                                 <Activity className="w-10 h-10 text-primary opacity-20" />
                             </div>
-                            <h3 className="text-xl font-black text-slate-700 mb-2">
+                            <h3 className="text-xl font-black text-slate-700 dark:text-gray-200 mb-2">
                                 ¿Listo para entrenar?
                             </h3>
-                            <p className="text-slate-400 max-w-xs mb-8">
+                            <p className="text-slate-400 dark:text-gray-400 max-w-xs mb-8">
                                 Crea tu primera rutina personalizada para llevar un seguimiento de tus progresos.
                             </p>
                             <Link
@@ -83,12 +83,12 @@ export default function RoutinesIndex({ routines = [] }) {
                             </Link>
                         </div>
                     ) : filteredRoutines.length === 0 ? (
-                        <div className="flex flex-col items-center justify-center py-16 text-center bg-white rounded-[35px] border border-slate-100 border-dashed">
-                            <Archive className="w-12 h-12 text-slate-200 mb-4" />
-                            <h3 className="text-lg font-black text-slate-700 mb-2">
+                        <div className="flex flex-col items-center justify-center py-16 text-center bg-white dark:bg-slate-900 rounded-[35px] border border-slate-100 dark:border-slate-800 border-dashed">
+                            <Archive className="w-12 h-12 text-slate-200 dark:text-slate-700 mb-4" />
+                            <h3 className="text-lg font-black text-slate-700 dark:text-gray-200 mb-2">
                                 No hay rutinas {filter === 'activa' ? 'activas' : 'archivadas'}
                             </h3>
-                            <p className="text-slate-400 text-sm">
+                            <p className="text-slate-400 dark:text-gray-400 text-sm">
                                 {filter === 'activa' 
                                     ? 'Todas tus rutinas están archivadas.' 
                                     : 'Aún no has archivado ninguna rutina.'}
@@ -99,7 +99,7 @@ export default function RoutinesIndex({ routines = [] }) {
                             {filteredRoutines.map((routine) => (
                                 <div
                                     key={routine.id}
-                                    className="bg-white rounded-[35px] shadow-sm border border-slate-100 overflow-hidden group hover:border-primary/30 hover:shadow-md transition-all duration-300 flex flex-col"
+                                    className="bg-white dark:bg-slate-900 rounded-[35px] shadow-sm border border-slate-100 dark:border-slate-800 overflow-hidden group hover:border-primary/30 hover:shadow-md transition-all duration-300 flex flex-col"
                                 >
                                     {/* Decoración superior */}
                                     <div className="h-2 bg-primary" />
@@ -107,15 +107,15 @@ export default function RoutinesIndex({ routines = [] }) {
                                     <div className="p-7 space-y-5 flex-1">
                                         <div className="flex justify-between items-start">
                                             <div>
-                                                <h3 className="text-xl font-black text-slate-900 group-hover:text-primary transition-colors">
+                                                <h3 className="text-xl font-black text-slate-900 dark:text-white group-hover:text-primary transition-colors">
                                                     {routine.nombre}
                                                 </h3>
                                                 <div className="flex items-center gap-3 mt-1.5">
-                                                    <span className="flex items-center gap-1 text-xs font-bold text-slate-400">
+                                                    <span className="flex items-center gap-1 text-xs font-bold text-slate-400 dark:text-gray-400">
                                                         <Activity className="w-3 h-3" />
                                                         {routine.exercises_count ?? 0} ejercicios
                                                     </span>
-                                                    <span className="flex items-center gap-1 text-xs font-bold text-slate-400">
+                                                    <span className="flex items-center gap-1 text-xs font-bold text-slate-400 dark:text-gray-400">
                                                         <Clock className="w-3 h-3" />
                                                         ~45 min
                                                     </span>
@@ -123,14 +123,14 @@ export default function RoutinesIndex({ routines = [] }) {
                                             </div>
                                             <span className={`text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full ${
                                                 routine.estado === 'activa'
-                                                    ? 'bg-emerald-50 text-emerald-600'
-                                                    : 'bg-amber-50 text-amber-600'
+                                                    ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400'
+                                                    : 'bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400'
                                             }`}>
                                                 {routine.estado}
                                             </span>
                                         </div>
 
-                                        <div className="pt-4 border-t border-slate-50 flex items-center justify-between">
+                                        <div className="pt-4 border-t border-slate-50 dark:border-slate-800 flex items-center justify-between">
                                             <Link 
                                                 href={route('routines.start', routine.id)}
                                                 className="flex items-center gap-2 text-sm font-black text-primary hover:text-primary-dark transition-colors"
@@ -143,8 +143,8 @@ export default function RoutinesIndex({ routines = [] }) {
                                                     onClick={() => handleToggleStatus(routine.id)}
                                                     className={`p-2 rounded-xl transition-all ${
                                                         routine.estado === 'activa' 
-                                                            ? 'bg-slate-50 text-slate-400 hover:bg-amber-100 hover:text-amber-600'
-                                                            : 'bg-emerald-50 text-emerald-600 hover:bg-emerald-100'
+                                                            ? 'bg-slate-50 dark:bg-slate-800 text-slate-400 dark:text-gray-400 hover:bg-amber-100 dark:hover:bg-amber-900/50 hover:text-amber-600 dark:hover:text-amber-400'
+                                                            : 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-100 dark:hover:bg-emerald-900/50'
                                                     }`}
                                                     title={routine.estado === 'activa' ? 'Archivar rutina' : 'Activar rutina'}
                                                 >
@@ -152,7 +152,7 @@ export default function RoutinesIndex({ routines = [] }) {
                                                 </button>
                                                 <Link 
                                                     href={route('routines.show', routine.id)} 
-                                                    className="p-2 bg-slate-50 rounded-xl text-slate-400 hover:bg-primary hover:text-white transition-all"
+                                                    className="p-2 bg-slate-50 dark:bg-slate-800 rounded-xl text-slate-400 dark:text-gray-400 hover:bg-primary dark:hover:bg-primary hover:text-white transition-all"
                                                 >
                                                     <ChevronRight className="w-5 h-5" />
                                                 </Link>
@@ -165,12 +165,12 @@ export default function RoutinesIndex({ routines = [] }) {
                             {/* Card para añadir nueva */}
                             <Link
                                 href={route('routines.create')}
-                                className="bg-slate-50/50 rounded-[35px] border-2 border-dashed border-slate-200 p-7 flex flex-col items-center justify-center gap-4 group hover:border-primary/50 hover:bg-white transition-all duration-300 min-h-[180px]"
+                                className="bg-slate-50/50 dark:bg-slate-900/50 rounded-[35px] border-2 border-dashed border-slate-200 dark:border-slate-800 p-7 flex flex-col items-center justify-center gap-4 group hover:border-primary/50 hover:bg-white dark:hover:bg-slate-900 transition-all duration-300 min-h-[180px]"
                             >
-                                <div className="p-4 bg-white rounded-2xl shadow-sm text-slate-300 group-hover:text-primary group-hover:scale-110 transition-all">
+                                <div className="p-4 bg-white dark:bg-slate-800 rounded-2xl shadow-sm text-slate-300 dark:text-slate-600 group-hover:text-primary group-hover:scale-110 transition-all">
                                     <Plus className="w-8 h-8" />
                                 </div>
-                                <span className="text-sm font-black text-slate-400 group-hover:text-slate-600">Nueva Rutina</span>
+                                <span className="text-sm font-black text-slate-400 dark:text-gray-400 group-hover:text-slate-600 dark:group-hover:text-gray-200">Nueva Rutina</span>
                             </Link>
                         </div>
                     )}

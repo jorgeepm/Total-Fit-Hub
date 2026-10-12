@@ -10,9 +10,11 @@ import InputError from '@/Components/InputError';
 import SecondaryButton from '@/Components/SecondaryButton';
 import PrimaryButton from '@/Components/PrimaryButton';
 import WaterTracker from './Nutrition/Partials/WaterTracker';
+import useTheme from '@/Hooks/useTheme';
 
 // ¡Aquí "atrapamos" la mochila de datos que envía Laravel!
 export default function Dashboard({ auth, nutritionSummary, macroTargets, entrenamientos, weightHistory, water }) {
+    const { isDark } = useTheme();
     const [showingWeightModal, setShowingWeightModal] = useState(false);
     const [hoveredWeight, setHoveredWeight] = useState(null);
     const [selectedWorkout, setSelectedWorkout] = useState(null);
@@ -46,14 +48,14 @@ export default function Dashboard({ auth, nutritionSummary, macroTargets, entren
         if (active && payload && payload.length) {
             const data = payload[0].payload;
             return (
-                <div className="bg-white p-3 rounded-xl shadow-2xl border border-teal-50 ring-4 ring-teal-50/50">
+                <div className="bg-white dark:bg-slate-800 p-3 rounded-xl shadow-2xl border border-teal-50 dark:border-slate-700 ring-4 ring-teal-50/50 dark:ring-slate-700/50">
                     <div className="flex flex-col">
                         <span className="text-[10px] font-bold text-teal-400 uppercase tracking-wider mb-1">
                             {data.full_date}
                         </span>
                         <div className="flex items-baseline gap-1">
-                            <span className="text-xl font-black text-slate-900">{data.peso}</span>
-                            <span className="text-xs font-bold text-slate-400">kg</span>
+                            <span className="text-xl font-black text-slate-900 dark:text-white">{data.peso}</span>
+                            <span className="text-xs font-bold text-slate-400 dark:text-slate-500">kg</span>
                         </div>
                     </div>
                 </div>
@@ -77,9 +79,9 @@ export default function Dashboard({ auth, nutritionSummary, macroTargets, entren
                 <Head title="Dashboard" />
                 <div className="py-12">
                     <div className="max-w-7xl mx-auto">
-                        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                            <p className="text-red-600 font-semibold">⚠️ Error al cargar datos de nutrición</p>
-                            <p className="text-red-500 text-sm">Recarga la página o intenta más tarde.</p>
+                        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
+                            <p className="text-red-600 dark:text-red-400 font-semibold">⚠️ Error al cargar datos de nutrición</p>
+                            <p className="text-red-500 dark:text-red-300 text-sm">Recarga la página o intenta más tarde.</p>
                         </div>
                     </div>
                 </div>
@@ -102,7 +104,7 @@ export default function Dashboard({ auth, nutritionSummary, macroTargets, entren
     );
 
     // 🎨 Tus colores premium
-    const COLORS = ['url(#colorUv)', '#E5E7EB'];
+    const COLORS = ['url(#colorUv)', isDark ? '#334155' : '#E5E7EB'];
 
     // 🎯 Objetivos de macronutrientes (desacoplados, dinámicos)
     const proteinTarget = macroTargets?.proteins || 150;
@@ -137,12 +139,12 @@ export default function Dashboard({ auth, nutritionSummary, macroTargets, entren
 
                         {/* TARJETA 1: CALORÍAS */}
                         <div 
-                            className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center" 
+                            className="bg-white dark:bg-slate-900 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-slate-800 flex flex-col items-center justify-center transition-colors" 
                             style={{userSelect: 'none', WebkitUserSelect: 'none', cursor: 'default', WebkitTouchCallout: 'none'}}
                             onMouseDown={(e) => e.preventDefault()}
                             draggable={false}
                         >
-                            <h2 className="text-lg font-semibold text-gray-800 mb-4 self-start" style={{userSelect: 'none'}}>Mi Progreso Diario</h2>
+                            <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4 self-start" style={{userSelect: 'none'}}>Mi Progreso Diario</h2>
                             
                             <div 
                                 className="h-64 w-full" 
@@ -151,7 +153,7 @@ export default function Dashboard({ auth, nutritionSummary, macroTargets, entren
                                 draggable={false}
                             >
                                 <ResponsiveContainer width="100%" height="100%">
-                                    <PieChart style={{userSelect: 'none', WebkitUserSelect: 'none'}} draggable={false}>
+                                    <PieChart key={isDark ? 'dark' : 'light'} style={{userSelect: 'none', WebkitUserSelect: 'none'}} draggable={false}>
                                         <defs>
                                             <linearGradient id="colorUv" x1="0" y1="0" x2="1" y2="1">
                                                 <stop offset="0%" stopColor="#4FD1C5" />
@@ -176,19 +178,20 @@ export default function Dashboard({ auth, nutritionSummary, macroTargets, entren
                                             <Label
                                                 value={`${Math.round(caloriasConsumidas)} / ${Math.round(caloriasObjetivo)}`}
                                                 position="center"
-                                                className="text-2xl font-bold fill-gray-800"
-                                                style={{userSelect: 'none', pointerEvents: 'none'}}
+                                                fill={isDark ? '#FFFFFF' : '#1F2937'}
+                                                className="text-2xl font-bold"
+                                                style={{userSelect: 'none', pointerEvents: 'none', fill: isDark ? '#FFFFFF' : '#1F2937'}}
                                             />
                                         </Pie>
                                     </PieChart>
                                 </ResponsiveContainer>
                             </div>
-                            <p className="text-sm text-gray-500 mt-2" style={{userSelect: 'none'}}>Calorías consumidas</p>
+                            <p className="text-sm text-gray-500 dark:text-gray-400 mt-2" style={{userSelect: 'none'}}>Calorías consumidas</p>
                         </div>
 
-                        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col">
+                        <div className="bg-white dark:bg-slate-900 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-slate-800 flex flex-col transition-colors">
                             <div className="mb-4">
-                                <h2 className="text-lg font-semibold text-gray-800">Entrenamiento de Hoy</h2>
+                                <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200">Entrenamiento de Hoy</h2>
                             </div>
                             
                             {Array.isArray(entrenamientos) && entrenamientos.length > 0 ? (
@@ -201,17 +204,17 @@ export default function Dashboard({ auth, nutritionSummary, macroTargets, entren
                                         <div 
                                             key={entreno?.id || Math.random()} 
                                             onClick={() => setSelectedWorkout(entreno)}
-                                            className="mb-3 p-4 bg-gray-50 rounded-lg border border-gray-100 cursor-pointer hover:bg-gray-100 transition-colors"
+                                            className="mb-3 p-4 bg-gray-50 dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 cursor-pointer hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors"
                                         >
-                                            <p className="font-bold text-gray-800">
+                                            <p className="font-bold text-gray-800 dark:text-gray-200">
                                                 {entreno?.routine?.nombre || 'Sesión completada'}
                                             </p>
                                             <div className="flex flex-wrap gap-2 mt-2">
-                                                <span className="text-xs font-bold text-teal-700 bg-teal-50 border border-teal-100 px-2.5 py-1 rounded-md flex items-center gap-1.5">
+                                                <span className="text-xs font-bold text-teal-700 dark:text-teal-400 bg-teal-50 dark:bg-teal-900/30 border border-teal-100 dark:border-teal-800 px-2.5 py-1 rounded-md flex items-center gap-1.5">
                                                     🏋️ Volumen: {entreno?.volumen_total || '0'} kg
                                                 </span>
                                                 {gruposMusculares && (
-                                                    <span className="text-xs font-bold text-teal-700 bg-teal-50 border border-teal-100 px-2.5 py-1 rounded-md flex items-center gap-1.5">
+                                                    <span className="text-xs font-bold text-teal-700 dark:text-teal-400 bg-teal-50 dark:bg-teal-900/30 border border-teal-100 dark:border-teal-800 px-2.5 py-1 rounded-md flex items-center gap-1.5">
                                                         💪 {gruposMusculares}
                                                     </span>
                                                 )}
@@ -221,56 +224,56 @@ export default function Dashboard({ auth, nutritionSummary, macroTargets, entren
                                 })
                             ) : (
                                 <div className="h-full flex items-center justify-center pb-8">
-                                    <p className="text-gray-400 text-sm text-center">
+                                    <p className="text-gray-400 dark:text-gray-500 text-sm text-center">
                                         Aún no has registrado <br/>ningún entrenamiento hoy.
                                     </p>
                                 </div>
                             )}
 
-                            <div className="mt-auto pt-4 flex justify-end border-t border-gray-50">
-                                <Link href={route('trainings.history')} className="text-sm font-semibold text-teal-600 hover:text-teal-800 transition-colors flex items-center gap-1">
+                            <div className="mt-auto pt-4 flex justify-end border-t border-slate-200 dark:border-slate-800">
+                                <Link href={route('trainings.history')} className="text-sm font-semibold text-teal-600 dark:text-teal-400 hover:text-teal-800 dark:hover:text-teal-300 transition-colors flex items-center gap-1">
                                     Ver todos los entrenamientos <span>&rarr;</span>
                                 </Link>
                             </div>
                         </div>
 
                         {/* TARJETA 3: MACROS REALES */}
-                        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col">
-                            <h2 className="text-lg font-semibold text-gray-800 mb-6">Resumen Nutricional</h2>
+                        <div className="bg-white dark:bg-slate-900 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-slate-800 flex flex-col transition-colors">
+                            <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-6">Resumen Nutricional</h2>
                             
                             <div className="flex flex-col space-y-5 w-full mt-2">
                                 <div>
                                     <div className="flex justify-between mb-1">
-                                        <span className="text-sm font-medium text-gray-700">Proteínas</span>
-                                        <span className="text-sm font-bold text-gray-900">
-                                            {Math.round(nutritionSummary?.proteins || 0)}g / {proteinTarget}g
+                                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Proteínas</span>
+                                        <span className="text-sm font-bold text-gray-900 dark:text-white">
+                                             {Math.round(nutritionSummary?.proteins || 0)}g / {proteinTarget}g
                                         </span>
                                     </div>
-                                    <div className="w-full bg-gray-100 rounded-full h-2.5">
+                                    <div className="w-full bg-gray-100 dark:bg-slate-800 rounded-full h-2.5">
                                         <div className="bg-teal-500 h-2.5 rounded-full transition-all duration-500" style={{ width: `${proteinPercent}%` }}></div>
                                     </div>
                                 </div>
 
                                 <div>
                                     <div className="flex justify-between mb-1">
-                                        <span className="text-sm font-medium text-gray-700">Carbohidratos</span>
-                                        <span className="text-sm font-bold text-gray-900">
+                                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Carbohidratos</span>
+                                        <span className="text-sm font-bold text-gray-900 dark:text-white">
                                             {Math.round(nutritionSummary?.carbs || 0)}g / {carbsTarget}g
                                         </span>
                                     </div>
-                                    <div className="w-full bg-gray-100 rounded-full h-2.5">
+                                    <div className="w-full bg-gray-100 dark:bg-slate-800 rounded-full h-2.5">
                                         <div className="bg-green-500 h-2.5 rounded-full transition-all duration-500" style={{ width: `${carbsPercent}%` }}></div>
                                     </div>
                                 </div>
 
                                 <div>
                                     <div className="flex justify-between mb-1">
-                                        <span className="text-sm font-medium text-gray-700">Grasas</span>
-                                        <span className="text-sm font-bold text-gray-900">
+                                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Grasas</span>
+                                        <span className="text-sm font-bold text-gray-900 dark:text-white">
                                             {Math.round(nutritionSummary?.fats || 0)}g / {fatsTarget}g
                                         </span>
                                     </div>
-                                    <div className="w-full bg-gray-100 rounded-full h-2.5">
+                                    <div className="w-full bg-gray-100 dark:bg-slate-800 rounded-full h-2.5">
                                         <div className="bg-yellow-500 h-2.5 rounded-full transition-all duration-500" style={{ width: `${fatsPercent}%` }}></div>
                                     </div>
                                 </div>
@@ -281,25 +284,25 @@ export default function Dashboard({ auth, nutritionSummary, macroTargets, entren
 
                     {/* Fila 2: Evolución del Peso y Agua */}
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col" style={{userSelect: 'none', WebkitUserSelect: 'none'}}>
+                        <div className="bg-white dark:bg-slate-900 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-slate-800 flex flex-col transition-colors" style={{userSelect: 'none', WebkitUserSelect: 'none'}}>
                             <div className="flex justify-between items-center mb-6">
                                 <div style={{userSelect: 'text'}}>
-                                    <h2 className="text-lg font-semibold text-gray-800">Evolución del Peso</h2>
-                                <p className="text-sm text-gray-500">Historial de tus registros</p>
+                                    <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200">Evolución del Peso</h2>
+                                <p className="text-sm text-gray-500 dark:text-gray-400">Historial de tus registros</p>
                             </div>
                             <div className="flex items-center gap-4">
                                 <button 
                                     onClick={() => setShowingWeightModal(true)}
-                                    className="flex items-center gap-2 px-4 py-2 bg-teal-50 text-teal-600 rounded-lg font-bold hover:bg-teal-100 transition-colors border border-teal-100"
+                                    className="flex items-center gap-2 px-4 py-2 bg-teal-50 dark:bg-teal-900/30 text-teal-600 dark:text-teal-400 rounded-lg font-bold hover:bg-teal-100 dark:hover:bg-teal-900/50 transition-colors border border-teal-100 dark:border-teal-800"
                                 >
                                     <Plus size={18} /> Registrar Peso
                                 </button>
-                                <div className="text-right border-l pl-4 border-gray-100 min-w-[140px]" style={{userSelect: 'none'}}>
+                                <div className="text-right border-l pl-4 border-gray-100 dark:border-slate-800 min-w-[140px]" style={{userSelect: 'none'}}>
                                     <div className="flex flex-col">
-                                        <span className="text-2xl font-black text-teal-600 leading-none">
+                                        <span className="text-2xl font-black text-teal-600 dark:text-teal-400 leading-none">
                                             {hoveredWeight ? `${hoveredWeight.peso} kg` : `${auth.user.peso} kg`}
                                         </span>
-                                        <span className="text-[10px] font-bold text-gray-400 uppercase mt-1">
+                                        <span className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase mt-1">
                                             {hoveredWeight ? hoveredWeight.full_date : 'Peso actual'}
                                         </span>
                                     </div>
@@ -318,6 +321,7 @@ export default function Dashboard({ auth, nutritionSummary, macroTargets, entren
                         >
                             <ResponsiveContainer width="100%" height={320}>
                                 <AreaChart 
+                                    key={isDark ? 'dark' : 'light'}
                                     data={weightHistory}
                                     onMouseMove={(v) => {
                                         if (v && v.activeTooltipIndex !== undefined) {
@@ -333,12 +337,12 @@ export default function Dashboard({ auth, nutritionSummary, macroTargets, entren
                                             <stop offset="95%" stopColor="#0d9488" stopOpacity={0}/>
                                         </linearGradient>
                                     </defs>
-                                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={isDark ? '#334155' : '#f1f5f9'} />
                                     <XAxis 
                                         dataKey="fecha" 
                                         axisLine={false} 
                                         tickLine={false} 
-                                        tick={{fill: '#64748b', fontSize: 11, fontWeight: 600}}
+                                        tick={{fill: isDark ? '#94a3b8' : '#64748b', fontSize: 11, fontWeight: 600}}
                                         dy={10}
                                     />
                                     <YAxis 
@@ -360,7 +364,7 @@ export default function Dashboard({ auth, nutritionSummary, macroTargets, entren
                                         animationDuration={1000}
                                         dot={{ 
                                             r: 5, 
-                                            fill: '#fff', 
+                                            fill: isDark ? '#0f172a' : '#fff', 
                                             stroke: '#0d9488', 
                                             strokeWidth: 3,
                                             fillOpacity: 1
@@ -368,7 +372,7 @@ export default function Dashboard({ auth, nutritionSummary, macroTargets, entren
                                         activeDot={{ 
                                             r: 8, 
                                             fill: '#0d9488', 
-                                            stroke: '#fff', 
+                                            stroke: isDark ? '#0f172a' : '#fff', 
                                             strokeWidth: 4,
                                             fillOpacity: 1
                                         }}
@@ -393,10 +397,10 @@ export default function Dashboard({ auth, nutritionSummary, macroTargets, entren
                 <Modal show={showingWeightModal} onClose={() => setShowingWeightModal(false)}>
                     <form onSubmit={submitWeight} className="p-6">
                         <div className="flex items-center gap-3 mb-6">
-                            <div className="p-2 bg-teal-100 rounded-lg text-teal-600">
+                            <div className="p-2 bg-teal-100 dark:bg-teal-900/40 rounded-lg text-teal-600 dark:text-teal-400">
                                 <Scale size={24} />
                             </div>
-                            <h2 className="text-lg font-bold text-gray-900">Registrar Nuevo Peso</h2>
+                            <h2 className="text-lg font-bold text-gray-900 dark:text-white">Registrar Nuevo Peso</h2>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -445,16 +449,16 @@ export default function Dashboard({ auth, nutritionSummary, macroTargets, entren
                         <div className="p-6 max-h-[85vh] overflow-y-auto">
                             <div className="flex items-center justify-between mb-6">
                                 <div>
-                                    <h2 className="text-xl font-black text-gray-900">
+                                    <h2 className="text-xl font-black text-gray-900 dark:text-white">
                                         {selectedWorkout.routine?.nombre || 'Detalles del Entrenamiento'}
                                     </h2>
-                                    <p className="text-sm text-gray-500 mt-1">
-                                        Volumen total: <span className="font-bold text-teal-600">{selectedWorkout.volumen_total} kg</span>
+                                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                                        Volumen total: <span className="font-bold text-teal-600 dark:text-teal-400">{selectedWorkout.volumen_total} kg</span>
                                     </p>
                                 </div>
                                 <button 
                                     onClick={() => setSelectedWorkout(null)}
-                                    className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition-colors"
+                                    className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full transition-colors"
                                 >
                                     ✕
                                 </button>
@@ -476,14 +480,14 @@ export default function Dashboard({ auth, nutritionSummary, macroTargets, entren
                                         return acc;
                                     }, {})
                                 ).map((ejercicio, idx) => (
-                                    <div key={ejercicio.id || idx} className="bg-gray-50 rounded-xl p-5 border border-gray-100">
+                                    <div key={ejercicio.id || idx} className="bg-gray-50 dark:bg-slate-800 rounded-xl p-5 border border-gray-100 dark:border-slate-700">
                                         <div className="flex items-center gap-3 mb-4">
-                                            <div className="w-10 h-10 rounded-lg bg-white shadow-sm flex items-center justify-center font-black text-gray-400 text-lg">
+                                            <div className="w-10 h-10 rounded-lg bg-white dark:bg-slate-700 shadow-sm flex items-center justify-center font-black text-gray-400 dark:text-gray-300 text-lg">
                                                 {ejercicio.nombre?.[0] || '?'}
                                             </div>
                                             <div>
-                                                <h4 className="font-bold text-gray-800 text-lg leading-tight">{ejercicio.nombre}</h4>
-                                                <p className="text-xs text-gray-500 font-bold uppercase tracking-wider">{ejercicio.grupo_muscular}</p>
+                                                <h4 className="font-bold text-gray-800 dark:text-gray-200 text-lg leading-tight">{ejercicio.nombre}</h4>
+                                                <p className="text-xs text-gray-500 dark:text-gray-400 font-bold uppercase tracking-wider">{ejercicio.grupo_muscular}</p>
                                             </div>
                                         </div>
                                         
@@ -491,23 +495,23 @@ export default function Dashboard({ auth, nutritionSummary, macroTargets, entren
                                             {ejercicio.series_hechas
                                                 .sort((a, b) => a.numero - b.numero)
                                                 .map((serie, sIdx) => (
-                                                <div key={sIdx} className="grid grid-cols-3 gap-4 items-center bg-white p-3 rounded-lg border border-gray-100">
+                                                <div key={sIdx} className="grid grid-cols-3 gap-4 items-center bg-white dark:bg-slate-900 p-3 rounded-lg border border-gray-100 dark:border-slate-700">
                                                     <div className="text-center">
-                                                        <span className="text-xs font-bold text-gray-400 uppercase">Serie</span>
-                                                        <p className="font-black text-gray-700">{serie.numero}</p>
+                                                        <span className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase">Serie</span>
+                                                        <p className="font-black text-gray-700 dark:text-gray-200">{serie.numero}</p>
                                                     </div>
                                                     <div className="text-center">
-                                                        <span className="text-xs font-bold text-gray-400 uppercase">Peso</span>
-                                                        <p className="font-black text-teal-600">{serie.peso} kg</p>
+                                                        <span className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase">Peso</span>
+                                                        <p className="font-black text-teal-600 dark:text-teal-400">{serie.peso} kg</p>
                                                     </div>
                                                     <div className="text-center">
-                                                        <span className="text-xs font-bold text-gray-400 uppercase">Reps</span>
-                                                        <p className="font-black text-gray-700">{serie.reps}</p>
+                                                        <span className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase">Reps</span>
+                                                        <p className="font-black text-gray-700 dark:text-gray-200">{serie.reps}</p>
                                                     </div>
                                                 </div>
                                             ))}
                                             {(!ejercicio.series_hechas || ejercicio.series_hechas.length === 0) && (
-                                                <p className="text-sm text-gray-400 italic text-center py-2">Sin series registradas</p>
+                                                <p className="text-sm text-gray-400 dark:text-gray-500 italic text-center py-2">Sin series registradas</p>
                                             )}
                                         </div>
                                     </div>

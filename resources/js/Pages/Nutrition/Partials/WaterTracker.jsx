@@ -36,13 +36,13 @@ export default function WaterTracker({ water = 0, selectedDate }) {
     const progressPercentage = Math.min((glasses / maxGlasses) * 100, 100);
 
     return (
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col">
+        <div className="bg-white dark:bg-slate-900 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-slate-800 flex flex-col transition-colors">
             <div className="flex justify-between items-center mb-6">
                 <div>
-                    <h2 className="text-lg font-semibold text-gray-800">Registro de Agua</h2>
-                    <p className="text-sm text-gray-500">Mantente hidratado hoy</p>
+                    <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200">Registro de Agua</h2>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">Mantente hidratado hoy</p>
                 </div>
-                <div className="p-3 bg-teal-50 text-teal-500 rounded-full">
+                <div className="p-3 bg-teal-50 dark:bg-teal-900/30 text-teal-500 dark:text-teal-400 rounded-full">
                     <Droplet size={24} />
                 </div>
             </div>
@@ -52,20 +52,20 @@ export default function WaterTracker({ water = 0, selectedDate }) {
                     <button 
                         onClick={handleSubtract}
                         disabled={glasses <= 0}
-                        className="w-12 h-12 rounded-full flex items-center justify-center bg-gray-50 text-gray-600 hover:bg-gray-100 disabled:opacity-50 transition-colors border border-gray-200"
+                        className="w-12 h-12 rounded-full flex items-center justify-center bg-gray-50 dark:bg-slate-800 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700 disabled:opacity-50 transition-colors border border-gray-200 dark:border-slate-700"
                     >
                         <Minus size={20} />
                     </button>
 
                     <div className="text-center">
-                        <span className="text-3xl font-black text-teal-600">{glasses}</span>
-                        <span className="text-xl font-bold text-gray-400"> / {maxGlasses}</span>
-                        <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mt-1">vasos ({glasses * 0.25}L)</p>
+                        <span className="text-3xl font-black text-teal-600 dark:text-teal-400">{glasses}</span>
+                        <span className="text-xl font-bold text-gray-400 dark:text-gray-500"> / {maxGlasses}</span>
+                        <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mt-1">vasos ({glasses * 0.25}L)</p>
                     </div>
 
                     <button 
                         onClick={handleAdd}
-                        className="w-12 h-12 rounded-full flex items-center justify-center bg-teal-50 text-teal-600 hover:bg-teal-100 disabled:opacity-50 transition-colors border border-teal-200"
+                        className="w-12 h-12 rounded-full flex items-center justify-center bg-teal-50 dark:bg-teal-900/30 text-teal-600 dark:text-teal-400 hover:bg-teal-100 dark:hover:bg-teal-900/50 disabled:opacity-50 transition-colors border border-teal-200 dark:border-teal-800"
                     >
                         <Plus size={20} />
                     </button>
@@ -74,17 +74,17 @@ export default function WaterTracker({ water = 0, selectedDate }) {
                 <div className="relative pt-2">
                     <div className="flex mb-2 items-center justify-between">
                         <div>
-                            <span className="text-xs font-semibold inline-block text-teal-600">
+                            <span className="text-xs font-semibold inline-block text-teal-600 dark:text-teal-400">
                                 {progressPercentage.toFixed(0)}% Completado
                             </span>
                         </div>
                         <div className="text-right">
-                            <span className="text-xs font-semibold inline-block text-gray-500">
+                            <span className="text-xs font-semibold inline-block text-gray-500 dark:text-gray-400">
                                 Objetivo: 4L
                             </span>
                         </div>
                     </div>
-                    <div className="overflow-hidden h-3 mb-4 text-xs flex rounded-full bg-teal-50">
+                    <div className="overflow-hidden h-3 mb-4 text-xs flex rounded-full bg-teal-50 dark:bg-slate-800">
                         <div 
                             style={{ width: `${progressPercentage}%` }} 
                             className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-gradient-to-r from-teal-400 to-teal-600 transition-all duration-500 ease-out"

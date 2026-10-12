@@ -1,10 +1,14 @@
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import Footer from '@/Components/Footer';
+import ThemeToggle from '@/Components/ThemeToggle';
 import { Link } from '@inertiajs/react';
 
 export default function GuestLayout({ children }) {
     return (
-        <div className="flex min-h-screen flex-col bg-gray-100">
+        <div className="relative flex min-h-screen flex-col bg-gray-100 dark:bg-slate-950">
+            <div className="absolute top-4 right-4 z-10">
+                <ThemeToggle />
+            </div>
             <div className="flex flex-1 flex-col items-center pt-6 sm:justify-center sm:pt-0">
                 <div>
                     <Link href="/">
@@ -12,7 +16,7 @@ export default function GuestLayout({ children }) {
                     </Link>
                 </div>
 
-                <div className="mt-6 w-full overflow-hidden bg-white px-6 py-4 shadow-md sm:max-w-md sm:rounded-lg">
+                <div className="mt-6 w-full overflow-hidden bg-white dark:bg-slate-900 px-6 py-4 shadow-md sm:max-w-md sm:rounded-lg">
                     {children}
                 </div>
             </div>

@@ -20,11 +20,11 @@ export default function Index({ auth, logs, summary, goals, selectedDate, water 
     return (
         <AuthenticatedLayout
             user={auth.user}
-            header={<h2 className="text-2xl font-black text-slate-800 tracking-tight">Registro Nutricional</h2>}
+            header={<h2 className="text-2xl font-black text-slate-800 dark:text-white tracking-tight">Registro Nutricional</h2>}
         >
             <Head title="Nutrición" />
 
-            <div className="py-12 bg-background min-h-screen">
+            <div className="py-12 bg-background dark:bg-slate-950 min-h-screen transition-colors">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-8">
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                         {/* Summary Column */}

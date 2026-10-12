@@ -138,11 +138,11 @@ export default function ActiveWorkout({ rutina, resistanceBands = [] }) {
 
   return (
     <AuthenticatedLayout
-      header={<h2 className="text-xl font-bold text-gray-800">Entrenamiento: {rutina?.nombre}</h2>}
+      header={<h2 className="text-xl font-bold text-gray-800 dark:text-white">Entrenamiento: {rutina?.nombre}</h2>}
     >
       <Head title={`Entrenando: ${rutina?.nombre}`} />
       
-      <div className="min-h-screen bg-slate-50 p-4 md:p-8">
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 p-4 md:p-8">
         <div className="max-w-6xl mx-auto space-y-6">
           
           {/* Cronómetro */}
@@ -178,64 +178,64 @@ export default function ActiveWorkout({ rutina, resistanceBands = [] }) {
 
           <div className="grid md:grid-cols-2 gap-6">
             {/* Estadísticas */}
-            <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
-              <h3 className="text-lg font-black text-slate-800 mb-6 flex items-center gap-2">
+            <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 p-6">
+              <h3 className="text-lg font-black text-slate-800 dark:text-white mb-6 flex items-center gap-2">
                 <div className="w-2 h-6 bg-blue-500 rounded-full" />
                 Estadísticas
               </h3>
               <div className="grid grid-cols-2 gap-4">
-                <div className="bg-slate-50 rounded-2xl p-6 border border-slate-100 text-center">
-                  <p className="text-slate-400 text-xs font-bold uppercase mb-1">Series</p>
-                  <p className="text-4xl font-black text-slate-800">{seriesCompletadas}</p>
+                <div className="bg-slate-50 dark:bg-slate-800 rounded-2xl p-6 border border-slate-100 dark:border-slate-700 text-center">
+                  <p className="text-slate-400 dark:text-gray-400 text-xs font-bold uppercase mb-1">Series</p>
+                  <p className="text-4xl font-black text-slate-800 dark:text-white">{seriesCompletadas}</p>
                 </div>
-                <div className="bg-slate-50 rounded-2xl p-6 border border-slate-100 text-center">
-                  <p className="text-slate-400 text-xs font-bold uppercase mb-1">Volumen (kg)</p>
-                  <p className="text-4xl font-black text-slate-800">{Math.round(volumenTotal)}</p>
+                <div className="bg-slate-50 dark:bg-slate-800 rounded-2xl p-6 border border-slate-100 dark:border-slate-700 text-center">
+                  <p className="text-slate-400 dark:text-gray-400 text-xs font-bold uppercase mb-1">Volumen (kg)</p>
+                  <p className="text-4xl font-black text-slate-800 dark:text-white">{Math.round(volumenTotal)}</p>
                 </div>
               </div>
             </div>
 
             {/* Info de la rutina */}
-            <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
-              <h3 className="text-lg font-black text-slate-800 mb-6 flex items-center gap-2">
+            <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 p-6">
+              <h3 className="text-lg font-black text-slate-800 dark:text-white mb-6 flex items-center gap-2">
                 <div className="w-2 h-6 bg-purple-500 rounded-full" />
                 Información
               </h3>
               <div className="space-y-2">
-                <p className="text-slate-600"><strong>Nombre:</strong> {rutina?.nombre}</p>
-                <p className="text-slate-600 text-sm"><strong>Descripción:</strong> {rutina?.descripcion || 'Sin descripción'}</p>
+                <p className="text-slate-600 dark:text-gray-300"><strong>Nombre:</strong> {rutina?.nombre}</p>
+                <p className="text-slate-600 dark:text-gray-300 text-sm"><strong>Descripción:</strong> {rutina?.descripcion || 'Sin descripción'}</p>
               </div>
             </div>
           </div>
 
           {/* Lista de ejercicios */}
-          <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
-            <h3 className="text-xl font-black text-slate-800 mb-8">Ejercicios de la rutina</h3>
+          <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 p-6">
+            <h3 className="text-xl font-black text-slate-800 dark:text-white mb-8">Ejercicios de la rutina</h3>
             <div className="space-y-8">
               {ejercicios.map((exercise) => (
-                <div key={exercise.dbId} className="border-b border-slate-100 pb-8 last:border-0 last:pb-0">
+                <div key={exercise.dbId} className="border-b border-slate-100 dark:border-slate-800 pb-8 last:border-0 last:pb-0">
                   <div className="flex items-center gap-4 mb-4">
-                    <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center font-black text-slate-400 text-lg">
+                    <div className="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center font-black text-slate-400 dark:text-gray-400 text-lg">
                       {exercise.nombre?.[0] || '?'}
                     </div>
                     <div>
-                      <h4 className="font-black text-slate-800 text-lg leading-tight">{exercise.nombre}</h4>
-                      <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">{exercise.grupo_muscular}</p>
+                      <h4 className="font-black text-slate-800 dark:text-white text-lg leading-tight">{exercise.nombre}</h4>
+                      <p className="text-[10px] text-slate-400 dark:text-gray-400 font-bold uppercase tracking-wider">{exercise.grupo_muscular}</p>
                     </div>
                   </div>
                   <div className="space-y-2">
                     {exercise.series.map((serie, index) => (
                       <div
                         key={serie.id}
-                        className={`grid grid-cols-[3rem_1fr_1fr_3rem] gap-3 items-center p-2 rounded-xl transition-all ${serie.completado ? 'bg-emerald-50' : 'hover:bg-slate-50'}`}
+                        className={`grid grid-cols-[3rem_1fr_1fr_3rem] gap-3 items-center p-2 rounded-xl transition-all ${serie.completado ? 'bg-emerald-50 dark:bg-emerald-950/40' : 'hover:bg-slate-50 dark:hover:bg-slate-800'}`}
                       >
-                        <div className="text-center font-black text-slate-400 text-sm">S{index + 1}</div>
+                        <div className="text-center font-black text-slate-400 dark:text-gray-400 text-sm">S{index + 1}</div>
                         <div className="relative group">
                           {exercise.equipamiento_necesario?.toLowerCase().includes('bandas') ? (
                             <select
                                 value={serie.peso}
                                 onChange={(e) => handleUpdateSerie(exercise.dbId, serie.id, 'peso', e.target.value)}
-                                className="w-full bg-white border-slate-200 rounded-lg text-center font-bold text-slate-700 focus:ring-blue-500 focus:border-blue-500 transition-shadow appearance-none px-2"
+                                className="w-full bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg text-center font-bold text-slate-700 dark:text-white focus:ring-blue-500 focus:border-blue-500 transition-shadow appearance-none px-2"
                                 style={{ textAlignLast: 'center' }}
                             >
                                 <option value="">---</option>
@@ -251,10 +251,10 @@ export default function ActiveWorkout({ rutina, resistanceBands = [] }) {
                                 type="number"
                                 value={serie.peso}
                                 onChange={(e) => handleUpdateSerie(exercise.dbId, serie.id, 'peso', e.target.value)}
-                                className="w-full bg-white border-slate-200 rounded-lg text-center font-bold text-slate-700 focus:ring-blue-500 focus:border-blue-500 pr-7 transition-shadow"
+                                className="w-full bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg text-center font-bold text-slate-700 dark:text-white focus:ring-blue-500 focus:border-blue-500 pr-7 transition-shadow"
                                 placeholder="0"
                               />
-                              <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] font-bold text-slate-300 group-focus-within:text-blue-400">kg</span>
+                              <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] font-bold text-slate-300 dark:text-gray-500 group-focus-within:text-blue-400">kg</span>
                             </>
                           )}
                         </div>
@@ -263,16 +263,16 @@ export default function ActiveWorkout({ rutina, resistanceBands = [] }) {
                             type="number"
                             value={serie.repeticiones}
                             onChange={(e) => handleUpdateSerie(exercise.dbId, serie.id, 'repeticiones', e.target.value)}
-                            className="w-full bg-white border-slate-200 rounded-lg text-center font-bold text-slate-700 focus:ring-blue-500 focus:border-blue-500 pr-7 transition-shadow"
+                            className="w-full bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg text-center font-bold text-slate-700 dark:text-white focus:ring-blue-500 focus:border-blue-500 pr-7 transition-shadow"
                             placeholder="0"
                           />
-                          <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] font-bold text-slate-300 group-focus-within:text-blue-400">reps</span>
+                          <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] font-bold text-slate-300 dark:text-gray-500 group-focus-within:text-blue-400">reps</span>
                         </div>
                         <button
                           onClick={() => handleToggleComplete(exercise.dbId, serie.id)}
-                          className={`w-10 h-10 rounded-lg flex items-center justify-center font-black transition-all shadow-sm ${serie.completado ? 'bg-emerald-500 text-white hover:bg-emerald-600' : 'bg-white border border-slate-200 text-slate-300 hover:text-slate-500 hover:border-slate-300'}`}
+                          className={`w-10 h-10 rounded-lg flex items-center justify-center font-black transition-all shadow-sm ${serie.completado ? 'bg-emerald-500 text-white hover:bg-emerald-600' : 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-300 dark:text-gray-600 hover:text-slate-500 dark:hover:text-gray-300 hover:border-slate-300 dark:hover:border-slate-600'}`}
                         >
-                          <Check className={serie.completado ? 'w-5 h-5 text-white stroke-[3px]' : 'w-5 h-5 text-slate-300 stroke-[2px] opacity-40'} />
+                          <Check className={serie.completado ? 'w-5 h-5 text-white stroke-[3px]' : 'w-5 h-5 text-slate-300 dark:text-gray-600 stroke-[2px] opacity-40'} />
                         </button>
                       </div>
                     ))}

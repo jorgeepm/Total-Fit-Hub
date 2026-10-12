@@ -24,33 +24,33 @@ export default function DateNavigator({ selectedDate }) {
     };
 
     return (
-        <div className="bg-white rounded-[40px] shadow-sm border border-slate-100 p-8 space-y-6">
+        <div className="bg-white dark:bg-slate-900 rounded-[40px] shadow-sm border border-slate-100 dark:border-slate-800 p-8 space-y-6 transition-colors">
             <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-4">
-                    <div className="p-3 bg-teal-50 rounded-2xl text-teal-600">
+                    <div className="p-3 bg-teal-50 dark:bg-teal-900/30 rounded-2xl text-teal-600 dark:text-teal-400">
                         <Calendar className="h-6 w-6" />
                     </div>
                     <div>
-                        <h3 className="text-xl font-black text-slate-800 capitalize">
+                        <h3 className="text-xl font-black text-slate-800 dark:text-white capitalize">
                             {format(current, "MMMM yyyy", { locale: es })}
                         </h3>
-                        <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Diario de Nutrición</p>
+                        <p className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Diario de Nutrición</p>
                     </div>
                 </div>
                 
-                <div className="flex items-center bg-slate-50 p-1.5 rounded-2xl border border-slate-100">
+                <div className="flex items-center bg-slate-50 dark:bg-slate-800 p-1.5 rounded-2xl border border-slate-100 dark:border-slate-700">
                     <button 
                         onClick={() => navigateWeek('prev')}
-                        className="p-2 hover:bg-white hover:shadow-sm rounded-xl text-slate-400 hover:text-teal-600 transition-all"
+                        className="p-2 hover:bg-white dark:hover:bg-slate-700 hover:shadow-sm rounded-xl text-slate-400 dark:text-slate-300 hover:text-teal-600 dark:hover:text-teal-400 transition-all"
                     >
                         <ChevronLeft className="h-5 w-5" />
                     </button>
-                    <div className="px-4 text-[10px] font-black text-slate-400 uppercase tracking-widest border-x border-slate-200 mx-2">
+                    <div className="px-4 text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest border-x border-slate-200 dark:border-slate-700 mx-2">
                         Semana
                     </div>
                     <button 
                         onClick={() => navigateWeek('next')}
-                        className="p-2 hover:bg-white hover:shadow-sm rounded-xl text-slate-400 hover:text-teal-600 transition-all"
+                        className="p-2 hover:bg-white dark:hover:bg-slate-700 hover:shadow-sm rounded-xl text-slate-400 dark:text-slate-300 hover:text-teal-600 dark:hover:text-teal-400 transition-all"
                     >
                         <ChevronRight className="h-5 w-5" />
                     </button>
@@ -68,8 +68,8 @@ export default function DateNavigator({ selectedDate }) {
                             onClick={() => navigateToDate(day)}
                             className={`flex flex-col items-center p-4 rounded-[25px] transition-all transform active:scale-90 ${
                                 isSelected 
-                                ? 'bg-slate-900 text-white shadow-xl shadow-slate-200' 
-                                : 'bg-slate-50 text-slate-400 hover:bg-slate-100'
+                                ? 'bg-slate-900 dark:bg-teal-600 text-white shadow-xl shadow-slate-200 dark:shadow-teal-900/40' 
+                                : 'bg-slate-50 dark:bg-slate-800 text-slate-400 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'
                             }`}
                         >
                             <span className="text-[10px] font-black uppercase tracking-widest mb-1 opacity-50">
@@ -88,7 +88,7 @@ export default function DateNavigator({ selectedDate }) {
             
             <button 
                 onClick={() => navigateToDate(new Date())}
-                className="w-full py-3 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] hover:text-teal-600 transition-colors"
+                className="w-full py-3 text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em] hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
             >
                 Ir a hoy
             </button>

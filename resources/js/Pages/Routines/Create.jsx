@@ -74,15 +74,15 @@ function ExercisePickerModal({ exercises, selectedIds, onSelect, onClose }) {
         >
             {/* Panel */}
             <div
-                className="bg-white w-full sm:max-w-lg rounded-t-2xl sm:rounded-2xl shadow-2xl flex flex-col max-h-[85vh] sm:max-h-[80vh]"
+                className="bg-white dark:bg-slate-900 w-full sm:max-w-lg rounded-t-2xl sm:rounded-2xl shadow-2xl flex flex-col max-h-[85vh] sm:max-h-[80vh] border border-gray-100 dark:border-slate-800"
                 onClick={(e) => e.stopPropagation()}
             >
                 {/* Cabecera modal */}
-                <div className="flex items-center justify-between px-5 pt-5 pb-3 border-b border-gray-100">
-                    <h2 className="text-lg font-bold text-gray-900">Añadir ejercicio</h2>
+                <div className="flex items-center justify-between px-5 pt-5 pb-3 border-b border-gray-100 dark:border-slate-800">
+                    <h2 className="text-lg font-bold text-gray-900 dark:text-white">Añadir ejercicio</h2>
                     <button
                         onClick={onClose}
-                        className="p-1.5 rounded-full hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-colors"
+                        className="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-slate-800 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
                         aria-label="Cerrar modal"
                     >
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -94,7 +94,7 @@ function ExercisePickerModal({ exercises, selectedIds, onSelect, onClose }) {
                 {/* Buscador */}
                 <div className="px-5 py-3">
                     <div className="relative">
-                        <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-4.35-4.35M17 11A6 6 0 111 11a6 6 0 0116 0z" />
                         </svg>
                         <input
@@ -103,10 +103,10 @@ function ExercisePickerModal({ exercises, selectedIds, onSelect, onClose }) {
                             placeholder="Buscar por nombre, músculo o equipo..."
                             value={query}
                             onChange={(e) => setQuery(e.target.value)}
-                            className="w-full pl-9 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="w-full pl-9 pr-4 py-2.5 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         />
                     </div>
-                    <p className="text-xs text-gray-400 mt-1.5 ml-1">
+                    <p className="text-xs text-gray-400 dark:text-gray-500 mt-1.5 ml-1">
                         {filtered.length} {filtered.length === 1 ? 'resultado' : 'resultados'}
                     </p>
                 </div>
@@ -114,7 +114,7 @@ function ExercisePickerModal({ exercises, selectedIds, onSelect, onClose }) {
                 {/* Lista scrollable */}
                 <div className="overflow-y-auto flex-1 px-3 pb-5 space-y-1">
                     {filtered.length === 0 ? (
-                        <p className="text-center text-gray-400 py-10 text-sm">No se encontraron ejercicios</p>
+                        <p className="text-center text-gray-400 dark:text-gray-500 py-10 text-sm">No se encontraron ejercicios</p>
                     ) : (
                         filtered.map((ex) => {
                             const alreadyAdded = selectedIds.has(ex.id);
@@ -125,16 +125,16 @@ function ExercisePickerModal({ exercises, selectedIds, onSelect, onClose }) {
                                     disabled={alreadyAdded}
                                     className={`w-full text-left flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
                                         alreadyAdded
-                                            ? 'opacity-40 cursor-not-allowed bg-gray-50'
-                                            : 'hover:bg-blue-50 active:bg-blue-100 cursor-pointer'
+                                            ? 'opacity-40 cursor-not-allowed bg-gray-50 dark:bg-slate-800/40'
+                                            : 'hover:bg-blue-50 dark:hover:bg-slate-800 active:bg-blue-100 dark:active:bg-slate-700 cursor-pointer'
                                     }`}
                                 >
                                     <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-gradient-to-br from-teal-500 to-indigo-600 flex items-center justify-center text-white font-bold text-sm">
                                         {ex.nombre?.[0]?.toUpperCase() ?? '?'}
                                     </div>
                                     <div className="flex-1 min-w-0">
-                                        <p className="font-semibold text-gray-800 text-sm truncate">{ex.nombre}</p>
-                                        <p className="text-xs text-gray-500 truncate capitalize">
+                                        <p className="font-semibold text-gray-800 dark:text-white text-sm truncate">{ex.nombre}</p>
+                                        <p className="text-xs text-gray-500 dark:text-gray-400 truncate capitalize">
                                             {ex.equipamiento_necesario ?? 'Sin equipo'}
                                         </p>
                                     </div>
@@ -259,7 +259,7 @@ export default function CreateRoutine({ exercises = [] }) {
         <AuthenticatedLayout
             header={
                 <div className="flex items-center justify-between">
-                    <h2 className="text-xl font-bold text-gray-800">Nueva Rutina</h2>
+                    <h2 className="text-xl font-bold text-gray-800 dark:text-white">Nueva Rutina</h2>
                 </div>
             }
         >
@@ -268,8 +268,8 @@ export default function CreateRoutine({ exercises = [] }) {
             <div className="py-6 px-4 sm:px-6 lg:px-8 max-w-2xl mx-auto">
 
                 {/* ── Nombre de la Rutina ─────────────────────────────────── */}
-                <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 mb-5">
-                    <label htmlFor="routine-name-input" className="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
+                <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-800 p-5 mb-5">
+                    <label htmlFor="routine-name-input" className="block text-xs font-semibold text-gray-400 dark:text-gray-400 uppercase tracking-wider mb-2">
                         Nombre de la rutina
                     </label>
                     <input
@@ -278,17 +278,17 @@ export default function CreateRoutine({ exercises = [] }) {
                         placeholder="Ej: Día de Empuje, Full Body Lunes..."
                         value={data.routineName}
                         onChange={(e) => setData('routineName', e.target.value)}
-                        className="w-full text-xl font-bold text-gray-900 placeholder-gray-300 border-none outline-none focus:ring-0 bg-transparent p-0"
+                        className="w-full text-xl font-bold text-gray-900 dark:text-white placeholder-gray-300 dark:placeholder-gray-600 border-none outline-none focus:ring-0 bg-transparent p-0"
                         autoFocus
                     />
                     {errors.routineName && (
-                        <p className="text-red-500 text-xs mt-2">{errors.routineName}</p>
+                        <p className="text-red-500 dark:text-red-400 text-xs mt-2">{errors.routineName}</p>
                     )}
                 </div>
 
                 {/* ── Descripción de la Rutina ──────────────────────────────── */}
-                <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 mb-5">
-                    <label htmlFor="routine-description-input" className="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
+                <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-800 p-5 mb-5">
+                    <label htmlFor="routine-description-input" className="block text-xs font-semibold text-gray-400 dark:text-gray-400 uppercase tracking-wider mb-2">
                         Descripción
                     </label>
                     <textarea
@@ -296,17 +296,17 @@ export default function CreateRoutine({ exercises = [] }) {
                         placeholder="Ej: Rutina enfocada en fuerza hipertrofia..."
                         value={data.description}
                         onChange={(e) => setData('description', e.target.value)}
-                        className="w-full text-sm text-gray-600 placeholder-gray-300 border-none outline-none focus:ring-0 bg-transparent p-0 resize-none h-20"
+                        className="w-full text-sm text-gray-600 dark:text-gray-200 placeholder-gray-300 dark:placeholder-gray-600 border-none outline-none focus:ring-0 bg-transparent p-0 resize-none h-20"
                     />
                     {errors.description && (
-                        <p className="text-red-500 text-xs mt-2">{errors.description}</p>
+                        <p className="text-red-500 dark:text-red-400 text-xs mt-2">{errors.description}</p>
                     )}
                 </div>
 
                 {/* ── Lista de ejercicios ─────────────────────────────────── */}
                 <div className="space-y-4">
                     {selectedExercises.length === 0 && (
-                        <div className="text-center py-12 text-gray-400">
+                        <div className="text-center py-12 text-gray-400 dark:text-gray-500">
                             <svg className="mx-auto w-12 h-12 mb-3 opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
                             </svg>
@@ -318,7 +318,7 @@ export default function CreateRoutine({ exercises = [] }) {
                     {selectedExercises.map((exercise) => (
                         <div
                             key={exercise.id}
-                            className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5"
+                            className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-800 p-5"
                         >
                             {/* Cabecera del ejercicio */}
                             <div className="flex items-start justify-between mb-4 gap-2">
@@ -327,18 +327,18 @@ export default function CreateRoutine({ exercises = [] }) {
                                         {exercise.nombre?.[0]?.toUpperCase()}
                                     </div>
                                     <div className="min-w-0">
-                                        <h3 className="font-bold text-gray-900 truncate leading-tight">{exercise.nombre}</h3>
+                                        <h3 className="font-bold text-gray-900 dark:text-white truncate leading-tight">{exercise.nombre}</h3>
                                         <div className="flex items-center gap-1.5 mt-1 flex-wrap">
                                             <MuscleTag muscle={exercise.grupo_muscular} isCustom={exercise.id_usuario !== null} />
                                             {exercise.equipamiento_necesario && (
-                                                <span className="text-xs text-gray-400 capitalize">{exercise.equipamiento_necesario}</span>
+                                                <span className="text-xs text-gray-400 dark:text-gray-400 capitalize">{exercise.equipamiento_necesario}</span>
                                             )}
                                         </div>
                                     </div>
                                 </div>
                                 <button
                                     onClick={() => handleRemoveExercise(exercise.id)}
-                                    className="flex-shrink-0 p-2 rounded-xl text-gray-300 hover:text-red-500 hover:bg-red-50 transition-all"
+                                    className="flex-shrink-0 p-2 rounded-xl text-gray-300 dark:text-gray-600 hover:text-red-500 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 transition-all"
                                     title="Eliminar ejercicio"
                                 >
                                     <TrashIcon />
@@ -347,8 +347,8 @@ export default function CreateRoutine({ exercises = [] }) {
 
                             {/* Cabecera de columnas */}
                             <div className="grid grid-cols-[2rem_1fr_2.5rem] gap-2 items-center px-1 mb-1.5">
-                                <span className="text-center text-xs font-semibold text-gray-400">Set</span>
-                                <span className="text-center text-xs font-semibold text-gray-400">Reps objetivo</span>
+                                <span className="text-center text-xs font-semibold text-gray-400 dark:text-gray-500">Set</span>
+                                <span className="text-center text-xs font-semibold text-gray-400 dark:text-gray-500">Reps objetivo</span>
                                 <span></span>
                             </div>
 
@@ -357,7 +357,7 @@ export default function CreateRoutine({ exercises = [] }) {
                                 {exercise.sets.map((set, setIndex) => (
                                     <div key={setIndex} className="grid grid-cols-[2rem_1fr_2.5rem] gap-2 items-center">
                                         {/* Número de serie */}
-                                        <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center font-bold text-gray-600 text-sm mx-auto">
+                                        <div className="w-8 h-8 rounded-full bg-gray-100 dark:bg-slate-800 flex items-center justify-center font-bold text-gray-600 dark:text-gray-300 text-sm mx-auto">
                                             {setIndex + 1}
                                         </div>
 
@@ -368,14 +368,14 @@ export default function CreateRoutine({ exercises = [] }) {
                                             max={999}
                                             value={set.target_reps}
                                             onChange={(e) => handleRepsChange(exercise.id, setIndex, e.target.value)}
-                                            className="w-full text-center bg-gray-50 border border-gray-200 rounded-xl py-2 text-sm font-semibold text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-shadow"
+                                            className="w-full text-center bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl py-2 text-sm font-semibold text-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-shadow"
                                         />
 
                                         {/* Eliminar serie */}
                                         <button
                                             onClick={() => handleRemoveSet(exercise.id, setIndex)}
                                             disabled={exercise.sets.length <= 1}
-                                            className="w-8 h-8 flex items-center justify-center rounded-full text-gray-300 hover:text-red-400 hover:bg-red-50 disabled:opacity-30 disabled:cursor-not-allowed transition-all mx-auto"
+                                            className="w-8 h-8 flex items-center justify-center rounded-full text-gray-300 dark:text-gray-600 hover:text-red-400 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 disabled:opacity-30 disabled:cursor-not-allowed transition-all mx-auto"
                                             title="Eliminar serie"
                                         >
                                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -389,7 +389,7 @@ export default function CreateRoutine({ exercises = [] }) {
                             {/* Botón añadir serie */}
                             <button
                                 onClick={() => handleAddSet(exercise.id)}
-                                className="mt-3 w-full py-2.5 flex items-center justify-center gap-1.5 text-sm font-semibold text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-xl transition-colors"
+                                className="mt-3 w-full py-2.5 flex items-center justify-center gap-1.5 text-sm font-semibold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/40 hover:bg-blue-100 dark:hover:bg-blue-900/40 rounded-xl transition-colors"
                             >
                                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -403,7 +403,7 @@ export default function CreateRoutine({ exercises = [] }) {
                 {/* ── Botón Añadir Ejercicio ──────────────────────────────── */}
                 <button
                     onClick={() => setIsModalOpen(true)}
-                    className="mt-5 w-full py-4 border-2 border-dashed border-blue-200 text-blue-500 font-semibold rounded-2xl hover:border-blue-400 hover:bg-blue-50 hover:text-blue-600 active:scale-[0.99] transition-all flex items-center justify-center gap-2 text-sm"
+                    className="mt-5 w-full py-4 border-2 border-dashed border-blue-200 dark:border-blue-900 text-blue-500 dark:text-blue-400 font-semibold rounded-2xl hover:border-blue-400 dark:hover:border-blue-700 hover:bg-blue-50 dark:hover:bg-blue-950/40 hover:text-blue-600 dark:hover:text-blue-300 active:scale-[0.99] transition-all flex items-center justify-center gap-2 text-sm"
                 >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -422,7 +422,7 @@ export default function CreateRoutine({ exercises = [] }) {
 
                 {/* Mensajes de error globales */}
                 {(errors.exercises || errors.routineName) && (
-                    <div className="mt-3 p-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-600">
+                    <div className="mt-3 p-3 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 rounded-xl text-sm text-red-600 dark:text-red-400">
                         {errors.routineName && <p>{errors.routineName}</p>}
                         {errors.exercises && <p>{errors.exercises}</p>}
                     </div>

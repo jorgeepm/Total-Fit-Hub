@@ -3,6 +3,7 @@ import Dropdown from '@/Components/Dropdown';
 import Footer from '@/Components/Footer';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
+import ThemeToggle from '@/Components/ThemeToggle';
 import { Link, usePage } from '@inertiajs/react';
 import { useState, useEffect } from 'react';
 
@@ -22,15 +23,15 @@ export default function AuthenticatedLayout({ header, children }) {
     }, []);
 
     return (
-        <div className="min-h-screen bg-gray-100">
-            <nav className="border-b border-gray-100 bg-white">
+        <div className="min-h-screen bg-gray-100 dark:bg-slate-950">
+            <nav className="border-b border-gray-100 bg-white dark:bg-slate-900 dark:border-slate-800">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex h-16 justify-between">
                         <div className="flex">
                             <div className="flex shrink-0 items-center">
                                 <Link href="/" className="flex items-center space-x-3">
                                     <ApplicationLogo className="block h-10 w-auto" />
-                                    <span className="hidden lg:block text-xl font-black text-slate-900 tracking-tight">Total Fit Hub</span>
+                                    <span className="hidden lg:block text-xl font-black text-slate-900 dark:text-white tracking-tight">Total Fit Hub</span>
                                 </Link>
                             </div>
 
@@ -79,14 +80,15 @@ export default function AuthenticatedLayout({ header, children }) {
                             </div>
                         </div>
 
-                        <div className="hidden sm:ms-6 sm:flex sm:items-center">
+                        <div className="hidden sm:ms-6 sm:flex sm:items-center gap-2">
+                            <ThemeToggle />
                             <div className="relative ms-3">
                                 <Dropdown>
                                     <Dropdown.Trigger>
                                         <span className="inline-flex rounded-md">
                                             <button
                                                 type="button"
-                                                className="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none"
+                                                className="inline-flex items-center rounded-md border border-transparent bg-white dark:bg-slate-900 px-3 py-2 text-sm font-medium leading-4 text-gray-500 dark:text-gray-400 transition duration-150 ease-in-out hover:text-gray-700 dark:hover:text-gray-200 focus:outline-none"
                                             >
                                                 {user.nombre_usuario}
 
@@ -100,6 +102,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                                         fillRule="evenodd"
                                                         d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
                                                         clipRule="evenodd"
+                                                        className="text-gray-400 dark:text-gray-400"
                                                     />
                                                 </svg>
                                             </button>
@@ -124,14 +127,15 @@ export default function AuthenticatedLayout({ header, children }) {
                             </div>
                         </div>
 
-                        <div className="-me-2 flex items-center sm:hidden">
+                        <div className="-me-2 flex items-center sm:hidden gap-1">
+                            <ThemeToggle />
                             <button
                                 onClick={() =>
                                     setShowingNavigationDropdown(
                                         (previousState) => !previousState,
                                     )
                                 }
-                                className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 transition duration-150 ease-in-out hover:bg-gray-100 hover:text-gray-500 focus:bg-gray-100 focus:text-gray-500 focus:outline-none"
+                                className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 dark:text-gray-500 transition duration-150 ease-in-out hover:bg-gray-100 dark:hover:bg-slate-800 hover:text-gray-500 dark:hover:text-gray-400 focus:bg-gray-100 dark:focus:bg-slate-800 focus:text-gray-500 focus:outline-none"
                             >
                                 <svg
                                     className="h-6 w-6"
@@ -217,12 +221,12 @@ export default function AuthenticatedLayout({ header, children }) {
                         )}
                     </div>
 
-                    <div className="border-t border-gray-200 pb-1 pt-4">
+                    <div className="border-t border-gray-200 dark:border-slate-700 pb-1 pt-4">
                         <div className="px-4">
-                            <div className="text-base font-medium text-gray-800">
+                            <div className="text-base font-medium text-gray-800 dark:text-gray-200">
                                 {user.nombre_usuario}
                             </div>
-                            <div className="text-sm font-medium text-gray-500">
+                            <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
                                 {user.email}
                             </div>
                         </div>
@@ -244,7 +248,7 @@ export default function AuthenticatedLayout({ header, children }) {
             </nav>
 
             {header && (
-                <header className="bg-white shadow">
+                <header className="bg-white dark:bg-slate-900 shadow dark:shadow-slate-900/50">
                     <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
                         {header}
                     </div>

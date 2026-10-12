@@ -24,8 +24,8 @@ export default function Register() {
     };
 
     // Estilos reutilizables
-    const inputBase = 'block w-full border-slate-200 bg-white text-slate-900 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl text-sm transition-colors duration-200';
-    const labelBase = 'block text-sm font-semibold text-slate-700 mb-1';
+    const inputBase = 'block w-full border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl text-sm transition-colors duration-200';
+    const labelBase = 'block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1';
 
     return (
         <AuthLayout image="/images/login_bg.png">
@@ -33,11 +33,11 @@ export default function Register() {
 
             <div className="text-center mb-6">
                 <img src="/images/logo.png" alt="Logo" className="h-16 w-16 mx-auto mb-4" />
-                <h2 className="text-2xl font-bold text-slate-800">Total Fit Hub</h2>
-                <h1 className="text-3xl font-extrabold mt-2 text-slate-900">Crear una cuenta</h1>
+                <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-200">Total Fit Hub</h2>
+                <h1 className="text-3xl font-extrabold mt-2 text-slate-900 dark:text-white">Crear una cuenta</h1>
             </div>
 
-            <form onSubmit={submit} className="space-y-5 bg-white p-6 rounded-2xl shadow-xl border border-slate-100">
+            <form onSubmit={submit} className="space-y-5 bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-xl border border-slate-100 dark:border-slate-800 transition-colors">
                 <div className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-300">
                     <div>
                         <label className={labelBase}>Nombre Completo</label>
@@ -85,7 +85,7 @@ export default function Register() {
                                     onChange={(e) => setData('password', e.target.value)} required
                                 />
                                 <button type="button" onClick={() => setShowPassword((v) => !v)}
-                                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600">
+                                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
                                     {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                                 </button>
                             </div>
@@ -118,8 +118,8 @@ export default function Register() {
                     </PrimaryButton>
                 </div>
                 
-                <div className="text-center mt-6 pt-4 border-t border-slate-100">
-                    <p className="text-slate-600">
+                <div className="text-center mt-6 pt-4 border-t border-slate-100 dark:border-slate-800">
+                    <p className="text-slate-600 dark:text-slate-400">
                         ¿Ya tienes cuenta?{' '}
                         <Link href={route('login')} className="text-indigo-600 font-bold hover:text-indigo-700 transition-colors">
                             Inicia Sesión

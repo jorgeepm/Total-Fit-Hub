@@ -22,27 +22,27 @@ export default function SatisfactionForm({ auth }) {
 
     return (
         <AuthenticatedLayout
-            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Danos tu opinión</h2>}
+            header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Danos tu opinión</h2>}
         >
             <Head title="Satisfacción y Feedback" />
 
             <div className="py-12">
                 <div className="max-w-3xl mx-auto sm:px-6 lg:px-8">
-                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                        <div className="p-6 text-gray-900">
+                    <div className="bg-white dark:bg-slate-900 border border-transparent dark:border-slate-800 overflow-hidden shadow-sm sm:rounded-lg">
+                        <div className="p-6 text-gray-900 dark:text-white">
                             {wasSuccessful ? (
                                 <div className="text-center py-10">
-                                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-100 text-green-500 mb-6">
+                                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-100 dark:bg-green-900/30 text-green-500 dark:text-green-400 mb-6">
                                         <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                         </svg>
                                     </div>
-                                    <h3 className="text-2xl font-bold text-gray-800 mb-2">¡Gracias por tu feedback!</h3>
-                                    <p className="text-gray-600">Tu opinión nos ayuda a mejorar la plataforma cada día.</p>
+                                    <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">¡Gracias por tu feedback!</h3>
+                                    <p className="text-gray-600 dark:text-gray-400">Tu opinión nos ayuda a mejorar la plataforma cada día.</p>
                                 </div>
                             ) : (
                                 <form onSubmit={submit} className="max-w-xl mx-auto">
-                                    <h3 className="text-lg font-medium text-gray-900 mb-6 text-center">
+                                    <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-6 text-center">
                                         ¿Cómo calificarías tu experiencia en la plataforma?
                                     </h3>
                                     
@@ -57,7 +57,7 @@ export default function SatisfactionForm({ auth }) {
                                                 className="focus:outline-none transition-transform hover:scale-110"
                                             >
                                                 <svg
-                                                    className={`w-12 h-12 transition-colors duration-200 ${(hoverRating || data.rating) >= star ? 'text-yellow-400' : 'text-gray-300'}`}
+                                                    className={`w-12 h-12 transition-colors duration-200 ${(hoverRating || data.rating) >= star ? 'text-yellow-400' : 'text-gray-300 dark:text-slate-700'}`}
                                                     fill="currentColor"
                                                     viewBox="0 0 20 20"
                                                     xmlns="http://www.w3.org/2000/svg"
@@ -69,19 +69,19 @@ export default function SatisfactionForm({ auth }) {
                                     </div>
 
                                     <div className="mb-6">
-                                        <label htmlFor="comentarios" className="block text-sm font-medium text-gray-700 mb-2">
+                                        <label htmlFor="comentarios" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                             Comentarios adicionales (opcional)
                                         </label>
                                         <textarea
                                             id="comentarios"
                                             rows="4"
-                                            className="w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm transition-colors"
+                                            className="w-full border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm transition-colors"
                                             placeholder="Cuéntanos qué te ha gustado o qué podríamos mejorar..."
                                             value={data.comentarios}
                                             onChange={(e) => setData('comentarios', e.target.value)}
                                             maxLength={1000}
                                         ></textarea>
-                                        <p className="text-right text-xs text-gray-500 mt-1">
+                                        <p className="text-right text-xs text-gray-500 dark:text-gray-400 mt-1">
                                             {data.comentarios.length}/1000
                                         </p>
                                     </div>
@@ -90,7 +90,7 @@ export default function SatisfactionForm({ auth }) {
                                         <button
                                             type="submit"
                                             disabled={data.rating === 0 || processing}
-                                            className="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 focus:bg-indigo-700 active:bg-indigo-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 disabled:opacity-50 disabled:cursor-not-allowed"
+                                            className="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 focus:bg-indigo-700 active:bg-indigo-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900 transition ease-in-out duration-150 disabled:opacity-50 disabled:cursor-not-allowed"
                                         >
                                             {processing ? 'Enviando...' : 'Enviar opinión'}
                                         </button>

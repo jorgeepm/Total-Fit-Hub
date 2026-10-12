@@ -27,15 +27,15 @@ export default function Login({ status, canResetPassword }) {
 
             <div className="text-center mb-8">
                 <img src="/images/logo.png" alt="Logo" className="h-16 w-16 mx-auto mb-4" />
-                <h2 className="text-2xl font-bold text-slate-800">Total Fit Hub</h2>
-                <h1 className="text-3xl font-extrabold mt-6 text-slate-900">Bienvenido de nuevo</h1>
+                <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100">Total Fit Hub</h2>
+                <h1 className="text-3xl font-extrabold mt-6 text-slate-900 dark:text-white">Bienvenido de nuevo</h1>
             </div>
 
-            {status && <div className="mb-4 font-medium text-sm text-green-600">{status}</div>}
+            {status && <div className="mb-4 font-medium text-sm text-green-600 dark:text-green-400">{status}</div>}
 
             <form onSubmit={submit} className="space-y-6">
                 <div>
-                    <label className="block text-sm font-semibold text-slate-700 mb-1">Correo Electrónico</label>
+                    <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Correo Electrónico</label>
                     <div className="relative">
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <Mail className="h-5 w-5 text-slate-400" />
@@ -56,7 +56,7 @@ export default function Login({ status, canResetPassword }) {
                 </div>
 
                 <div>
-                    <label className="block text-sm font-semibold text-slate-700 mb-1">Contraseña</label>
+                    <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Contraseña</label>
                     <div className="relative">
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <Lock className="h-5 w-5 text-slate-400" />
@@ -89,9 +89,9 @@ export default function Login({ status, canResetPassword }) {
                             name="remember"
                             checked={data.remember}
                             onChange={(e) => setData('remember', e.target.checked)}
-                            className="rounded border-slate-300 text-primary shadow-sm focus:ring-primary"
+                            className="rounded border-slate-300 dark:border-slate-600 dark:bg-slate-800 text-primary shadow-sm focus:ring-primary"
                         />
-                        <span className="ml-2 text-sm text-slate-600">Recuérdame</span>
+                        <span className="ml-2 text-sm text-slate-600 dark:text-slate-400">Recuérdame</span>
                     </label>
 
                     {canResetPassword && (
@@ -112,7 +112,7 @@ export default function Login({ status, canResetPassword }) {
                 </PrimaryButton>
 
                 <div className="text-center mt-6">
-                    <p className="text-slate-600">
+                    <p className="text-slate-600 dark:text-slate-400">
                         ¿No tienes cuenta?{' '}
                         <Link href={route('register')} className="text-primary font-bold hover:underline">
                             Regístrate aquí

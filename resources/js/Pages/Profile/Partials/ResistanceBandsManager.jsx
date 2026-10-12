@@ -28,8 +28,8 @@ export default function ResistanceBandsManager({ bands = [] }) {
     return (
         <section>
             <header>
-                <h2 className="text-lg font-medium text-gray-900">Mis Bandas Elásticas</h2>
-                <p className="mt-1 text-sm text-gray-600">
+                <h2 className="text-lg font-medium text-gray-900 dark:text-white">Mis Bandas Elásticas</h2>
+                <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
                     Añade tus bandas elásticas y asígnales un peso equivalente (resistencia máxima). Esto te permitirá seleccionarlas fácilmente durante tus entrenamientos y calcular el volumen estimado de forma precisa.
                 </p>
             </header>
@@ -70,19 +70,19 @@ export default function ResistanceBandsManager({ bands = [] }) {
             </form>
 
             {bands.length > 0 ? (
-                <div className="mt-8 bg-slate-50 rounded-xl border border-slate-100 overflow-hidden">
-                    <ul className="divide-y divide-slate-100">
+                <div className="mt-8 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700 overflow-hidden">
+                    <ul className="divide-y divide-slate-100 dark:divide-slate-700">
                         {bands.map((band) => (
-                            <li key={band.id} className="flex justify-between items-center p-4 hover:bg-white transition-colors">
+                            <li key={band.id} className="flex justify-between items-center p-4 hover:bg-white dark:hover:bg-slate-700/50 transition-colors">
                                 <div className="flex items-center gap-3">
-                                    <div className="w-4 h-4 rounded-full border border-slate-300 shadow-sm" style={{ backgroundColor: band.color_nombre.toLowerCase().includes('roj') ? '#ef4444' : band.color_nombre.toLowerCase().includes('azul') ? '#3b82f6' : band.color_nombre.toLowerCase().includes('negr') ? '#1f2937' : band.color_nombre.toLowerCase().includes('verd') ? '#22c55e' : band.color_nombre.toLowerCase().includes('amarill') ? '#eab308' : '#e2e8f0' }}></div>
-                                    <span className="font-bold text-slate-700">{band.color_nombre}</span>
+                                    <div className="w-4 h-4 rounded-full border border-slate-300 dark:border-slate-600 shadow-sm" style={{ backgroundColor: band.color_nombre.toLowerCase().includes('roj') ? '#ef4444' : band.color_nombre.toLowerCase().includes('azul') ? '#3b82f6' : band.color_nombre.toLowerCase().includes('negr') ? '#1f2937' : band.color_nombre.toLowerCase().includes('verd') ? '#22c55e' : band.color_nombre.toLowerCase().includes('amarill') ? '#eab308' : '#e2e8f0' }}></div>
+                                    <span className="font-bold text-slate-700 dark:text-slate-200">{band.color_nombre}</span>
                                 </div>
                                 <div className="flex items-center gap-4">
-                                    <span className="text-sm font-semibold text-slate-500 bg-slate-200/50 px-2.5 py-1 rounded-md">{band.peso_equivalente} kg equiv.</span>
+                                    <span className="text-sm font-semibold text-slate-500 dark:text-slate-400 bg-slate-200/50 dark:bg-slate-700 px-2.5 py-1 rounded-md">{band.peso_equivalente} kg equiv.</span>
                                     <button
                                         onClick={() => deleteBand(band.id)}
-                                        className="text-red-400 hover:text-red-600 p-1.5 hover:bg-red-50 rounded-md transition-colors"
+                                        className="text-red-400 hover:text-red-600 p-1.5 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-md transition-colors"
                                         title="Eliminar banda"
                                     >
                                         <Trash2 size={18} />
@@ -93,8 +93,8 @@ export default function ResistanceBandsManager({ bands = [] }) {
                     </ul>
                 </div>
             ) : (
-                <div className="mt-8 text-center p-6 bg-slate-50 rounded-xl border border-dashed border-slate-200">
-                    <p className="text-slate-500 text-sm">Aún no has registrado ninguna banda elástica.</p>
+                <div className="mt-8 text-center p-6 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-dashed border-slate-200 dark:border-slate-700">
+                    <p className="text-slate-500 dark:text-slate-400 text-sm">Aún no has registrado ninguna banda elástica.</p>
                 </div>
             )}
         </section>

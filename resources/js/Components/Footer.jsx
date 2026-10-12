@@ -66,28 +66,28 @@ export default function Footer() {
 
             {/* Modal de Reporte de Error */}
             <Modal show={showModal} onClose={closeModal} maxWidth="md">
-                <div className="p-6 bg-white rounded-3xl text-slate-900">
+                <div className="p-6 bg-white dark:bg-slate-900 rounded-3xl text-slate-900 dark:text-slate-100">
                     <div className="flex justify-between items-center mb-6">
                         <div className="flex items-center gap-2 text-red-500">
                             <AlertTriangle className="h-6 w-6" />
-                            <h2 className="text-lg font-black text-slate-900">Reportar un Error</h2>
+                            <h2 className="text-lg font-black text-slate-900 dark:text-white">Reportar un Error</h2>
                         </div>
-                        <button onClick={closeModal} className="text-slate-400 hover:text-slate-600">
+                        <button onClick={closeModal} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
                             <X className="h-5 w-5" />
                         </button>
                     </div>
-                    <p className="text-sm text-slate-500 mb-6">
+                    <p className="text-sm text-slate-500 dark:text-slate-400 mb-6">
                         ¿Has encontrado un problema? Descríbelo a continuación para que nuestro equipo lo revise.
                     </p>
                     
                     <form onSubmit={submitError}>
                         <div className="mb-4">
-                            <label className="block text-sm font-black text-slate-700 mb-2">Asunto</label>
+                            <label className="block text-sm font-black text-slate-700 dark:text-slate-300 mb-2">Asunto</label>
                             <input
                                 type="text"
                                 value={data.subject}
                                 onChange={(e) => setData('subject', e.target.value)}
-                                className="w-full border-slate-200 rounded-xl focus:ring-red-500 focus:border-red-500"
+                                className="w-full border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 rounded-xl focus:ring-red-500 focus:border-red-500"
                                 placeholder="Ej: No carga la gráfica"
                                 required
                             />
@@ -95,11 +95,11 @@ export default function Footer() {
                         </div>
                         
                         <div className="mb-6">
-                            <label className="block text-sm font-black text-slate-700 mb-2">Descripción detallada</label>
+                            <label className="block text-sm font-black text-slate-700 dark:text-slate-300 mb-2">Descripción detallada</label>
                             <textarea
                                 value={data.description}
                                 onChange={(e) => setData('description', e.target.value)}
-                                className="w-full border-slate-200 rounded-xl focus:ring-red-500 focus:border-red-500 h-32 resize-none"
+                                className="w-full border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 rounded-xl focus:ring-red-500 focus:border-red-500 h-32 resize-none"
                                 placeholder="Describe qué estabas haciendo y qué falló..."
                                 required
                             />
@@ -110,7 +110,7 @@ export default function Footer() {
                             <button
                                 type="button"
                                 onClick={closeModal}
-                                className="px-5 py-2.5 text-sm font-black text-slate-500 hover:bg-slate-100 rounded-xl transition-colors"
+                                className="px-5 py-2.5 text-sm font-black text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors"
                             >
                                 Cancelar
                             </button>

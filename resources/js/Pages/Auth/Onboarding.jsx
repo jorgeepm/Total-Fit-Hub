@@ -2,6 +2,7 @@ import InputError from '@/Components/InputError';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import InputLabel from '@/Components/InputLabel';
+import ThemeToggle from '@/Components/ThemeToggle';
 import { Head, useForm } from '@inertiajs/react';
 import { useMemo, useState } from 'react';
 import { ChevronRight, ChevronLeft, Target, Scale, Zap, Activity, Flame, User as UserIcon } from 'lucide-react';
@@ -52,16 +53,19 @@ export default function Onboarding({ user }) {
     const nextStep = () => setStep(s => s + 1);
     const prevStep = () => setStep(s => s - 1);
 
-    const inputBase = 'block w-full border-slate-200 focus:border-teal-500 focus:ring-teal-500 rounded-xl text-sm transition-colors duration-200';
-    const labelBase = 'block text-sm font-semibold text-slate-700 mb-1';
-    const unitSpan  = 'absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-400 pointer-events-none';
+    const inputBase = 'block w-full border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:border-teal-500 focus:ring-teal-500 rounded-xl text-sm transition-colors duration-200';
+    const labelBase = 'block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1';
+    const unitSpan  = 'absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-400 dark:text-slate-500 pointer-events-none';
 
     return (
-        <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-4">
+        <div className="relative min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col items-center justify-center p-4 transition-colors">
+            <div className="absolute top-4 right-4 z-10">
+                <ThemeToggle />
+            </div>
             <Head title="Cuestionario Inicial" />
 
-            <div className="max-w-md w-full bg-white rounded-3xl shadow-xl overflow-hidden">
-                <div className="h-2 bg-slate-100 flex">
+            <div className="max-w-md w-full bg-white dark:bg-slate-900 rounded-3xl shadow-xl overflow-hidden border border-transparent dark:border-slate-800 transition-colors">
+                <div className="h-2 bg-slate-100 dark:bg-slate-800 flex">
                     <div 
                         className="bg-teal-600 transition-all duration-500" 
                         style={{ width: `${(step / 4) * 100}%` }}
@@ -70,18 +74,18 @@ export default function Onboarding({ user }) {
 
                 <div className="p-8">
                     <header className="mb-8 text-center">
-                        <h1 className="text-2xl font-bold text-slate-900">¡Hola, {user.nombre_usuario}!</h1>
-                        <p className="text-slate-600 mt-2">Vamos a configurar tu perfil para empezar.</p>
+                        <h1 className="text-2xl font-bold text-slate-900 dark:text-white">¡Hola, {user.nombre_usuario}!</h1>
+                        <p className="text-slate-600 dark:text-slate-400 mt-2">Vamos a configurar tu perfil para empezar.</p>
                     </header>
 
                     <form onSubmit={submit}>
                         {step === 1 && (
                             <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
                                 <div className="flex items-center gap-3 mb-4">
-                                    <div className="p-2 bg-teal-100 rounded-lg text-teal-600">
+                                    <div className="p-2 bg-teal-100 dark:bg-teal-900/40 rounded-lg text-teal-600 dark:text-teal-400">
                                         <UserIcon size={24} />
                                     </div>
-                                    <h2 className="text-lg font-semibold text-slate-800">Sobre ti</h2>
+                                    <h2 className="text-lg font-semibold text-slate-800 dark:text-slate-200">Sobre ti</h2>
                                 </div>
 
                                 <div>
@@ -95,8 +99,8 @@ export default function Onboarding({ user }) {
                                                 onClick={() => setData('genero', val)}
                                                 className={`flex flex-col items-center justify-center p-4 rounded-2xl border-2 transition-all duration-200 ${
                                                     data.genero === val
-                                                        ? 'bg-teal-50 border-teal-500 text-teal-600'
-                                                        : 'bg-white border-slate-200 text-slate-500 hover:border-slate-300'
+                                                        ? 'bg-teal-50 dark:bg-teal-900/30 border-teal-500 text-teal-600 dark:text-teal-400'
+                                                        : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:border-slate-300 dark:hover:border-slate-600'
                                                 }`}
                                             >
                                                 <span className="text-4xl mb-2">{icon}</span>
@@ -131,10 +135,10 @@ export default function Onboarding({ user }) {
                         {step === 2 && (
                             <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
                                 <div className="flex items-center gap-3 mb-4">
-                                    <div className="p-2 bg-teal-100 rounded-lg text-teal-600">
+                                    <div className="p-2 bg-teal-100 dark:bg-teal-900/40 rounded-lg text-teal-600 dark:text-teal-400">
                                         <Scale size={24} />
                                     </div>
-                                    <h2 className="text-lg font-semibold text-slate-800">Tus medidas</h2>
+                                    <h2 className="text-lg font-semibold text-slate-800 dark:text-slate-200">Tus medidas</h2>
                                 </div>
 
                                 <div>
@@ -163,7 +167,7 @@ export default function Onboarding({ user }) {
                                     <button
                                         type="button"
                                         onClick={prevStep}
-                                        className="flex-1 flex items-center justify-center gap-2 py-4 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-2xl font-bold transition-all"
+                                        className="flex-1 flex items-center justify-center gap-2 py-4 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-2xl font-bold transition-all"
                                     >
                                         <ChevronLeft size={20} /> Atrás
                                     </button>
@@ -181,10 +185,10 @@ export default function Onboarding({ user }) {
                         {step === 3 && (
                             <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
                                 <div className="flex items-center gap-3 mb-4">
-                                    <div className="p-2 bg-emerald-100 rounded-lg text-emerald-600">
+                                    <div className="p-2 bg-emerald-100 dark:bg-emerald-900/40 rounded-lg text-emerald-600 dark:text-emerald-400">
                                         <Target size={24} />
                                     </div>
-                                    <h2 className="text-lg font-semibold text-slate-800">Tus objetivos</h2>
+                                    <h2 className="text-lg font-semibold text-slate-800 dark:text-slate-200">Tus objetivos</h2>
                                 </div>
 
                                 <div>
@@ -208,15 +212,15 @@ export default function Onboarding({ user }) {
                                                 onClick={() => setData('nivel_actividad', n.value)}
                                                 className={`flex items-center justify-between py-2.5 px-3 rounded-xl border-2 transition-all duration-200 text-left ${
                                                     data.nivel_actividad === n.value
-                                                        ? 'bg-teal-50 border-teal-500 text-teal-700'
-                                                        : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300'
+                                                        ? 'bg-teal-50 dark:bg-teal-900/30 border-teal-500 text-teal-700 dark:text-teal-400'
+                                                        : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-slate-300 dark:hover:border-slate-600'
                                                 } ${idx === 4 ? 'col-span-2' : ''}`}
                                             >
                                                 <div>
-                                                    <span className={`block font-bold text-xs sm:text-sm ${data.nivel_actividad === n.value ? 'text-teal-600' : 'text-slate-800'}`}>{n.label}</span>
-                                                    <span className={`block text-[10px] sm:text-xs ${data.nivel_actividad === n.value ? 'text-teal-500' : 'text-slate-500'}`}>{n.desc}</span>
+                                                    <span className={`block font-bold text-xs sm:text-sm ${data.nivel_actividad === n.value ? 'text-teal-600 dark:text-teal-400' : 'text-slate-800 dark:text-slate-200'}`}>{n.label}</span>
+                                                    <span className={`block text-[10px] sm:text-xs ${data.nivel_actividad === n.value ? 'text-teal-500 dark:text-teal-400' : 'text-slate-500 dark:text-slate-400'}`}>{n.desc}</span>
                                                 </div>
-                                                <Activity className={`w-4 h-4 sm:w-5 sm:h-5 ml-1 flex-shrink-0 ${data.nivel_actividad === n.value ? 'text-teal-500' : 'text-slate-400'}`} />
+                                                <Activity className={`w-4 h-4 sm:w-5 sm:h-5 ml-1 flex-shrink-0 ${data.nivel_actividad === n.value ? 'text-teal-500 dark:text-teal-400' : 'text-slate-400 dark:text-slate-500'}`} />
                                             </button>
                                         ))}
                                     </div>
@@ -229,7 +233,7 @@ export default function Onboarding({ user }) {
                                     <button
                                         type="button"
                                         onClick={prevStep}
-                                        className="flex-1 flex items-center justify-center gap-2 py-4 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-2xl font-bold transition-all"
+                                        className="flex-1 flex items-center justify-center gap-2 py-4 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-2xl font-bold transition-all"
                                     >
                                         <ChevronLeft size={20} /> Atrás
                                     </button>
@@ -247,47 +251,47 @@ export default function Onboarding({ user }) {
                         {step === 4 && (
                             <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
                                 <div className="flex items-center gap-3 mb-4">
-                                    <div className="p-2 bg-amber-100 rounded-lg text-amber-600">
+                                    <div className="p-2 bg-amber-100 dark:bg-amber-900/40 rounded-lg text-amber-600 dark:text-amber-400">
                                         <Zap size={24} />
                                     </div>
-                                    <h2 className="text-lg font-semibold text-slate-800">Tus macronutrientes</h2>
+                                    <h2 className="text-lg font-semibold text-slate-800 dark:text-slate-200">Tus macronutrientes</h2>
                                 </div>
 
                                 {tdee && (
-                                    <div className="mb-4 text-center p-4 bg-slate-50 border border-slate-100 rounded-2xl">
-                                        <p className="text-slate-500 font-semibold uppercase tracking-wider text-xs">Calorías Objetivo</p>
-                                        <p className="text-3xl font-black text-slate-800">{tdee.toLocaleString()} <span className="text-base text-slate-500 font-medium">kcal</span></p>
+                                    <div className="mb-4 text-center p-4 bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-2xl">
+                                        <p className="text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider text-xs">Calorías Objetivo</p>
+                                        <p className="text-3xl font-black text-slate-800 dark:text-white">{tdee.toLocaleString()} <span className="text-base text-slate-500 dark:text-slate-400 font-medium">kcal</span></p>
                                     </div>
                                 )}
 
-                                <p className="text-sm text-slate-500 mb-4 text-center">Puedes ajustar estos valores para cuadrar con tus calorías calculadas.</p>
+                                <p className="text-sm text-slate-500 dark:text-slate-400 mb-4 text-center">Puedes ajustar estos valores para cuadrar con tus calorías calculadas.</p>
 
                                 <div className="grid grid-cols-1 gap-4">
-                                    <div className="flex items-center justify-between p-4 bg-teal-50 rounded-xl border border-teal-100">
-                                        <label className="text-sm font-bold text-teal-800">Proteínas (g)</label>
+                                    <div className="flex items-center justify-between p-4 bg-teal-50 dark:bg-teal-950/40 rounded-xl border border-teal-100 dark:border-teal-900/60">
+                                        <label className="text-sm font-bold text-teal-800 dark:text-teal-300">Proteínas (g)</label>
                                         <input 
                                             type="number" 
                                             value={data.target_proteins} 
                                             onChange={e => setData('target_proteins', e.target.value)}
-                                            className="w-20 bg-transparent text-right font-bold text-teal-900 border-none focus:ring-0 pl-4"
+                                            className="w-20 bg-transparent text-right font-bold text-teal-900 dark:text-teal-200 border-none focus:ring-0 pl-4"
                                         />
                                     </div>
-                                    <div className="flex items-center justify-between p-4 bg-green-50 rounded-xl border border-green-100">
-                                        <label className="text-sm font-bold text-green-800">Carbos (g)</label>
+                                    <div className="flex items-center justify-between p-4 bg-green-50 dark:bg-emerald-950/40 rounded-xl border border-green-100 dark:border-emerald-900/60">
+                                        <label className="text-sm font-bold text-green-800 dark:text-emerald-300">Carbos (g)</label>
                                         <input 
                                             type="number" 
                                             value={data.target_carbs} 
                                             onChange={e => setData('target_carbs', e.target.value)}
-                                            className="w-20 bg-transparent text-right font-bold text-green-900 border-none focus:ring-0 pl-4"
+                                            className="w-20 bg-transparent text-right font-bold text-green-900 dark:text-emerald-200 border-none focus:ring-0 pl-4"
                                         />
                                     </div>
-                                    <div className="flex items-center justify-between p-4 bg-yellow-50 rounded-xl border border-yellow-100">
-                                        <label className="text-sm font-bold text-yellow-800">Grasas (g)</label>
+                                    <div className="flex items-center justify-between p-4 bg-yellow-50 dark:bg-amber-950/40 rounded-xl border border-yellow-100 dark:border-amber-900/60">
+                                        <label className="text-sm font-bold text-yellow-800 dark:text-amber-300">Grasas (g)</label>
                                         <input 
                                             type="number" 
                                             value={data.target_fats} 
                                             onChange={e => setData('target_fats', e.target.value)}
-                                            className="w-20 bg-transparent text-right font-bold text-yellow-900 border-none focus:ring-0 pl-4"
+                                            className="w-20 bg-transparent text-right font-bold text-yellow-900 dark:text-amber-200 border-none focus:ring-0 pl-4"
                                         />
                                     </div>
                                 </div>
@@ -296,7 +300,7 @@ export default function Onboarding({ user }) {
                                     <button
                                         type="button"
                                         onClick={prevStep}
-                                        className="flex-1 flex items-center justify-center gap-2 py-4 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-2xl font-bold transition-all"
+                                        className="flex-1 flex items-center justify-center gap-2 py-4 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-2xl font-bold transition-all"
                                     >
                                         <ChevronLeft size={20} /> Atrás
                                     </button>
@@ -313,7 +317,7 @@ export default function Onboarding({ user }) {
                 </div>
             </div>
 
-            <p className="mt-8 text-slate-400 text-sm">Paso {step} de 4</p>
+            <p className="mt-8 text-slate-400 dark:text-slate-500 text-sm">Paso {step} de 4</p>
         </div>
     );
 }

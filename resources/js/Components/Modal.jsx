@@ -37,7 +37,7 @@ export default function Modal({
             >
                 <DialogBackdrop
                     transition
-                    className="fixed inset-0 bg-gray-500/75 transition-opacity data-[closed]:opacity-0"
+                    className="fixed inset-0 bg-gray-500/75 dark:bg-slate-950/80 transition-opacity data-[closed]:opacity-0"
                 />
 
                 <div className="fixed inset-0 z-50 w-screen overflow-y-auto">
@@ -52,7 +52,7 @@ export default function Modal({
                             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                         >
                             <DialogPanel
-                                className={`relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full ${maxWidthClass}`}
+                                className={`relative transform overflow-hidden rounded-lg bg-white dark:bg-slate-900 text-left shadow-xl transition-all sm:my-8 sm:w-full ${maxWidthClass}`}
                             >
                                 {children}
                             </DialogPanel>

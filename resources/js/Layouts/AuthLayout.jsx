@@ -1,3 +1,4 @@
+import ThemeToggle from '@/Components/ThemeToggle';
 import { Link } from '@inertiajs/react';
 
 export default function AuthLayout({ children, image }) {
@@ -18,7 +19,10 @@ export default function AuthLayout({ children, image }) {
             </div>
 
             {/* Lado derecho: Formulario */}
-            <div className="w-full lg:w-1/2 flex flex-col items-center justify-center bg-background px-6 py-12 sm:px-12">
+            <div className="relative w-full lg:w-1/2 flex flex-col items-center justify-center bg-background dark:bg-slate-950 px-6 py-12 sm:px-12">
+                <div className="absolute top-4 right-4 z-10">
+                    <ThemeToggle />
+                </div>
                 <div className="w-full max-w-md">
                     {children}
                 </div>
