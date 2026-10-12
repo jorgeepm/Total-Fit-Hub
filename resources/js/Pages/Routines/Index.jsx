@@ -1,0 +1,181 @@
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { Head, Link, router } from '@inertiajs/react';
+import { Plus, Play, Clock, ChevronRight, Activity, Archive, ArchiveRestore } from 'lucide-react';
+import { useState } from 'react';
+
+export default function RoutinesIndex({ routines = [] }) {
+    const [filter, setFilter] = useState('activa');
+    const filteredRoutines = routines.filter(r => r.estado === filter);
+
+    const handleToggleStatus = (id) => {
+        router.patch(route('routines.toggle-status', id), {}, {
+            preserveScroll: true
+        });
+    };
+    return (
+        <AuthenticatedLayout
+            header={
+                <div className="flex items-center justify-between">
+                    <div>
+                        <h2 className="text-2xl font-black text-slate-800 dark:text-white tracking-tight">Mis Rutinas</h2>
+                        <p className="text-sm text-slate-400 dark:text-gray-400 mt-0.5">
+                            {routines.length} rutinas guardadas
+                        </p>
+                    </div>
+                    <Link
+                        href={route('routines.create')}
+                        className="flex items-center gap-2 px-5 py-2.5 bg-primary text-white font-bold rounded-2xl shadow-lg shadow-primary/20 hover:opacity-90 hover:scale-[1.02] transition-all text-sm"
+                    >
+                        <Plus className="w-4 h-4" />
+                        Nueva Rutina
+                    </Link>
+                </div>
+            }
+        >
+            <Head title="Mis Rutinas" />
+
+            <div className="py-8 bg-background dark:bg-slate-950 min-h-screen">
+                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                    
+                    {routines.length > 0 && (
+                        <div className="flex items-center gap-2 mb-8 bg-white dark:bg-slate-900 p-1 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm w-max">
+                            <button
+                                onClick={() => setFilter('activa')}
+                                className={`px-6 py-2.5 rounded-xl text-sm font-bold transition-all ${
+                                    filter === 'activa'
+                                        ? 'bg-primary text-white shadow-md'
+                                        : 'text-slate-400 dark:text-gray-400 hover:text-slate-600 dark:hover:text-gray-200 hover:bg-slate-50 dark:hover:bg-slate-800'
+                                }`}
+                            >
+                                Activas
+                            </button>
+                            <button
+                                onClick={() => setFilter('inactiva')}
+                                className={`px-6 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center gap-2 ${
+                                    filter === 'inactiva'
+                                        ? 'bg-amber-500 text-white shadow-md'
+                                        : 'text-slate-400 dark:text-gray-400 hover:text-slate-600 dark:hover:text-gray-200 hover:bg-slate-50 dark:hover:bg-slate-800'
+                                }`}
+                            >
+                                <Archive className="w-4 h-4" />
+                                Archivadas
+                            </button>
+                        </div>
+                    )}
+
+                    {routines.length === 0 ? (
+                        <div className="flex flex-col items-center justify-center py-24 text-center">
+                            <div className="w-20 h-20 rounded-[30px] bg-white dark:bg-slate-900 shadow-sm flex items-center justify-center mb-6 border border-slate-100 dark:border-slate-800">
+                                <Activity className="w-10 h-10 text-primary opacity-20" />
+                            </div>
+                            <h3 className="text-xl font-black text-slate-700 dark:text-gray-200 mb-2">
+                                ¿Listo para entrenar?
+                            </h3>
+                            <p className="text-slate-400 dark:text-gray-400 max-w-xs mb-8">
+                                Crea tu primera rutina personalizada para llevar un seguimiento de tus progresos.
+                            </p>
+                            <Link
+                                href={route('routines.create')}
+                                className="flex items-center gap-3 px-8 py-4 bg-primary text-white font-black rounded-2xl shadow-xl shadow-primary/20 hover:opacity-90 transition-all"
+                            >
+                                <Plus className="w-5 h-5" />
+                                Crear mi primera rutina
+                            </Link>
+                        </div>
+                    ) : filteredRoutines.length === 0 ? (
+                        <div className="flex flex-col items-center justify-center py-16 text-center bg-white dark:bg-slate-900 rounded-[35px] border border-slate-100 dark:border-slate-800 border-dashed">
+                            <Archive className="w-12 h-12 text-slate-200 dark:text-slate-700 mb-4" />
+                            <h3 className="text-lg font-black text-slate-700 dark:text-gray-200 mb-2">
+                                No hay rutinas {filter === 'activa' ? 'activas' : 'archivadas'}
+                            </h3>
+                            <p className="text-slate-400 dark:text-gray-400 text-sm">
+                                {filter === 'activa' 
+                                    ? 'Todas tus rutinas están archivadas.' 
+                                    : 'Aún no has archivado ninguna rutina.'}
+                            </p>
+                        </div>
+                    ) : (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {filteredRoutines.map((routine) => (
+                                <div
+                                    key={routine.id}
+                                    className="bg-white dark:bg-slate-900 rounded-[35px] shadow-sm border border-slate-100 dark:border-slate-800 overflow-hidden group hover:border-primary/30 hover:shadow-md transition-all duration-300 flex flex-col"
+                                >
+                                    {/* Decoración superior */}
+                                    <div className="h-2 bg-primary" />
+                                    
+                                    <div className="p-7 space-y-5 flex-1">
+                                        <div className="flex justify-between items-start">
+                                            <div>
+                                                <h3 className="text-xl font-black text-slate-900 dark:text-white group-hover:text-primary transition-colors">
+                                                    {routine.nombre}
+                                                </h3>
+                                                <div className="flex items-center gap-3 mt-1.5">
+                                                    <span className="flex items-center gap-1 text-xs font-bold text-slate-400 dark:text-gray-400">
+                                                        <Activity className="w-3 h-3" />
+                                                        {routine.exercises_count ?? 0} ejercicios
+                                                    </span>
+                                                    <span className="flex items-center gap-1 text-xs font-bold text-slate-400 dark:text-gray-400">
+                                                        <Clock className="w-3 h-3" />
+                                                        ~45 min
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <span className={`text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full ${
+                                                routine.estado === 'activa'
+                                                    ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400'
+                                                    : 'bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400'
+                                            }`}>
+                                                {routine.estado}
+                                            </span>
+                                        </div>
+
+                                        <div className="pt-4 border-t border-slate-50 dark:border-slate-800 flex items-center justify-between">
+                                            <Link 
+                                                href={route('routines.start', routine.id)}
+                                                className="flex items-center gap-2 text-sm font-black text-primary hover:text-primary-dark transition-colors"
+                                            >
+                                                <Play className="w-4 h-4 fill-current" />
+                                                Iniciar Entrenamiento
+                                            </Link>
+                                            <div className="flex items-center gap-2">
+                                                <button
+                                                    onClick={() => handleToggleStatus(routine.id)}
+                                                    className={`p-2 rounded-xl transition-all ${
+                                                        routine.estado === 'activa' 
+                                                            ? 'bg-slate-50 dark:bg-slate-800 text-slate-400 dark:text-gray-400 hover:bg-amber-100 dark:hover:bg-amber-900/50 hover:text-amber-600 dark:hover:text-amber-400'
+                                                            : 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-100 dark:hover:bg-emerald-900/50'
+                                                    }`}
+                                                    title={routine.estado === 'activa' ? 'Archivar rutina' : 'Activar rutina'}
+                                                >
+                                                    {routine.estado === 'activa' ? <Archive className="w-5 h-5" /> : <ArchiveRestore className="w-5 h-5" />}
+                                                </button>
+                                                <Link 
+                                                    href={route('routines.show', routine.id)} 
+                                                    className="p-2 bg-slate-50 dark:bg-slate-800 rounded-xl text-slate-400 dark:text-gray-400 hover:bg-primary dark:hover:bg-primary hover:text-white transition-all"
+                                                >
+                                                    <ChevronRight className="w-5 h-5" />
+                                                </Link>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+
+                            {/* Card para añadir nueva */}
+                            <Link
+                                href={route('routines.create')}
+                                className="bg-slate-50/50 dark:bg-slate-900/50 rounded-[35px] border-2 border-dashed border-slate-200 dark:border-slate-800 p-7 flex flex-col items-center justify-center gap-4 group hover:border-primary/50 hover:bg-white dark:hover:bg-slate-900 transition-all duration-300 min-h-[180px]"
+                            >
+                                <div className="p-4 bg-white dark:bg-slate-800 rounded-2xl shadow-sm text-slate-300 dark:text-slate-600 group-hover:text-primary group-hover:scale-110 transition-all">
+                                    <Plus className="w-8 h-8" />
+                                </div>
+                                <span className="text-sm font-black text-slate-400 dark:text-gray-400 group-hover:text-slate-600 dark:group-hover:text-gray-200">Nueva Rutina</span>
+                            </Link>
+                        </div>
+                    )}
+                </div>
+            </div>
+        </AuthenticatedLayout>
+    );
+}

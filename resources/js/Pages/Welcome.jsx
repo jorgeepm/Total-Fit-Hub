@@ -1,0 +1,179 @@
+import { Head, Link } from '@inertiajs/react';
+import { ChevronRight, Target, Activity, Zap } from 'lucide-react';
+import Footer from '@/Components/Footer';
+import ThemeToggle from '@/Components/ThemeToggle';
+
+export default function Welcome({ auth }) {
+    return (
+        <div className="bg-background dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans selection:bg-teal-500 selection:text-white transition-colors duration-200">
+            <Head title="Bienvenido a Total Fit Hub" />
+            
+            {/* Navegación */}
+            <nav className="fixed top-0 w-full z-50 bg-white/70 dark:bg-slate-900/80 backdrop-blur-md border-b border-white/20 dark:border-slate-800">
+                <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+                    <div className="flex items-center space-x-3">
+                        <img src="/images/logo.png" alt="Logo" className="h-10 w-10" />
+                        <span className="text-xl font-black tracking-tight text-slate-900 dark:text-white">Total Fit Hub</span>
+                    </div>
+                    
+                    <div className="hidden md:flex items-center space-x-8 text-sm font-bold text-slate-600 dark:text-slate-300">
+                        <a href="#features" className="hover:text-primary transition-colors">Características</a>
+                        <a href="#nutrition" className="hover:text-primary transition-colors">Nutrición</a>
+                        <a href="#workout" className="hover:text-primary transition-colors">Entrenamientos</a>
+                    </div>
+                    
+                    <div className="flex items-center space-x-4">
+                        <ThemeToggle />
+                        {auth?.user ? (
+                            <Link 
+                                href={route('dashboard')} 
+                                className="bg-primary text-white px-6 py-2.5 rounded-full font-bold text-sm hover:bg-primary-dark transition-all transform hover:scale-105 shadow-lg shadow-primary/20"
+                            >
+                                Panel de Control
+                            </Link>
+                        ) : (
+                            <>
+                                <Link 
+                                    href={route('login')} 
+                                    className="text-slate-600 dark:text-slate-300 font-bold text-sm hover:text-slate-900 dark:hover:text-white px-4"
+                                >
+                                    Iniciar Sesión
+                                </Link>
+                                <Link 
+                                    href={route('register')} 
+                                    className="bg-primary text-white px-6 py-2.5 rounded-full font-bold text-sm hover:bg-primary-dark transition-all transform hover:scale-105 shadow-lg shadow-primary/20"
+                                >
+                                    Empezar Gratis
+                                </Link>
+                            </>
+                        )}
+                    </div>
+                </div>
+            </nav>
+
+            {/* Seccion principal */}
+            <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+                <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
+                    <div className="relative z-10 space-y-8">
+                        <div className="inline-block px-4 py-1.5 bg-teal-50 dark:bg-teal-900/40 text-primary rounded-full text-xs font-black uppercase tracking-[0.2em]">
+                            Potencia tu rendimiento
+                        </div>
+                        <h1 className="text-6xl lg:text-8xl font-black text-slate-900 dark:text-white leading-[1.1]">
+                            Entrena <span className="gradient-text">Inteligente</span>, Vive Mejor.
+                        </h1>
+                        <p className="text-xl text-slate-500 dark:text-slate-400 max-w-lg leading-relaxed">
+                            La plataforma integral que fusiona tecnología y fitness. Controla tu nutrición, planifica tus rutinas y visualiza tu progreso como nunca antes.
+                        </p>
+                        <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 pt-4">
+                            <Link 
+                                href={route('register')} 
+                                className="flex items-center justify-center space-x-2 bg-slate-900 dark:bg-teal-600 text-white px-8 py-4 rounded-2xl font-bold hover:bg-slate-800 dark:hover:bg-teal-700 transition-all transform hover:scale-[1.02]"
+                            >
+                                <span>Unirse ahora</span>
+                                <ChevronRight className="h-5 w-5" />
+                            </Link>
+                            <a 
+                                href="#features" 
+                                className="flex items-center justify-center space-x-2 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 px-8 py-4 rounded-2xl font-bold hover:bg-slate-50 dark:hover:bg-slate-700 transition-all"
+                            >
+                                Leer más
+                            </a>
+                        </div>
+                        <div className="flex items-center space-x-6 pt-8 border-t border-slate-100 dark:border-slate-800">
+                            <div className="flex -space-x-3">
+                                {[1, 2, 3, 4].map(i => (
+                                    <div key={i} className="w-10 h-10 rounded-full border-2 border-white dark:border-slate-900 bg-slate-200 dark:bg-slate-700 overflow-hidden">
+                                        <img src={`https://i.pravatar.cc/100?u=${i}`} alt="" />
+                                    </div>
+                                ))}
+                            </div>
+                            <p className="text-sm font-bold text-slate-400 dark:text-slate-500">
+                                <span className="text-slate-900 dark:text-white">+10,000</span> usuarios ya están transformando su vida.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div className="relative lg:h-[600px] flex items-center justify-center">
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-teal-100/50 rounded-full blur-[120px] -z-10 animate-pulse"></div>
+                        <div className="relative w-full max-w-lg">
+                            <img 
+                                src="/images/hero.png" 
+                                alt="Fitness Training" 
+                                className="w-full rounded-[40px] shadow-2xl rotate-2 hover:rotate-0 transition-transform duration-700" 
+                            />
+                            {/* Tarjeta flotante */}
+                            <div className="absolute -bottom-10 -left-10 glass p-6 rounded-3xl shadow-xl animate-bounce-slow">
+                                <Activity className="h-10 w-10 text-primary mb-3" />
+                                <div className="space-y-1">
+                                    <p className="text-xs font-black text-slate-400 dark:text-slate-400 uppercase tracking-widest">Ritmo Cardíaco</p>
+                                    <p className="text-2xl font-black text-slate-900 dark:text-white">128 BPM</p>
+                                </div>
+                            </div>
+                            <div className="absolute top-10 -right-10 glass p-6 rounded-3xl shadow-xl animate-float">
+                                <Target className="h-10 w-10 text-orange-500 mb-3" />
+                                <div className="space-y-1">
+                                    <p className="text-xs font-black text-slate-400 dark:text-slate-400 uppercase tracking-widest">Objetivo Diario</p>
+                                    <p className="text-2xl font-black text-slate-900 dark:text-white">85%</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Seccion de Características */}
+            <section id="features" className="py-24 bg-white dark:bg-slate-900 transition-colors duration-200">
+                <div className="max-w-7xl mx-auto px-6 text-center mb-20">
+                    <h2 className="text-4xl lg:text-5xl font-black text-slate-900 dark:text-white mb-6">Todo lo que necesitas en un <span className="text-primary">mismo lugar</span>.</h2>
+                    <p className="text-slate-500 dark:text-slate-400 max-w-2xl mx-auto text-lg leading-relaxed">
+                        Hemos diseñado la herramienta definitiva para que te centres en lo que importa: tus resultados.
+                    </p>
+                </div>
+
+                <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-12">
+                    {[
+                        {
+                            icon: <Zap className="h-8 w-8 text-primary" />,
+                            title: "Seguimiento en Tiempo Real",
+                            desc: "Sincroniza tus dispositivos y observa tu rendimiento al instante con gráficas interactivas."
+                        },
+                        {
+                            icon: <Activity className="h-8 w-8 text-orange-500" />,
+                            title: "Nutrición Inteligente",
+                            desc: "Acceso a la base de datos de OpenFoodFacts para registrar cada caloría con precisión quirúrgica."
+                        },
+                        {
+                            icon: <Target className="h-8 w-8 text-teal-600" />,
+                            title: "Planes Personalizados",
+                            desc: "Algoritmos avanzados que adaptan tus rutinas según tu nivel de fatiga y objetivos."
+                        }
+                    ].map((feature, i) => (
+                        <div key={i} className="group p-10 bg-slate-50 dark:bg-slate-800 rounded-[40px] hover:bg-white dark:hover:bg-slate-750 hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 border border-transparent hover:border-slate-100 dark:hover:border-slate-700">
+                            <div className="mb-8 p-4 inline-block bg-white dark:bg-slate-700 rounded-2xl shadow-sm group-hover:scale-110 transition-transform">
+                                {feature.icon}
+                            </div>
+                            <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-4">{feature.title}</h3>
+                            <p className="text-slate-500 dark:text-slate-400 leading-relaxed">{feature.desc}</p>
+                        </div>
+                    ))}
+                </div>
+            </section>
+
+            {/* Footer */}
+            <Footer />
+
+            <style dangerouslySetInnerHTML={{ __html: `
+                @keyframes float {
+                    0%, 100% { transform: translateY(0); }
+                    50% { transform: translateY(-20px); }
+                }
+                @keyframes bounce-slow {
+                    0%, 100% { transform: translateY(0); }
+                    50% { transform: translateY(-10px); }
+                }
+                .animate-float { animation: float 6s ease-in-out infinite; }
+                .animate-bounce-slow { animation: bounce-slow 4s ease-in-out infinite; }
+            `}} />
+        </div>
+    );
+}

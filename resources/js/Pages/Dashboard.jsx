@@ -1,0 +1,519 @@
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { Head, useForm, Link } from '@inertiajs/react';
+import { PieChart, Pie, Cell, Label, ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, AreaChart, Area } from 'recharts';
+import { useMemo, useState } from 'react';
+import { Plus, Scale } from 'lucide-react';
+import Modal from '@/Components/Modal';
+import InputLabel from '@/Components/InputLabel';
+import TextInput from '@/Components/TextInput';
+import InputError from '@/Components/InputError';
+import SecondaryButton from '@/Components/SecondaryButton';
+import PrimaryButton from '@/Components/PrimaryButton';
+import WaterTracker from './Nutrition/Partials/WaterTracker';
+import useTheme from '@/Hooks/useTheme';
+
+const CustomTooltip = ({ active, payload }) => {
+    if (active && payload && payload.length) {
+        const item = payload[0].payload;
+        return (
+            <div className="bg-white dark:bg-slate-800 p-3 rounded-xl shadow-2xl border border-teal-50 dark:border-slate-700 ring-4 ring-teal-50/50 dark:ring-slate-700/50">
+                <div className="flex flex-col">
+                    <span className="text-[10px] font-bold text-teal-400 uppercase tracking-wider mb-1">
+                        {item.full_date}
+                    </span>
+                    <div className="flex items-baseline gap-1">
+                        <span className="text-xl font-black text-slate-900 dark:text-white">{item.peso}</span>
+                        <span className="text-xs font-bold text-slate-400 dark:text-slate-500">kg</span>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+    return null;
+};
+
+// ¡Aquí "atrapamos" la mochila de datos que envía Laravel!
+export default function Dashboard({ auth, nutritionSummary, macroTargets, entrenamientos, weightHistory, water }) {
+    const { isDark } = useTheme();
+    const [showingWeightModal, setShowingWeightModal] = useState(false);
+    const [hoveredWeight, setHoveredWeight] = useState(null);
+    const [selectedWorkout, setSelectedWorkout] = useState(null);
+
+    // Formulario para nuevo peso
+    const { data, setData, post, processing, reset, errors } = useForm({
+        weight: auth.user.peso || '',
+        log_date: new Date().toISOString().slice(0, 16), // Formato para datetime-local
+    });
+
+    const submitWeight = (e) => {
+        e.preventDefault();
+        post(route('weight-logs.store'), {
+            onSuccess: () => {
+                setShowingWeightModal(false);
+                reset();
+            },
+        });
+    };
+
+    };
+
+    const handleChartHover = (state) => {
+        if (state && state.activePayload && state.activePayload.length > 0) {
+            setHoveredWeight(state.activePayload[0].payload);
+        } else {
+            setHoveredWeight(null);
+        }
+    };
+
+    // 🛡️ VALIDACIONES: Verificar que los datos llegan correctamente
+    if (!nutritionSummary || typeof nutritionSummary !== 'object') {
+        return (
+            <AuthenticatedLayout>
+                <Head title="Dashboard" />
+                <div className="py-12">
+                    <div className="max-w-7xl mx-auto">
+                        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
+                            <p className="text-red-600 dark:text-red-400 font-semibold">⚠️ Error al cargar datos de nutrición</p>
+                            <p className="text-red-500 dark:text-red-300 text-sm">Recarga la página o intenta más tarde.</p>
+                        </div>
+                    </div>
+                </div>
+            </AuthenticatedLayout>
+        );
+    }
+
+    // 1. Cálculos matemáticos seguros para tu Donut usando DATOS REALES
+    const caloriasConsumidas = nutritionSummary?.consumidas || 0;
+    const caloriasObjetivo = nutritionSummary?.objetivo || 2500;
+    const caloriasRestantes = Math.max(caloriasObjetivo - caloriasConsumidas, 0);
+
+    // 📊 Datos de gráfico memoizados (se recalculan solo si nutritionSummary cambia)
+    const chartData = useMemo(
+        () => [
+            { name: 'Consumidas', value: caloriasConsumidas },
+            { name: 'Restantes', value: caloriasRestantes }
+        ],
+        [caloriasConsumidas, caloriasRestantes]
+    );
+
+    // 🎨 Tus colores premium
+    const COLORS = ['url(#colorUv)', isDark ? '#334155' : '#E5E7EB'];
+
+    // 🎯 Objetivos de macronutrientes (desacoplados, dinámicos)
+    const proteinTarget = macroTargets?.proteins || 150;
+    const carbsTarget = macroTargets?.carbs || 250;
+    const fatsTarget = macroTargets?.fats || 70;
+
+    // 📈 Cálculos de porcentajes SEGUROS (sin división por cero)
+    const proteinPercent = useMemo(
+        () => Math.min(((nutritionSummary?.proteins || 0) / proteinTarget) * 100, 100),
+        [nutritionSummary?.proteins, proteinTarget]
+    );
+
+    const carbsPercent = useMemo(
+        () => Math.min(((nutritionSummary?.carbs || 0) / carbsTarget) * 100, 100),
+        [nutritionSummary?.carbs, carbsTarget]
+    );
+
+    const fatsPercent = useMemo(
+        () => Math.min(((nutritionSummary?.fats || 0) / fatsTarget) * 100, 100),
+        [nutritionSummary?.fats, fatsTarget]
+    );
+
+    return (
+        <AuthenticatedLayout>
+            <Head title="Dashboard" />
+
+            <div className="py-12">
+                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+                    
+                    {/* Fila 1: Resumen rápido */}
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+                        {/* TARJETA 1: CALORÍAS */}
+                        <div 
+                            className="bg-white dark:bg-slate-900 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-slate-800 flex flex-col items-center justify-center transition-colors" 
+                            style={{userSelect: 'none', WebkitUserSelect: 'none', cursor: 'default', WebkitTouchCallout: 'none'}}
+                            onMouseDown={(e) => e.preventDefault()}
+                            draggable={false}
+                        >
+                            <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4 self-start" style={{userSelect: 'none'}}>Mi Progreso Diario</h2>
+                            
+                            <div 
+                                className="h-64 w-full" 
+                                style={{userSelect: 'none', WebkitUserSelect: 'none', touchAction: 'none'}}
+                                onMouseDown={(e) => e.preventDefault()}
+                                draggable={false}
+                            >
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <PieChart key={isDark ? 'dark' : 'light'} style={{userSelect: 'none', WebkitUserSelect: 'none'}} draggable={false}>
+                                        <defs>
+                                            <linearGradient id="colorUv" x1="0" y1="0" x2="1" y2="1">
+                                                <stop offset="0%" stopColor="#4FD1C5" />
+                                                <stop offset="100%" stopColor="#ff7e1c" />
+                                            </linearGradient>
+                                        </defs>
+                                        
+                                        <Pie
+                                            data={chartData}
+                                            cx="50%"
+                                            cy="50%"
+                                            innerRadius={70}
+                                            outerRadius={90}
+                                            startAngle={90}
+                                            endAngle={-270}
+                                            dataKey="value"
+                                            stroke="none"
+                                        >
+                                            {chartData.map((entry, index) => (
+                                                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                            ))}
+                                            <Label
+                                                value={`${Math.round(caloriasConsumidas)} / ${Math.round(caloriasObjetivo)}`}
+                                                position="center"
+                                                fill={isDark ? '#FFFFFF' : '#1F2937'}
+                                                className="text-2xl font-bold"
+                                                style={{userSelect: 'none', pointerEvents: 'none', fill: isDark ? '#FFFFFF' : '#1F2937'}}
+                                            />
+                                        </Pie>
+                                    </PieChart>
+                                </ResponsiveContainer>
+                            </div>
+                            <p className="text-sm text-gray-500 dark:text-gray-400 mt-2" style={{userSelect: 'none'}}>Calorías consumidas</p>
+                        </div>
+
+                        <div className="bg-white dark:bg-slate-900 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-slate-800 flex flex-col transition-colors">
+                            <div className="mb-4">
+                                <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200">Entrenamiento de Hoy</h2>
+                            </div>
+                            
+                            {Array.isArray(entrenamientos) && entrenamientos.length > 0 ? (
+                                entrenamientos.map((entreno, idx) => {
+                                    const gruposMusculares = entreno?.ejercicios 
+                                        ? [...new Set(entreno.ejercicios.map(e => e.grupo_muscular).filter(Boolean))].join(', ')
+                                        : '';
+
+                                    return (
+                                        <div 
+                                            key={entreno?.id ?? `entreno-${idx}`} 
+                                            onClick={() => setSelectedWorkout(entreno)}
+                                            className="mb-3 p-4 bg-gray-50 dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 cursor-pointer hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors"
+                                        >
+                                            <p className="font-bold text-gray-800 dark:text-gray-200">
+                                                {entreno?.routine?.nombre || 'Sesión completada'}
+                                            </p>
+                                            <div className="flex flex-wrap gap-2 mt-2">
+                                                <span className="text-xs font-bold text-teal-700 dark:text-teal-400 bg-teal-50 dark:bg-teal-900/30 border border-teal-100 dark:border-teal-800 px-2.5 py-1 rounded-md flex items-center gap-1.5">
+                                                    🏋️ Volumen: {entreno?.volumen_total || '0'} kg
+                                                </span>
+                                                {gruposMusculares && (
+                                                    <span className="text-xs font-bold text-teal-700 dark:text-teal-400 bg-teal-50 dark:bg-teal-900/30 border border-teal-100 dark:border-teal-800 px-2.5 py-1 rounded-md flex items-center gap-1.5">
+                                                        💪 {gruposMusculares}
+                                                    </span>
+                                                )}
+                                            </div>
+                                        </div>
+                                    );
+                                })
+                            ) : (
+                                <div className="h-full flex items-center justify-center pb-8">
+                                    <p className="text-gray-400 dark:text-gray-500 text-sm text-center">
+                                        Aún no has registrado <br/>ningún entrenamiento hoy.
+                                    </p>
+                                </div>
+                            )}
+
+                            <div className="mt-auto pt-4 flex justify-end border-t border-slate-200 dark:border-slate-800">
+                                <Link href={route('trainings.history')} className="text-sm font-semibold text-teal-600 dark:text-teal-400 hover:text-teal-800 dark:hover:text-teal-300 transition-colors flex items-center gap-1">
+                                    Ver todos los entrenamientos <span>&rarr;</span>
+                                </Link>
+                            </div>
+                        </div>
+
+                        {/* TARJETA 3: MACROS REALES */}
+                        <div className="bg-white dark:bg-slate-900 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-slate-800 flex flex-col transition-colors">
+                            <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-6">Resumen Nutricional</h2>
+                            
+                            <div className="flex flex-col space-y-5 w-full mt-2">
+                                <div>
+                                    <div className="flex justify-between mb-1">
+                                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Proteínas</span>
+                                        <span className="text-sm font-bold text-gray-900 dark:text-white">
+                                             {Math.round(nutritionSummary?.proteins || 0)}g / {proteinTarget}g
+                                        </span>
+                                    </div>
+                                    <div className="w-full bg-gray-100 dark:bg-slate-800 rounded-full h-2.5">
+                                        <div className="bg-teal-500 h-2.5 rounded-full transition-all duration-500" style={{ width: `${proteinPercent}%` }}></div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div className="flex justify-between mb-1">
+                                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Carbohidratos</span>
+                                        <span className="text-sm font-bold text-gray-900 dark:text-white">
+                                            {Math.round(nutritionSummary?.carbs || 0)}g / {carbsTarget}g
+                                        </span>
+                                    </div>
+                                    <div className="w-full bg-gray-100 dark:bg-slate-800 rounded-full h-2.5">
+                                        <div className="bg-green-500 h-2.5 rounded-full transition-all duration-500" style={{ width: `${carbsPercent}%` }}></div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div className="flex justify-between mb-1">
+                                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Grasas</span>
+                                        <span className="text-sm font-bold text-gray-900 dark:text-white">
+                                            {Math.round(nutritionSummary?.fats || 0)}g / {fatsTarget}g
+                                        </span>
+                                    </div>
+                                    <div className="w-full bg-gray-100 dark:bg-slate-800 rounded-full h-2.5">
+                                        <div className="bg-yellow-500 h-2.5 rounded-full transition-all duration-500" style={{ width: `${fatsPercent}%` }}></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    {/* Fila 2: Evolución del Peso y Agua */}
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div className="bg-white dark:bg-slate-900 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-slate-800 flex flex-col transition-colors" style={{userSelect: 'none', WebkitUserSelect: 'none'}}>
+                            <div className="flex justify-between items-center mb-6">
+                                <div style={{userSelect: 'text'}}>
+                                    <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200">Evolución del Peso</h2>
+                                <p className="text-sm text-gray-500 dark:text-gray-400">Historial de tus registros</p>
+                            </div>
+                            <div className="flex items-center gap-4">
+                                <button 
+                                    onClick={() => setShowingWeightModal(true)}
+                                    className="flex items-center gap-2 px-4 py-2 bg-teal-50 dark:bg-teal-900/30 text-teal-600 dark:text-teal-400 rounded-lg font-bold hover:bg-teal-100 dark:hover:bg-teal-900/50 transition-colors border border-teal-100 dark:border-teal-800"
+                                >
+                                    <Plus size={18} /> Registrar Peso
+                                </button>
+                                <div className="text-right border-l pl-4 border-gray-100 dark:border-slate-800 min-w-[140px]" style={{userSelect: 'none'}}>
+                                    <div className="flex flex-col">
+                                        <span className="text-2xl font-black text-teal-600 dark:text-teal-400 leading-none">
+                                            {hoveredWeight ? `${hoveredWeight.peso} kg` : `${auth.user.peso} kg`}
+                                        </span>
+                                        <span className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase mt-1">
+                                            {hoveredWeight ? hoveredWeight.full_date : 'Peso actual'}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div 
+                            className="h-80 w-full" 
+                            style={{
+                                userSelect: 'none', 
+                                WebkitUserSelect: 'none'
+                            }}
+                            onMouseDown={(e) => e.preventDefault()}
+                            draggable={false}
+                        >
+                            <ResponsiveContainer width="100%" height={320}>
+                                <AreaChart 
+                                    key={isDark ? 'dark' : 'light'}
+                                    data={weightHistory}
+                                    onMouseMove={(v) => {
+                                        if (v && v.activeTooltipIndex !== undefined) {
+                                            setHoveredWeight(weightHistory[v.activeTooltipIndex]);
+                                        }
+                                    }}
+                                    onMouseLeave={() => setHoveredWeight(null)}
+                                    margin={{ top: 10, right: 10, left: -20, bottom: 10 }}
+                                >
+                                    <defs>
+                                        <linearGradient id="colorWeight" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="5%" stopColor="#0d9488" stopOpacity={0.15}/>
+                                            <stop offset="95%" stopColor="#0d9488" stopOpacity={0}/>
+                                        </linearGradient>
+                                    </defs>
+                                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={isDark ? '#334155' : '#f1f5f9'} />
+                                    <XAxis 
+                                        dataKey="fecha" 
+                                        axisLine={false} 
+                                        tickLine={false} 
+                                        tick={{fill: isDark ? '#94a3b8' : '#64748b', fontSize: 11, fontWeight: 600}}
+                                        dy={10}
+                                    />
+                                    <YAxis 
+                                        hide 
+                                        domain={['dataMin - 1', 'dataMax + 1']}
+                                    />
+                                    <Tooltip 
+                                        shared={false}
+                                        cursor={{ stroke: '#0d9488', strokeWidth: 2, strokeDasharray: '6 6' }}
+                                        content={<CustomTooltip />}
+                                    />
+                                    <Area 
+                                        type="monotone" 
+                                        dataKey="peso" 
+                                        stroke="#0d9488" 
+                                        strokeWidth={4}
+                                        fillOpacity={1} 
+                                        fill="url(#colorWeight)" 
+                                        animationDuration={1000}
+                                        dot={{ 
+                                            r: 5, 
+                                            fill: isDark ? '#0f172a' : '#fff', 
+                                            stroke: '#0d9488', 
+                                            strokeWidth: 3,
+                                            fillOpacity: 1
+                                        }}
+                                        activeDot={{ 
+                                            r: 8, 
+                                            fill: '#0d9488', 
+                                            stroke: isDark ? '#0f172a' : '#fff', 
+                                            strokeWidth: 4,
+                                            fillOpacity: 1
+                                        }}
+                                    />
+                                </AreaChart>
+                            </ResponsiveContainer>
+                        </div>
+                    </div>
+                    
+                    {/* Componente de Agua */}
+                    <div>
+                        <WaterTracker 
+                            water={water} 
+                            selectedDate={new Date().toISOString().slice(0, 10)} 
+                        />
+                    </div>
+                </div>
+
+                </div>
+
+                {/* Modal para registrar peso */}
+                <Modal show={showingWeightModal} onClose={() => setShowingWeightModal(false)}>
+                    <form onSubmit={submitWeight} className="p-6">
+                        <div className="flex items-center gap-3 mb-6">
+                            <div className="p-2 bg-teal-100 dark:bg-teal-900/40 rounded-lg text-teal-600 dark:text-teal-400">
+                                <Scale size={24} />
+                            </div>
+                            <h2 className="text-lg font-bold text-gray-900 dark:text-white">Registrar Nuevo Peso</h2>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <InputLabel htmlFor="weight" value="Peso (kg)" />
+                                <TextInput
+                                    id="weight"
+                                    type="number"
+                                    step="0.1"
+                                    className="mt-1 block w-full"
+                                    value={data.weight}
+                                    onChange={(e) => setData('weight', e.target.value)}
+                                    required
+                                />
+                                <InputError message={errors.weight} className="mt-2" />
+                            </div>
+
+                            <div>
+                                <InputLabel htmlFor="log_date" value="Fecha y Hora" />
+                                <TextInput
+                                    id="log_date"
+                                    type="datetime-local"
+                                    className="mt-1 block w-full"
+                                    value={data.log_date}
+                                    onChange={(e) => setData('log_date', e.target.value)}
+                                    required
+                                />
+                                <InputError message={errors.log_date} className="mt-2" />
+                            </div>
+                        </div>
+
+                        <div className="mt-8 flex justify-end gap-3">
+                            <SecondaryButton onClick={() => setShowingWeightModal(false)}>
+                                Cancelar
+                            </SecondaryButton>
+                            <PrimaryButton disabled={processing}>
+                                Guardar Registro
+                            </PrimaryButton>
+                        </div>
+                    </form>
+                </Modal>
+
+                {/* Modal para detalles del entrenamiento */}
+                <Modal show={!!selectedWorkout} onClose={() => setSelectedWorkout(null)} maxWidth="2xl">
+                    {selectedWorkout && (
+                        <div className="p-6 max-h-[85vh] overflow-y-auto">
+                            <div className="flex items-center justify-between mb-6">
+                                <div>
+                                    <h2 className="text-xl font-black text-gray-900 dark:text-white">
+                                        {selectedWorkout.routine?.nombre || 'Detalles del Entrenamiento'}
+                                    </h2>
+                                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                                        Volumen total: <span className="font-bold text-teal-600 dark:text-teal-400">{selectedWorkout.volumen_total} kg</span>
+                                    </p>
+                                </div>
+                                <button 
+                                    onClick={() => setSelectedWorkout(null)}
+                                    className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full transition-colors"
+                                >
+                                    ✕
+                                </button>
+                            </div>
+
+                            <div className="space-y-6">
+                                {Object.values(
+                                    (selectedWorkout.ejercicios || []).reduce((acc, ex) => {
+                                        if (!acc[ex.id]) {
+                                            acc[ex.id] = { ...ex, series_hechas: [] };
+                                        }
+                                        if (ex.pivot) {
+                                            acc[ex.id].series_hechas.push({
+                                                numero: ex.pivot.numero_series,
+                                                reps: ex.pivot.repeticiones_hechas,
+                                                peso: ex.pivot.peso_usado,
+                                            });
+                                        }
+                                        return acc;
+                                    }, {})
+                                ).map((ejercicio, idx) => (
+                                    <div key={ejercicio.id || idx} className="bg-gray-50 dark:bg-slate-800 rounded-xl p-5 border border-gray-100 dark:border-slate-700">
+                                        <div className="flex items-center gap-3 mb-4">
+                                            <div className="w-10 h-10 rounded-lg bg-white dark:bg-slate-700 shadow-sm flex items-center justify-center font-black text-gray-400 dark:text-gray-300 text-lg">
+                                                {ejercicio.nombre?.[0] || '?'}
+                                            </div>
+                                            <div>
+                                                <h4 className="font-bold text-gray-800 dark:text-gray-200 text-lg leading-tight">{ejercicio.nombre}</h4>
+                                                <p className="text-xs text-gray-500 dark:text-gray-400 font-bold uppercase tracking-wider">{ejercicio.grupo_muscular}</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div className="space-y-2">
+                                            {ejercicio.series_hechas
+                                                .sort((a, b) => a.numero - b.numero)
+                                                .map((serie, sIdx) => (
+                                                <div key={sIdx} className="grid grid-cols-3 gap-4 items-center bg-white dark:bg-slate-900 p-3 rounded-lg border border-gray-100 dark:border-slate-700">
+                                                    <div className="text-center">
+                                                        <span className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase">Serie</span>
+                                                        <p className="font-black text-gray-700 dark:text-gray-200">{serie.numero}</p>
+                                                    </div>
+                                                    <div className="text-center">
+                                                        <span className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase">Peso</span>
+                                                        <p className="font-black text-teal-600 dark:text-teal-400">{serie.peso} kg</p>
+                                                    </div>
+                                                    <div className="text-center">
+                                                        <span className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase">Reps</span>
+                                                        <p className="font-black text-gray-700 dark:text-gray-200">{serie.reps}</p>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                            {(!ejercicio.series_hechas || ejercicio.series_hechas.length === 0) && (
+                                                <p className="text-sm text-gray-400 dark:text-gray-500 italic text-center py-2">Sin series registradas</p>
+                                            )}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+                </Modal>
+            </div>
+        </AuthenticatedLayout>
+    );
+}

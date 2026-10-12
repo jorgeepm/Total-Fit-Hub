@@ -1,0 +1,554 @@
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { Head, useForm, router } from '@inertiajs/react';
+import { Search, Plus, Trash2, X, Dumbbell, ChevronDown, Edit2 } from 'lucide-react';
+import { useState, useMemo } from 'react';
+
+// ─── Opciones de filtros ─────────────────────────────────────────────────────
+const MUSCLE_GROUPS = ['Pecho', 'Espalda', 'Hombros', 'Bíceps', 'Tríceps',
+                       'Piernas', 'Glúteos', 'Abdominales', 'Cardiovascular', 'Otro'];
+const EQUIPMENT_OPTIONS = ['Sin equipo', 'Mancuernas', 'Barra', 'Máquinas',
+                           'Bandas elásticas', 'Kettlebell', 'TRX', 'Otro'];
+const DIFFICULTY_OPTIONS = ['Principiante', 'Intermedio', 'Avanzado'];
+
+// ─── Colores por grupo muscular ──────────────────────────────────────────────
+const MUSCLE_COLORS = {
+    pecho:         'bg-red-50 text-red-600 border-red-100',
+    espalda:       'bg-blue-50 text-blue-600 border-blue-100',
+    hombros:       'bg-purple-50 text-purple-600 border-purple-100',
+    bíceps:        'bg-green-50 text-green-600 border-green-100',
+    tríceps:       'bg-orange-50 text-orange-600 border-orange-100',
+    piernas:       'bg-yellow-50 text-yellow-700 border-yellow-100',
+    glúteos:       'bg-pink-50 text-pink-600 border-pink-100',
+    abdominales:   'bg-indigo-50 text-indigo-600 border-indigo-100',
+    cardiovascular:'bg-rose-50 text-rose-600 border-rose-100',
+};
+
+const getMuscleColor = (group) => MUSCLE_COLORS[group?.toLowerCase()] ?? 'bg-slate-50 text-slate-600 border-slate-100';
+
+const DIFF_COLORS = {
+    'Principiante': 'bg-emerald-50 text-emerald-600',
+    'Intermedio':   'bg-amber-50 text-amber-600',
+    'Avanzado':     'bg-rose-50 text-rose-600',
+};
+
+// ─── Modal de creación / edición de ejercicio ─────────────────────────────────────────
+function ExerciseModal({ onClose, exercise = null, isAdmin = false }) {
+    const isEditing = !!exercise;
+    
+    const { data, setData, post, put, processing, errors, reset } = useForm({
+        nombre:                  exercise?.nombre || '',
+        grupo_muscular:          exercise?.grupo_muscular || 'Pecho',
+        equipamiento_necesario:  exercise?.equipamiento_necesario || 'Sin equipo',
+        dificultad:              exercise?.dificultad || 'Intermedio',
+        peso_base:               exercise?.peso_base || '',
+        calorias_minuto:         exercise?.calorias_minuto || '',
+        descripcion:             exercise?.descripcion || '',
+        is_global:               exercise ? (exercise.id_usuario === null) : false,
+    });
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        
+        if (isEditing) {
+            put(route('exercises.update', exercise.id), {
+                onSuccess: () => {
+                    reset();
+                    onClose();
+                },
+            });
+        } else {
+            post(route('exercises.store'), {
+                onSuccess: () => {
+                    reset();
+                    onClose();
+                },
+            });
+        }
+    };
+
+    return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
+             onClick={onClose}>
+            <div className="bg-white dark:bg-slate-900 w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden border border-slate-100 dark:border-slate-800"
+                 onClick={e => e.stopPropagation()}>
+
+                {/* Cabecera */}
+                <div className="bg-gradient-to-r from-teal-500 to-indigo-600 p-6 flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                        <div className="p-2 bg-white/20 rounded-xl">
+                            {isEditing ? <Edit2 className="w-6 h-6 text-white" /> : <Dumbbell className="w-6 h-6 text-white" />}
+                        </div>
+                        <h2 className="text-xl font-black text-white">
+                            {isEditing ? 'Editar Ejercicio' : 'Nuevo Ejercicio'}
+                        </h2>
+                    </div>
+                    <button onClick={onClose}
+                            className="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors">
+                        <X className="w-5 h-5" />
+                    </button>
+                </div>
+
+                {/* Formulario */}
+                <form onSubmit={handleSubmit} className="p-6 space-y-4">
+
+                    {/* Nombre */}
+                    <div>
+                        <label className="block text-xs font-bold text-slate-500 dark:text-gray-400 uppercase tracking-wider mb-1.5">
+                            Nombre del ejercicio *
+                        </label>
+                        <input
+                            type="text"
+                            value={data.nombre}
+                            onChange={e => setData('nombre', e.target.value)}
+                            placeholder="Ej: Press de banca con mancuernas"
+                            className="w-full border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 rounded-xl px-4 py-2.5 text-slate-800 dark:text-white font-medium placeholder-slate-300 dark:placeholder-slate-500 focus:ring-2 focus:ring-teal-400 focus:border-transparent outline-none transition"
+                            autoFocus
+                        />
+                        {errors.nombre && <p className="text-red-500 dark:text-red-400 text-xs mt-1">{errors.nombre}</p>}
+                    </div>
+
+                    {/* Grupo muscular + Equipamiento */}
+                    <div className="grid grid-cols-2 gap-4">
+                        <div>
+                            <label className="block text-xs font-bold text-slate-500 dark:text-gray-400 uppercase tracking-wider mb-1.5">
+                                Grupo muscular *
+                            </label>
+                            <div className="relative">
+                                <select
+                                    value={data.grupo_muscular}
+                                    onChange={e => setData('grupo_muscular', e.target.value)}
+                                    className="w-full appearance-none border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 rounded-xl px-4 py-2.5 text-slate-700 dark:text-gray-200 font-medium focus:ring-2 focus:ring-teal-400 focus:border-transparent outline-none pr-8 transition"
+                                >
+                                    {MUSCLE_GROUPS.map(g => <option key={g}>{g}</option>)}
+                                </select>
+                                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                            </div>
+                            {errors.grupo_muscular && <p className="text-red-500 dark:text-red-400 text-xs mt-1">{errors.grupo_muscular}</p>}
+                        </div>
+
+                        <div>
+                            <label className="block text-xs font-bold text-slate-500 dark:text-gray-400 uppercase tracking-wider mb-1.5">
+                                Equipamiento *
+                            </label>
+                            <div className="relative">
+                                <select
+                                    value={data.equipamiento_necesario}
+                                    onChange={e => setData('equipamiento_necesario', e.target.value)}
+                                    className="w-full appearance-none border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 rounded-xl px-4 py-2.5 text-slate-700 dark:text-gray-200 font-medium focus:ring-2 focus:ring-teal-400 focus:border-transparent outline-none pr-8 transition"
+                                >
+                                    {EQUIPMENT_OPTIONS.map(eq => <option key={eq}>{eq}</option>)}
+                                </select>
+                                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                            </div>
+                            {errors.equipamiento_necesario && <p className="text-red-500 dark:text-red-400 text-xs mt-1">{errors.equipamiento_necesario}</p>}
+                        </div>
+                    </div>
+
+                    {/* Dificultad + Calorías */}
+                    <div className="grid grid-cols-2 gap-4">
+                        <div>
+                            <label className="block text-xs font-bold text-slate-500 dark:text-gray-400 uppercase tracking-wider mb-1.5">
+                                Dificultad *
+                            </label>
+                            <div className="relative">
+                                <select
+                                    value={data.dificultad}
+                                    onChange={e => setData('dificultad', e.target.value)}
+                                    className="w-full appearance-none border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 rounded-xl px-4 py-2.5 text-slate-700 dark:text-gray-200 font-medium focus:ring-2 focus:ring-teal-400 focus:border-transparent outline-none pr-8 transition"
+                                >
+                                    {DIFFICULTY_OPTIONS.map(d => <option key={d}>{d}</option>)}
+                                </select>
+                                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                            </div>
+                        </div>
+
+                        <div>
+                            <label className="block text-xs font-bold text-slate-500 dark:text-gray-400 uppercase tracking-wider mb-1.5">
+                                Cal/minuto *
+                            </label>
+                            <input
+                                type="number"
+                                step="0.1"
+                                min="0"
+                                value={data.calorias_minuto}
+                                onChange={e => setData('calorias_minuto', e.target.value)}
+                                placeholder="Ej: 8.5"
+                                className="w-full border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 rounded-xl px-4 py-2.5 text-slate-800 dark:text-white font-medium placeholder-slate-300 dark:placeholder-slate-500 focus:ring-2 focus:ring-teal-400 focus:border-transparent outline-none transition"
+                            />
+                            {errors.calorias_minuto && <p className="text-red-500 dark:text-red-400 text-xs mt-1">{errors.calorias_minuto}</p>}
+                        </div>
+                    </div>
+
+                    {/* Peso Base (Condicional) */}
+                    {['Barra', 'Máquinas', 'Mancuernas', 'Kettlebell', 'Otro'].includes(data.equipamiento_necesario) && (
+                        <div>
+                            <label className="block text-xs font-bold text-slate-500 dark:text-gray-400 uppercase tracking-wider mb-1.5">
+                                Peso base del equipamiento (kg) <span className="font-normal text-slate-400">(opcional)</span>
+                            </label>
+                            <input
+                                type="number"
+                                step="0.5"
+                                min="0"
+                                value={data.peso_base}
+                                onChange={e => setData('peso_base', e.target.value)}
+                                placeholder="Ej: 20 (peso de la barra)"
+                                className="w-full border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 rounded-xl px-4 py-2.5 text-slate-800 dark:text-white font-medium placeholder-slate-300 dark:placeholder-slate-500 focus:ring-2 focus:ring-teal-400 focus:border-transparent outline-none transition"
+                            />
+                            <p className="text-[11px] text-slate-400 dark:text-gray-400 mt-1.5">Este peso se sumará automáticamente al cálculo del volumen total levantado.</p>
+                            {errors.peso_base && <p className="text-red-500 dark:text-red-400 text-xs mt-1">{errors.peso_base}</p>}
+                        </div>
+                    )}
+
+                    {/* Descripción */}
+                    <div>
+                        <label className="block text-xs font-bold text-slate-500 dark:text-gray-400 uppercase tracking-wider mb-1.5">
+                            Descripción <span className="font-normal text-slate-400">(opcional)</span>
+                        </label>
+                        <textarea
+                            value={data.descripcion}
+                            onChange={e => setData('descripcion', e.target.value)}
+                            placeholder="Describe el ejercicio, técnica, variantes..."
+                            rows={3}
+                            className="w-full border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 rounded-xl px-4 py-2.5 text-slate-700 dark:text-gray-200 placeholder-slate-300 dark:placeholder-slate-500 focus:ring-2 focus:ring-teal-400 focus:border-transparent outline-none resize-none transition"
+                        />
+                    </div>
+
+                    {/* Admin: Crear como global */}
+                    {isAdmin && (
+                        <label className="flex items-center gap-3 mt-4 p-3 rounded-xl border border-teal-100 dark:border-teal-900/50 bg-teal-50/50 dark:bg-teal-950/30 cursor-pointer hover:bg-teal-50 dark:hover:bg-teal-900/30 transition-colors">
+                            <input
+                                type="checkbox"
+                                checked={data.is_global}
+                                onChange={e => setData('is_global', e.target.checked)}
+                                className="rounded text-teal-500 focus:ring-teal-400 h-5 w-5 border-teal-300"
+                            />
+                            <div className="flex flex-col">
+                                <span className="text-sm font-bold text-teal-800 dark:text-teal-300">Ejercicio Global</span>
+                                <span className="text-xs text-teal-600/70 dark:text-teal-400/70">Será visible y utilizable por todos los usuarios</span>
+                            </div>
+                        </label>
+                    )}
+
+                    {/* Botones */}
+                    <div className="flex gap-3 pt-2">
+                        <button type="button" onClick={onClose}
+                                className="flex-1 py-3 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-gray-300 font-bold hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+                            Cancelar
+                        </button>
+                        <button type="submit" disabled={processing}
+                                className="flex-[2] py-3 rounded-xl bg-gradient-to-r from-teal-500 to-indigo-600 text-white font-bold hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+                            {processing ? (
+                                <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                            ) : (
+                                isEditing ? <Edit2 className="w-4 h-4" /> : <Plus className="w-4 h-4" />
+                            )}
+                            {processing ? 'Guardando...' : (isEditing ? 'Actualizar Ejercicio' : 'Crear Ejercicio')}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    );
+}
+
+// ─── Modal de Confirmación de Eliminación ──────────────────────────────────────────
+function DeleteConfirmModal({ exercise, onClose, onConfirm, processing }) {
+    if (!exercise) return null;
+    
+    return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4" onClick={onClose}>
+            <div className="bg-white dark:bg-slate-900 w-full max-w-sm rounded-3xl shadow-2xl overflow-hidden border border-slate-100 dark:border-slate-800 text-center p-8 animate-in fade-in zoom-in-95 duration-200" onClick={e => e.stopPropagation()}>
+                <div className="w-16 h-16 bg-red-50 dark:bg-red-950/40 rounded-full flex items-center justify-center mx-auto mb-4 border-8 border-red-50/50 dark:border-red-900/40">
+                    <Trash2 className="w-7 h-7 text-red-500 dark:text-red-400" />
+                </div>
+                <h3 className="text-xl font-black text-slate-800 dark:text-white mb-2">¿Eliminar ejercicio?</h3>
+                <p className="text-slate-500 dark:text-gray-400 text-sm mb-8 leading-relaxed">
+                    Estás a punto de eliminar <strong className="text-slate-700 dark:text-gray-200">{exercise.nombre}</strong>. Esta acción es permanente y no se podrá deshacer.
+                </p>
+                <div className="flex gap-3">
+                    <button type="button" onClick={onClose} disabled={processing}
+                            className="flex-1 py-3 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-gray-300 font-bold hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-800 dark:hover:text-white transition-all">
+                        Cancelar
+                    </button>
+                    <button type="button" onClick={onConfirm} disabled={processing}
+                            className="flex-1 py-3 rounded-xl bg-red-500 text-white font-bold hover:bg-red-600 hover:shadow-lg hover:shadow-red-500/20 transition-all flex items-center justify-center gap-2">
+                        {processing ? <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : 'Sí, eliminar'}
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+// ─── Tarjeta de ejercicio ────────────────────────────────────────────────────
+function ExerciseCard({ exercise, canManage, onEdit, onDelete }) {
+    const isCustom = exercise.id_usuario !== null;
+    const muscleColor = getMuscleColor(exercise.grupo_muscular);
+    const diffColor = DIFF_COLORS[exercise.dificultad] ?? 'bg-slate-50 text-slate-600';
+
+    return (
+        <div className="bg-white dark:bg-slate-900 rounded-[28px] shadow-sm border border-slate-100 dark:border-slate-800 overflow-hidden group hover:border-teal-200 dark:hover:border-teal-800 hover:shadow-md transition-all duration-300 hover:-translate-y-1 flex flex-col">
+            {/* Header colorido */}
+            <div className={`h-3 ${isCustom ? 'bg-gradient-to-r from-teal-400 to-indigo-500' : 'bg-gradient-to-r from-slate-200 to-slate-300 dark:from-slate-700 dark:to-slate-800'}`} />
+
+            <div className="p-5 flex flex-col gap-3 flex-1">
+                {/* Título + acciones */}
+                <div className="flex items-start justify-between gap-2">
+                    <h4 className="font-black text-slate-900 dark:text-white text-base leading-snug flex-1">{exercise.nombre}</h4>
+                    {canManage && (
+                        <div className="flex items-center gap-1">
+                            <button onClick={() => onEdit(exercise)}
+                                    className="flex-shrink-0 p-1.5 rounded-lg text-slate-300 dark:text-gray-600 hover:text-indigo-500 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 transition-all"
+                                    title="Editar ejercicio">
+                                <Edit2 className="w-4 h-4" />
+                            </button>
+                            <button onClick={() => onDelete(exercise)}
+                                    className="flex-shrink-0 p-1.5 rounded-lg text-slate-300 dark:text-gray-600 hover:text-red-500 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 transition-all"
+                                    title="Eliminar ejercicio">
+                                <Trash2 className="w-4 h-4" />
+                            </button>
+                        </div>
+                    )}
+                </div>
+
+                {/* Badges */}
+                <div className="flex flex-wrap gap-1.5">
+                    <span className={`text-[11px] font-bold px-2.5 py-0.5 rounded-full border ${muscleColor}`}>
+                        {exercise.grupo_muscular}
+                    </span>
+                    {exercise.dificultad && (
+                        <span className={`text-[11px] font-bold px-2.5 py-0.5 rounded-full ${diffColor}`}>
+                            {exercise.dificultad}
+                        </span>
+                    )}
+                    {isCustom && (
+                        <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-teal-50 dark:bg-teal-950/40 text-teal-600 dark:text-teal-400">
+                            ✦ Personalizado
+                        </span>
+                    )}
+                </div>
+
+                {/* Detalles */}
+                <div className="text-xs text-slate-400 dark:text-gray-400 space-y-0.5 mt-auto pt-2 border-t border-slate-50 dark:border-slate-800">
+                    <p><span className="font-semibold text-slate-500 dark:text-gray-300">Equipo:</span> {exercise.equipamiento_necesario}</p>
+                    {exercise.calorias_minuto > 0 && (
+                        <p><span className="font-semibold text-slate-500 dark:text-gray-300">Cal/min:</span> {exercise.calorias_minuto}</p>
+                    )}
+                    {exercise.descripcion && (
+                        <p className="truncate mt-1 text-slate-400 dark:text-gray-500 italic">"{exercise.descripcion}"</p>
+                    )}
+                </div>
+            </div>
+        </div>
+    );
+}
+
+// ─── Página principal ────────────────────────────────────────────────────────
+export default function Trainings({ exercises = [], isAdmin = false }) {
+    const [searchTerm, setSearchTerm]         = useState('');
+    const [selectedGroups, setSelectedGroups] = useState([]);
+    const [editingExercise, setEditingExercise] = useState(null);
+    const [showModal, setShowModal] = useState(false);
+    
+    const [deletingExercise, setDeletingExercise] = useState(null);
+    const [isDeleting, setIsDeleting] = useState(false);
+
+    const handleCreateNew = () => {
+        setEditingExercise(null);
+        setShowModal(true);
+    };
+
+    const handleEdit = (exercise) => {
+        setEditingExercise(exercise);
+        setShowModal(true);
+    };
+
+    const handleDeleteClick = (exercise) => {
+        setDeletingExercise(exercise);
+    };
+
+    const confirmDelete = () => {
+        if (!deletingExercise) return;
+        setIsDeleting(true);
+        router.delete(route('exercises.destroy', deletingExercise.id), {
+            onFinish: () => {
+                setIsDeleting(false);
+                setDeletingExercise(null);
+            }
+        });
+    };
+
+    const normalizeGroupName = (name) => {
+        if (!name) return '';
+        const found = MUSCLE_GROUPS.find(g => g.toLowerCase() === name.toLowerCase());
+        return found || (name.charAt(0).toUpperCase() + name.slice(1));
+    };
+
+    const toggleGroup = (group) => {
+        setSelectedGroups(prev =>
+            prev.some(g => g.toLowerCase() === group.toLowerCase())
+                ? prev.filter(g => g.toLowerCase() !== group.toLowerCase())
+                : [...prev, group]
+        );
+    };
+
+    const filtered = useMemo(() => {
+        return exercises.filter(ex => {
+            const matchesSearch = ex.nombre?.toLowerCase().includes(searchTerm.toLowerCase())
+                || ex.grupo_muscular?.toLowerCase().includes(searchTerm.toLowerCase());
+            const matchesGroup = selectedGroups.length === 0
+                || selectedGroups.some(g => g.toLowerCase() === ex.grupo_muscular?.toLowerCase());
+            return matchesSearch && matchesGroup;
+        });
+    }, [exercises, searchTerm, selectedGroups]);
+
+    // Grupos únicos que existen en los datos
+    const existingGroups = useMemo(() => {
+        const set = new Set(exercises.map(e => normalizeGroupName(e.grupo_muscular)).filter(Boolean));
+        return [...set].sort();
+    }, [exercises]);
+
+    const customCount = exercises.filter(e => e.id_usuario !== null).length;
+
+    return (
+        <AuthenticatedLayout
+            header={
+                <div className="flex items-center justify-between">
+                    <div>
+                        <h2 className="text-2xl font-black text-slate-800 dark:text-white tracking-tight">Biblioteca de Ejercicios</h2>
+                        <p className="text-sm text-slate-400 dark:text-gray-400 mt-0.5">
+                            {exercises.length} ejercicios · {customCount} personalizados
+                        </p>
+                    </div>
+                    <button
+                        id="btn-create-exercise"
+                        onClick={handleCreateNew}
+                        className="flex items-center gap-2 px-5 py-2.5 bg-primary text-white font-bold rounded-2xl shadow-lg shadow-primary/20 hover:opacity-90 hover:scale-[1.02] transition-all text-sm"
+                    >
+                        <Plus className="w-4 h-4" />
+                        Crear Ejercicio
+                    </button>
+                </div>
+            }
+        >
+            <Head title="Entrenamientos" />
+
+            <div className="py-8 bg-background dark:bg-slate-950 min-h-screen">
+                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                    <div className="flex flex-col lg:flex-row gap-8">
+
+                        {/* Sidebar de filtros */}
+                        <aside className="w-full lg:w-56 flex-shrink-0 space-y-4">
+                            <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 shadow-sm border border-slate-100 dark:border-slate-800">
+                                <h3 className="text-xs font-black text-slate-400 dark:text-gray-400 uppercase tracking-widest mb-4">
+                                    Grupos Musculares
+                                </h3>
+                                <div className="space-y-2">
+                                    {existingGroups.map(group => (
+                                        <label key={group} className="flex items-center gap-2.5 cursor-pointer group">
+                                            <input
+                                                type="checkbox"
+                                                checked={selectedGroups.some(g => g.toLowerCase() === group.toLowerCase())}
+                                                onChange={() => toggleGroup(group)}
+                                                className="rounded border-slate-200 dark:border-slate-700 text-teal-500 focus:ring-teal-400 h-4 w-4 bg-white dark:bg-slate-800"
+                                            />
+                                            <span className="text-sm text-slate-600 dark:text-gray-300 font-semibold group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">
+                                                {group}
+                                            </span>
+                                        </label>
+                                    ))}
+                                    {existingGroups.length === 0 && (
+                                        <p className="text-xs text-slate-400 dark:text-gray-500">Crea ejercicios para ver filtros</p>
+                                    )}
+                                </div>
+
+                                {selectedGroups.length > 0 && (
+                                    <button onClick={() => setSelectedGroups([])}
+                                            className="mt-4 text-xs font-bold text-teal-500 dark:text-teal-400 hover:text-teal-700 dark:hover:text-teal-300 transition-colors">
+                                        Limpiar filtros
+                                    </button>
+                                )}
+                            </div>
+                        </aside>
+
+                        {/* Contenido principal */}
+                        <div className="flex-1 space-y-6">
+                            {/* Barra de búsqueda */}
+                            <div className="relative">
+                                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-300 dark:text-gray-500" />
+                                <input
+                                    type="text"
+                                    id="exercise-search"
+                                    placeholder="Buscar por nombre o grupo muscular..."
+                                    value={searchTerm}
+                                    onChange={e => setSearchTerm(e.target.value)}
+                                    className="w-full pl-12 pr-4 py-3.5 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl shadow-sm focus:ring-2 focus:ring-teal-400/30 focus:border-teal-300 transition-all text-slate-700 dark:text-white font-medium placeholder-slate-300 dark:placeholder-slate-500 outline-none"
+                                />
+                            </div>
+
+                            {/* Grid de ejercicios */}
+                            {filtered.length > 0 ? (
+                                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+                                    {filtered.map(exercise => (
+                                        <ExerciseCard
+                                            key={exercise.id}
+                                            exercise={exercise}
+                                            canManage={isAdmin || exercise.id_usuario !== null}
+                                            onEdit={handleEdit}
+                                            onDelete={handleDeleteClick}
+                                        />
+                                    ))}
+                                </div>
+                            ) : (
+                                <div className="flex flex-col items-center justify-center py-24 text-center">
+                                    <div className="w-20 h-20 rounded-[30px] bg-white dark:bg-slate-900 shadow-sm flex items-center justify-center mb-6 border border-slate-100 dark:border-slate-800">
+                                        <Dumbbell className="w-10 h-10 text-primary opacity-20" />
+                                    </div>
+                                    {exercises.length === 0 ? (
+                                        <>
+                                            <h3 className="text-xl font-black text-slate-700 dark:text-gray-200 mb-2">
+                                                No hay ejercicios todavía
+                                            </h3>
+                                            <p className="text-slate-400 dark:text-gray-400 max-w-xs mb-8">
+                                                Crea tu primer ejercicio personalizado para empezar a construir tus rutinas.
+                                            </p>
+                                            <button
+                                                onClick={handleCreateNew}
+                                                className="flex items-center gap-3 px-8 py-4 bg-primary text-white font-black rounded-2xl shadow-xl shadow-primary/20 hover:opacity-90 transition-all"
+                                            >
+                                                <Plus className="w-5 h-5" />
+                                                Crear mi primer ejercicio
+                                            </button>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <h3 className="text-lg font-black text-slate-700 dark:text-gray-200 mb-1">Sin resultados</h3>
+                                            <p className="text-slate-400 dark:text-gray-400">Prueba con otros filtros o términos de búsqueda.</p>
+                                        </>
+                                    )}
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {showModal && (
+                <ExerciseModal 
+                    exercise={editingExercise}
+                    isAdmin={isAdmin}
+                    onClose={() => setShowModal(false)} 
+                />
+            )}
+
+            {deletingExercise && (
+                <DeleteConfirmModal
+                    exercise={deletingExercise}
+                    onClose={() => setDeletingExercise(null)}
+                    onConfirm={confirmDelete}
+                    processing={isDeleting}
+                />
+            )}
+        </AuthenticatedLayout>
+    );
+}
